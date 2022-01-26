@@ -8,16 +8,15 @@ terraform {
   }
 }
 
-# Create a resource group
-resource "azurerm_resource_group" "example" {
-  name     = var.rg_name
-  location = "West Europe"
+resource "azurerm_digital_twins_instance" "adt" {
+  name                = "${var.organization_id}-${var.workspace_key}"
+  resource_group_name = "${var.resource_group}"
+  location            = "${var.location}"
+
+  tags = {
+    creator = "terraform"
+    organization = "${var.organization_id}"
+    workspace = "${var.workspace_key}"
+  }
 }
 
-# Create a virtual network within the resource group
-resource "azurerm_virtual_network" "example" {
-  name                = "example-network"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-  address_space       = ["10.0.0.0/17"]
-}
