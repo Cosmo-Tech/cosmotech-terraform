@@ -1,11 +1,12 @@
-terraform {
-  cloud {
-    organization = "cosmotech"
+# create the Azure AD resource group
+data "azuread_user" "owner" {
+  user_principal_name = "${var.owner_sp_name}"
+}
 
-    workspaces {
-      name = "azure-new-workspace"
-    }
-  }
+resource "azuread_group" "workspace_group" {
+  display_name     = "Workspace-${var.workspace_key}"
+  owners           = [data.azuread_user.owner.object_id]
+  security_enabled = true
 }
 
 resource "azurerm_digital_twins_instance" "adt" {
