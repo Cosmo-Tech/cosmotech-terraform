@@ -5,4 +5,5 @@ The App Registration used must be:
 * Subscription owner
 * Have Application API Permission to ReadAllUsers on Ms Graph service
 * Have Application API Permission to ReadWriteAllGroup on Ms Graph service
+* Have Application API Permission to ReadAllApplications on Ms Graph service
 
