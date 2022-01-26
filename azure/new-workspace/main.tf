@@ -24,5 +24,5 @@ resource "azurerm_digital_twins_instance" "adt" {
 resource "azurerm_role_assignment" "adt_data_owner" {
   scope                = azurerm_digital_twins_instance.adt.id
   role_definition_name = "Azure Digital Twins Data Owner"
-  principal_id         = data.azuread_group.workspace_group.object_id
+  principal_id         = azuread_group.workspace_group.object_id
 }
