@@ -52,5 +52,5 @@ variable "app_adt_name" {
 }
 
 variable "storage_account_name" {
-  description = "The platform storage account name"
+  description = "The platform storage account name. Must contains a container named terraform"
 }
