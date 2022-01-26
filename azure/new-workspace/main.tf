@@ -133,7 +133,7 @@ resource "azurerm_kusto_database_principal_assignment" "adx_assignment_platform"
 }
 
 resource "azurerm_storage_blob" "kusto_script_blob" {
-  name                   = "initdb.kusto"
+  name                   = "initdb-${local.resource_name}.kusto"
   storage_account_name   = data.azurerm_storage_account.terraform_account.name
   storage_container_name = data.azurerm_storage_container.terraform_container.name
   type                   = "Block"
