@@ -48,8 +48,8 @@ resource "azurerm_role_assignment" "adt_data_owner" {
 # Event Hub
 resource "azurerm_eventhub" "eventhub" {
   name                = local.resource_name
-  namespace_name      = azurerm_eventhub_namespace.example.name
-  resource_group_name = azurerm_resource_group.example.name
+  namespace_name      = var.eventhub_namespace_name
+  resource_group_name = var.resource_group
   partition_count     = 1
   message_retention   = 1
 }
@@ -62,7 +62,7 @@ resource "azurerm_eventhub_consumer_group" "eventhub_consumer_adx" {
 }
 
 resource "azurerm_role_assignment" "eventhub_owner" {
-  scope                = azurerm_eventhub.evenhub.id
+  scope                = azurerm_eventhub.eventhub.id
   role_definition_name = "Owner"
   principal_id         = azuread_group.workspace_group.object_id
 }
