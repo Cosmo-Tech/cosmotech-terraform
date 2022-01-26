@@ -99,7 +99,7 @@ resource "azurerm_kusto_database" "database" {
 }
 
 resource "azurerm_kusto_database_principal_assignment" "adx_assignment_group" {
-  name                = "KustoPrincipalAssignment"
+  name                = "WorkspaceGroupAssignment"
   resource_group_name = var.resource_group
   cluster_name        = var.adx_name
   database_name       = azurerm_kusto_database.database.name
@@ -111,7 +111,7 @@ resource "azurerm_kusto_database_principal_assignment" "adx_assignment_group" {
 }
 
 resource "azurerm_kusto_database_principal_assignment" "adx_assignment_platform" {
-  name                = "KustoPrincipalAssignment"
+  name                = "PlatformAssignment"
   resource_group_name = var.resource_group
   cluster_name        = var.adx_name
   database_name       = azurerm_kusto_database.database.name
