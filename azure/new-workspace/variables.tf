@@ -35,3 +35,6 @@ variable "workspace_key" {
   description = "The Workspace key"
 }
 
+variable "eventhub_namespace_name" {
+  description = "The Event Hub namespace name"
+}
