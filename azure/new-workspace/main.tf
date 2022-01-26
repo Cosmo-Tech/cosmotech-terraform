@@ -12,6 +12,14 @@ data "azurerm_eventhub_namespace" "eventhub_namespace" {
   resource_group_name = var.resource_group
 }
 
+data "azuread_application" "app_platform" {
+  display_name = var.app_platform_name
+}
+
+data "azuread_application" "app_adt" {
+  display_name = var.app_adt_name
+}
+
 # create the Azure AD resource group
 resource "azuread_group" "workspace_group" {
   display_name     = "Workspace-${local.resource_name}"
@@ -48,7 +56,7 @@ resource "azurerm_role_assignment" "adt_data_owner" {
 resource "azurerm_role_assignment" "adt_data_owner_app" {
   scope                = azurerm_digital_twins_instance.adt.id
   role_definition_name = "Azure Digital Twins Data Owner"
-  principal_id         = var.app_adt_oid
+  principal_id         = data.azuread_application.app_adt.id
 }
 
 # Event Hub
@@ -76,7 +84,7 @@ resource "azurerm_role_assignment" "eventhub_owner" {
 resource "azurerm_role_assignment" "eventhub_owner_app" {
   scope                = azurerm_eventhub.eventhub.id
   role_definition_name = "Azure Event Hubs Data Sender"
-  principal_id         = var.app_platform_oid
+  principal_id         = data.azuread_application.app_platform.id
 }
 
 # ADX
@@ -109,7 +117,7 @@ resource "azurerm_kusto_database_principal_assignment" "adx_assignment_platform"
   database_name       = azurerm_kusto_database.database.name
 
   tenant_id      = var.tenant_id
-  principal_id   = var.app_platform_oid
+  principal_id   = data.azuread_application.app_platform.id
   principal_type = "App"
   role           = "Admin"
 }

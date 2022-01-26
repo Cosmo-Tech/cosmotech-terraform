@@ -43,10 +43,10 @@ variable "adx_name" {
   description = "The Azure Data Explorer cluster name"
 }
 
-variable "app_platform_oid" {
-  description = "The App Registration for the platform object id"
+variable "app_platform_name" {
+  description = "The Platform App Registration name"
 }
 
-variable "app_adt_oid" {
-  description = "The App Registration to read ADT object id"
+variable "app_adt_name" {
+  description = "The ADT App Registration name"
 }
