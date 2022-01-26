@@ -60,8 +60,14 @@ resource "azurerm_eventhub" "eventhub" {
   message_retention   = 1
 }
 
+resource "time_sleep" "wait_eventhub_creation" {
+  depends_on = [azurerm_eventhub.eventhub]
+
+  create_duration = "10s"
+}
 resource "azurerm_eventhub_consumer_group" "eventhub_consumer_adx" {
-  name                = local.eventhub_consumer_adx
+  depends_on = [time_sleep.wait_eventhub_creation] 
+  name               = local.eventhub_consumer_adx
   namespace_name      = var.eventhub_namespace_name
   eventhub_name       = local.resource_name
   resource_group_name = var.resource_group
@@ -112,4 +118,20 @@ resource "azurerm_kusto_database_principal_assignment" "adx_assignment_platform"
   principal_id   = var.app_platform_oid
   principal_type = "App"
   role           = "Admin"
+}
+
+resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_connection" {
+  name                = "${local.resource_name}-probesmeasures"
+  resource_group_name = var.resource_group
+  location            = var.location
+  cluster_name        = var.adx_name
+  database_name       = local.resource_name
+
+  eventhub_id    = azurerm_eventhub.eventhub.id
+  consumer_group = azurerm_eventhub_consumer_group.eventhub_consumer_adx.name
+
+  table_name        = "ProbesMeasures"
+  mapping_rule_name = "ProbesMeasuresMapping"
+  data_format       = "JSON"
+  compression       = "GZip"
 }

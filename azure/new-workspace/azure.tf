@@ -8,6 +8,10 @@ terraform {
       source = "hashicorp/azuread"
       version = "2.15.0"
     }
+    time = {
+      source = "hashicorp/time"
+      version = "0.7.2"
+    }
   }
 }
 
@@ -25,3 +29,7 @@ provider "azuread" {
   client_id     = var.client_id
   client_secret = var.client_secret
 }
+
+provider "time" {
+}
+
