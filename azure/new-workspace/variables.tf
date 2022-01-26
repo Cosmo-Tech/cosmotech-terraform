@@ -38,3 +38,15 @@ variable "workspace_key" {
 variable "eventhub_namespace_name" {
   description = "The Event Hub namespace name"
 }
+
+variable "adx_name" {
+  description = "The Azure Data Explorer cluster name"
+}
+
+variable "app_platform_oid" {
+  description = "The App Registration for the platform object id"
+}
+
+variable "app_adt_oid" {
+  description = "The App Registration to read ADT object id"
+}

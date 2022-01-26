@@ -45,6 +45,12 @@ resource "azurerm_role_assignment" "adt_data_owner" {
   principal_id         = azuread_group.workspace_group.object_id
 }
 
+resource "azurerm_role_assignment" "adt_data_owner_app" {
+  scope                = azurerm_digital_twins_instance.adt.id
+  role_definition_name = "Azure Digital Twins Data Owner"
+  principal_id         = var.app_adt_oid
+}
+
 # Event Hub
 resource "azurerm_eventhub" "eventhub" {
   name                = local.resource_name
@@ -67,5 +73,43 @@ resource "azurerm_role_assignment" "eventhub_owner" {
   principal_id         = azuread_group.workspace_group.object_id
 }
 
-# ADX
+resource "azurerm_role_assignment" "eventhub_owner_app" {
+  scope                = azurerm_eventhub.eventhub.id
+  role_definition_name = "Azure Event Hubs Data Sender"
+  principal_id         = var.app_platform_oid
+}
 
+# ADX
+resource "azurerm_kusto_database" "database" {
+  name                = local.resource_name
+  resource_group_name = var.resource_group
+  location            = var.location
+  cluster_name        = var.adx_name
+
+  hot_cache_period   = "P31D"
+  soft_delete_period = "P365D"
+}
+
+resource "azurerm_kusto_database_principal_assignment" "adx_assignment_group" {
+  name                = "KustoPrincipalAssignment"
+  resource_group_name = var.resource_group
+  cluster_name        = var.adx_name
+  database_name       = local.resource_name
+
+  tenant_id      = var.tenant_id
+  principal_id   = azuread_group.workspace_group.object_id
+  principal_type = "Group"
+  role           = "Admin"
+}
+
+resource "azurerm_kusto_database_principal_assignment" "adx_assignment_platform" {
+  name                = "KustoPrincipalAssignment"
+  resource_group_name = var.resource_group
+  cluster_name        = var.adx_name
+  database_name       = local.resource_name
+
+  tenant_id      = var.tenant_id
+  principal_id   = var.app_platform_oid
+  principal_type = "App"
+  role           = "Admin"
+}
