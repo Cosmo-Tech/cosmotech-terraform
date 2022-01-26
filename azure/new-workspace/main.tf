@@ -1,4 +1,4 @@
-local {
+locals {
   resource_name         = lower("${var.organization_id}-${var.workspace_key}")
   eventhub_consumer_adx = "adx"
 }
@@ -66,4 +66,6 @@ resource "azurerm_role_assignment" "eventhub_owner" {
   role_definition_name = "Owner"
   principal_id         = azuread_group.workspace_group.object_id
 }
+
+# ADX
 
