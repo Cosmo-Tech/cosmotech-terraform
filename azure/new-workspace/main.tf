@@ -7,6 +7,7 @@ resource "azuread_group" "workspace_group" {
   display_name     = "Workspace-${var.workspace_key}"
   owners           = [data.azuread_user.owner.object_id]
   security_enabled = true
+  members          = [data.azuread_user.owner.object_id]
 }
 
 resource "azurerm_digital_twins_instance" "adt" {
