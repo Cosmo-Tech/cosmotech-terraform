@@ -20,6 +20,16 @@ data "azuread_service_principal" "app_adt" {
   display_name = var.app_adt_name
 }
 
+data "azurerm_storage_account" "terraform_account" {
+  name                 = var.storage_account_name
+  resource_group_name  = var.resource_group
+}
+
+data "azurerm_storage_container" "terraform_container" {
+  name                 = "terraform"
+  storage_account_name = data.azurerm_storage_account.terraform_account.name
+}
+
 # create the Azure AD resource group
 resource "azuread_group" "workspace_group" {
   display_name     = "Workspace-${local.resource_name}"
@@ -120,6 +130,68 @@ resource "azurerm_kusto_database_principal_assignment" "adx_assignment_platform"
   principal_id   = data.azuread_service_principal.app_platform.id
   principal_type = "App"
   role           = "Admin"
+}
+
+resource "azurerm_storage_blob" "kusto_script_blob" {
+  name                   = "initdb.kusto"
+  storage_account_name   = data.azurerm_storage_account.terraform_account.name
+  storage_container_name = data.azurerm_storage_container.terraform_container.name
+  type                   = "Block"
+  source_content         = <<EOT
+.alter database ['${local.resource_name}'] policy streamingingestion enable
+.alter database ['${local.resource_name}'] policy ingestionbatching '{"MaximumBatchingTimeSpan": "00:00:15"}'
+.create table ProbesMeasures(
+SimulationRun:guid,
+SimulationDate:datetime,
+SimulationName:string,
+ProbeDate:datetime,
+ProbeName:string,
+ProbeRun:long,
+ProbeType:string,
+SimulatedDate:datetime,
+CommonRaw:dynamic,
+FactsRaw:dynamic)
+.create table ProbesMeasures ingestion json mapping "ProbesMeasuresMapping"
+    '['
+    '    { "column" : "SimulationRun", "Properties":{"Path":"$.simulation.run"}},'
+    '    { "column" : "SimulationDate", "Properties":{"Path":"$.simulation.date"}},'
+    '    { "column" : "SimulationName", "Properties":{"Path":"$.simulation.name"}},'
+    '    { "column" : "ProbeDate", "Properties":{"Path":"$.probe.date"}},'
+    '    { "column" : "ProbeName", "Properties":{"Path":"$.probe.name"}},'
+    '    { "column" : "ProbeRun", "Properties":{"Path":"$.probe.run"}},'
+    '    { "column" : "ProbeType", "Properties":{"Path":"$.probe.type"}},'
+    '    { "column" : "SimulatedDate", "Properties":{"Path":"$.facts_common.MeasureDate"}},'
+    '    { "column" : "CommonRaw", "Properties":{"Path":"$.facts_common"}},'
+    '    { "column" : "FactsRaw", "Properties":{"Path":"$.facts"}},'
+    ']'
+EOT
+}
+
+data "azurerm_storage_account_blob_container_sas" "kusto_script_sas" {
+  connection_string = data.azurerm_storage_account.terraform_account.primary_connection_string
+  container_name    = data.azurerm_storage_container.terraform_container.name
+  https_only        = true
+
+  start  = formatdate("YYYY-MM-DD", timestamp())
+  expiry = formatdate("YYYY-MM-DD", timeadd(timestamp(), "1h"))
+
+  permissions {
+    read   = true
+    add    = false
+    create = false
+    write  = true
+    delete = false
+    list   = true
+  }
+}
+
+resource "azurerm_kusto_script" "kusto_script" {
+  name                               = "initdb"
+  database_id                        = azurerm_kusto_database.database.id
+  url                                = azurerm_storage_blob.kusto_script_blob.id
+  sas_token                          = data.azurerm_storage_account_blob_container_sas.kusto_script_sas.sas
+  continue_on_errors_enabled         = true
+  force_an_update_when_value_changed = "first"
 }
 
 resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_connection" {

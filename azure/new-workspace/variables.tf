@@ -50,3 +50,7 @@ variable "app_platform_name" {
 variable "app_adt_name" {
   description = "The ADT App Registration name"
 }
+
+variable "storage_account_name" {
+  description = "The platform storage account name"
+}
