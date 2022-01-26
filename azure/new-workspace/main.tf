@@ -140,30 +140,8 @@ resource "azurerm_storage_blob" "kusto_script_blob" {
   source_content         = <<EOT
 .alter database ['${local.resource_name}'] policy streamingingestion enable
 .alter database ['${local.resource_name}'] policy ingestionbatching '{"MaximumBatchingTimeSpan": "00:00:15"}'
-.create table ProbesMeasures(
-SimulationRun:guid,
-SimulationDate:datetime,
-SimulationName:string,
-ProbeDate:datetime,
-ProbeName:string,
-ProbeRun:long,
-ProbeType:string,
-SimulatedDate:datetime,
-CommonRaw:dynamic,
-FactsRaw:dynamic)
-.create table ProbesMeasures ingestion json mapping "ProbesMeasuresMapping"
-    '['
-    '    { "column" : "SimulationRun", "Properties":{"Path":"$.simulation.run"}},'
-    '    { "column" : "SimulationDate", "Properties":{"Path":"$.simulation.date"}},'
-    '    { "column" : "SimulationName", "Properties":{"Path":"$.simulation.name"}},'
-    '    { "column" : "ProbeDate", "Properties":{"Path":"$.probe.date"}},'
-    '    { "column" : "ProbeName", "Properties":{"Path":"$.probe.name"}},'
-    '    { "column" : "ProbeRun", "Properties":{"Path":"$.probe.run"}},'
-    '    { "column" : "ProbeType", "Properties":{"Path":"$.probe.type"}},'
-    '    { "column" : "SimulatedDate", "Properties":{"Path":"$.facts_common.MeasureDate"}},'
-    '    { "column" : "CommonRaw", "Properties":{"Path":"$.facts_common"}},'
-    '    { "column" : "FactsRaw", "Properties":{"Path":"$.facts"}},'
-    ']'
+.create table ProbesMeasures(SimulationRun:guid,SimulationDate:datetime,SimulationName:string,ProbeDate:datetime,ProbeName:string,ProbeRun:long,ProbeType:string,SimulatedDate:datetime,CommonRaw:dynamic,FactsRaw:dynamic)
+.create table ProbesMeasures ingestion json mapping "ProbesMeasuresMapping" [{ "column" : "SimulationRun", "Properties":{"Path":"$.simulation.run"}},{ "column" : "SimulationDate", "Properties":{"Path":"$.simulation.date"}},{ "column" : "SimulationName", "Properties":{"Path":"$.simulation.name"}},{ "column" : "ProbeDate", "Properties":{"Path":"$.probe.date"}},{ "column" : "ProbeName", "Properties":{"Path":"$.probe.name"}},{ "column" : "ProbeRun", "Properties":{"Path":"$.probe.run"}},{ "column" : "ProbeType", "Properties":{"Path":"$.probe.type"}},{ "column" : "SimulatedDate", "Properties":{"Path":"$.facts_common.MeasureDate"}},{ "column" : "CommonRaw", "Properties":{"Path":"$.facts_common"}},{ "column" : "FactsRaw", "Properties":{"Path":"$.facts"}}]
 EOT
 }
 
@@ -195,6 +173,7 @@ resource "azurerm_kusto_script" "kusto_script" {
 }
 
 resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_connection" {
+  depends_on          = [azurerm_kusto_script.kusto_script]
   name                = "${local.resource_name}-probesmeasures"
   resource_group_name = var.resource_group
   location            = var.location
