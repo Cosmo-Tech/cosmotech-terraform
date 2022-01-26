@@ -3,7 +3,7 @@ terraform {
     organization = "cosmotech"
 
     workspaces {
-      name = ["azure-new-workspace"]
+      name = "azure-new-workspace"
     }
   }
 }
