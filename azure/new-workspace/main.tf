@@ -1,3 +1,13 @@
+terraform {
+  cloud {
+    organization = "cosmotech"
+
+    workspaces {
+      name = "azure-new-workspace"
+    }
+  }
+}
+
 # Create a resource group
 resource "azurerm_resource_group" "example" {
   name     = var.rg_name
