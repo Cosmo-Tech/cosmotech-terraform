@@ -4,6 +4,7 @@ locals {
 }
 
 data "azuread_user" "owner" {
+  count = var.aad_groups_and_assignements ? 1 : 0
   user_principal_name = "${var.owner_sp_name}"
 }
 
@@ -14,10 +15,12 @@ data "azurerm_eventhub_namespace" "eventhub_namespace" {
 }
 
 data "azuread_service_principal" "app_platform" {
+  count = var.aad_groups_and_assignements ? 1 : 0
   display_name = var.app_platform_name
 }
 
 data "azuread_service_principal" "app_adt" {
+  count = var.aad_groups_and_assignements ? 1 : 0
   display_name = var.app_adt_name
 }
 
@@ -33,10 +36,11 @@ data "azurerm_storage_container" "terraform_container" {
 
 # create the Azure AD resource group
 resource "azuread_group" "workspace_group" {
+  count = var.aad_groups_and_assignements ? 1 : 0
   display_name     = "Workspace-${local.resource_name}"
-  owners           = [data.azuread_user.owner.object_id]
+  owners           = [data.azuread_user.owner[0].object_id]
   security_enabled = true
-  members          = [data.azuread_user.owner.object_id]
+  members          = [data.azuread_user.owner[0].object_id]
 }
 
 # ADT instance
@@ -53,21 +57,24 @@ resource "azurerm_digital_twins_instance" "adt" {
 }
 
 resource "azurerm_role_assignment" "adt_owner" {
+  count = var.aad_groups_and_assignements ? 1 : 0
   scope                = azurerm_digital_twins_instance.adt.id
   role_definition_name = "Owner"
-  principal_id         = azuread_group.workspace_group.object_id
+  principal_id         = azuread_group.workspace_group[0].object_id
 }
 
 resource "azurerm_role_assignment" "adt_data_owner" {
+  count = var.aad_groups_and_assignements ? 1 : 0
   scope                = azurerm_digital_twins_instance.adt.id
   role_definition_name = "Azure Digital Twins Data Owner"
-  principal_id         = azuread_group.workspace_group.object_id
+  principal_id         = azuread_group.workspace_group[0].object_id
 }
 
 resource "azurerm_role_assignment" "adt_data_owner_app" {
+  count = var.aad_groups_and_assignements ? 1 : 0
   scope                = azurerm_digital_twins_instance.adt.id
   role_definition_name = "Azure Digital Twins Data Owner"
-  principal_id         = data.azuread_service_principal.app_adt.id
+  principal_id         = data.azuread_service_principal.app_adt[0].id
 }
 
 # Event Hub
@@ -87,10 +94,10 @@ resource "azurerm_eventhub_namespace" "eventhub_namespace" {
 }
 
 resource "azurerm_role_assignment" "eventhub_namespace_owner" {
-  count               = var.dedicated_eventhub_namespace ? 1 : 0
+  count                = var.aad_groups_and_assignements && var.dedicated_eventhub_namespace ? 1 : 0
   scope                = azurerm_eventhub_namespace.eventhub_namespace[0].id
   role_definition_name = "Owner"
-  principal_id         = azuread_group.workspace_group.object_id
+  principal_id         = azuread_group.workspace_group[0].object_id
 }
 
 resource "azurerm_eventhub" "eventhub" {
@@ -109,15 +116,17 @@ resource "azurerm_eventhub_consumer_group" "eventhub_consumer_adx" {
 }
 
 resource "azurerm_role_assignment" "eventhub_owner" {
+  count = var.aad_groups_and_assignements ? 1 : 0
   scope                = azurerm_eventhub.eventhub.id
   role_definition_name = "Owner"
-  principal_id         = azuread_group.workspace_group.object_id
+  principal_id         = azuread_group.workspace_group[0].object_id
 }
 
 resource "azurerm_role_assignment" "eventhub_owner_app" {
+  count = var.aad_groups_and_assignements ? 1 : 0
   scope                = azurerm_eventhub.eventhub.id
   role_definition_name = "Azure Event Hubs Data Sender"
-  principal_id         = data.azuread_service_principal.app_platform.id
+  principal_id         = data.azuread_service_principal.app_platform[0].id
 }
 
 # ADX
@@ -138,7 +147,7 @@ resource "azurerm_kusto_database_principal_assignment" "adx_assignment_group" {
   database_name       = azurerm_kusto_database.database.name
 
   tenant_id      = var.tenant_id
-  principal_id   = azuread_group.workspace_group.object_id
+  principal_id   = azuread_group.workspace_group[0].object_id
   principal_type = "Group"
   role           = "Admin"
 }
@@ -150,7 +159,7 @@ resource "azurerm_kusto_database_principal_assignment" "adx_assignment_platform"
   database_name       = azurerm_kusto_database.database.name
 
   tenant_id      = var.tenant_id
-  principal_id   = data.azuread_service_principal.app_platform.id
+  principal_id   = data.azuread_service_principal.app_platform[0].id
   principal_type = "App"
   role           = "Admin"
 }
