@@ -214,8 +214,8 @@ data "azurerm_storage_account_blob_container_sas" "kusto_script_sas" {
   container_name    = data.azurerm_storage_container.terraform_container.name
   https_only        = true
 
-  start  = formatdate("YYYY-MM-DD", timestamp())
-  expiry = formatdate("YYYY-MM-DD", timeadd(timestamp(), "1h"))
+  start  = formatdate("YYYY-MM-DD'T'hh:mm:ssZ", timestamp())
+  expiry = formatdate("YYYY-MM-DD'T'hh:mm:ssZ", timeadd(timestamp(), "1h"))
 
   permissions {
     read   = true
@@ -225,11 +225,6 @@ data "azurerm_storage_account_blob_container_sas" "kusto_script_sas" {
     delete = false
     list   = true
   }
-}
-
-output "kusto_script_blob_sas" {
-  value = var.kusto_script ? data.azurerm_storage_account_blob_container_sas.kusto_script_sas[0].sas : "No kusto script"
-  sensitive = false
 }
 
 resource "azurerm_kusto_script" "kusto_script" {
