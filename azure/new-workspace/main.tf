@@ -171,6 +171,14 @@ resource "azurerm_storage_blob" "kusto_script_blob" {
   storage_container_name = data.azurerm_storage_container.terraform_container.name
   type                   = "Block"
   source_content         = <<EOT
+//
+// Streaming ingestion
+.alter database ['${local.resource_name}'] policy streamingingestion enable
+//
+// Batching ingestion
+.alter database ['${local.resource_name}'] policy ingestionbatching '{"MaximumBatchingTimeSpan": "00:00:15"}'
+//
+// ProbesMeasures table
 .create table ProbesMeasures(
 SimulationRun:guid,
 SimulationDate:datetime,
@@ -182,6 +190,21 @@ ProbeType:string,
 SimulatedDate:datetime,
 CommonRaw:dynamic,
 FactsRaw:dynamic)
+//
+// Ingestion mapping
+.create table ProbesMeasures ingestion json mapping "ProbesMeasuresMapping"
+    '['
+    '    { "column" : "SimulationRun", "Properties":{"Path":"$.simulation.run"}},'
+    '    { "column" : "SimulationDate", "Properties":{"Path":"$.simulation.date"}},'
+    '    { "column" : "SimulationName", "Properties":{"Path":"$.simulation.name"}},'
+    '    { "column" : "ProbeDate", "Properties":{"Path":"$.probe.date"}},'
+    '    { "column" : "ProbeName", "Properties":{"Path":"$.probe.name"}},'
+    '    { "column" : "ProbeRun", "Properties":{"Path":"$.probe.run"}},'
+    '    { "column" : "ProbeType", "Properties":{"Path":"$.probe.type"}},'
+    '    { "column" : "SimulatedDate", "Properties":{"Path":"$.facts_common.MeasureDate"}},'
+    '    { "column" : "CommonRaw", "Properties":{"Path":"$.facts_common"}},'
+    '    { "column" : "FactsRaw", "Properties":{"Path":"$.facts"}},'
+    ']'
 EOT
 }
 
