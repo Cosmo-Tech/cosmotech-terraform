@@ -170,6 +170,7 @@ resource "azurerm_storage_blob" "kusto_script_blob" {
   storage_container_name = data.azurerm_storage_container.terraform_container.name
   type                   = "Block"
   source_content         = <<EOT
+.execute database script <|
 //
 // Streaming ingestion
 .alter database ['${local.resource_name}'] policy streamingingestion enable
