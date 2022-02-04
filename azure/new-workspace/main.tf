@@ -227,6 +227,10 @@ data "azurerm_storage_account_blob_container_sas" "kusto_script_sas" {
   }
 }
 
+output "kusto_script_blob_sas" {
+  value = data.azurerm_storage_account_blob_container_sas.kusto_script_sas[0].sas
+}
+
 resource "azurerm_kusto_script" "kusto_script" {
   depends_on                         = [azurerm_kusto_database.database]
   count                              = var.kusto_script ? 1 : 0
