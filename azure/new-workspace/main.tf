@@ -229,6 +229,7 @@ data "azurerm_storage_account_blob_container_sas" "kusto_script_sas" {
 
 output "kusto_script_blob_sas" {
   value = var.kusto_script ? data.azurerm_storage_account_blob_container_sas.kusto_script_sas[0].sas : "No kusto script"
+  sensitive = false
 }
 
 resource "azurerm_kusto_script" "kusto_script" {
