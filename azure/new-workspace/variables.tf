@@ -37,6 +37,7 @@ variable "workspace_key" {
 
 variable "eventhub_namespace_name" {
   description = "The Event Hub namespace name"
+  default = ""
 }
 
 variable "adx_name" {
@@ -53,4 +54,16 @@ variable "app_adt_name" {
 
 variable "storage_account_name" {
   description = "The platform storage account name. Must contains a container named terraform"
+}
+
+variable "dedicated_eventhub_namespace" {
+  type = bool
+  description = "Create a dedicated event hub namespace"
+  default = true
+}
+
+variable "eventhub_namespace_capacity" {
+  description = "The event hub namespace capacity in terms of throughput units"
+  type = number
+  default = 3
 }

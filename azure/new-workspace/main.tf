@@ -8,6 +8,7 @@ data "azuread_user" "owner" {
 }
 
 data "azurerm_eventhub_namespace" "eventhub_namespace" {
+  count               = var.dedicated_eventhub_namespace ? 0 : 1
   name                = var.eventhub_namespace_name
   resource_group_name = var.resource_group
 }
@@ -70,9 +71,31 @@ resource "azurerm_role_assignment" "adt_data_owner_app" {
 }
 
 # Event Hub
+resource "azurerm_eventhub_namespace" "eventhub_namespace" {
+  count               = var.dedicated_eventhub_namespace ? 1 : 0
+  name                = local.resource_name
+  location            = var.location
+  resource_group_name = var.resource_group
+  sku                 = "Standard"
+  capacity            = var.eventhub_namespace_capacity
+
+  tags = {
+    creator = "terraform"
+    organization = var.organization_id
+    workspace = var.workspace_key
+  }
+}
+
+resource "azurerm_role_assignment" "eventhub_namespace_owner" {
+  count               = var.dedicated_eventhub_namespace ? 1 : 0
+  scope                = azurerm_eventhub_namespace.eventhub_namespace[0].id
+  role_definition_name = "Owner"
+  principal_id         = azuread_group.workspace_group.object_id
+}
+
 resource "azurerm_eventhub" "eventhub" {
   name                = local.resource_name
-  namespace_name      = var.eventhub_namespace_name
+  namespace_name      = var.dedicated_eventhub_namespace ? azurerm_eventhub_namespace.eventhub_namespace[0].name : var.eventhub_namespace_name
   resource_group_name = var.resource_group
   partition_count     = 1
   message_retention   = 1
@@ -80,7 +103,7 @@ resource "azurerm_eventhub" "eventhub" {
 
 resource "azurerm_eventhub_consumer_group" "eventhub_consumer_adx" {
   name               = local.eventhub_consumer_adx
-  namespace_name      = var.eventhub_namespace_name
+  namespace_name      = var.dedicated_eventhub_namespace ? azurerm_eventhub_namespace.eventhub_namespace[0].name : var.eventhub_namespace_name
   eventhub_name       = azurerm_eventhub.eventhub.name
   resource_group_name = var.resource_group
 }
@@ -194,6 +217,7 @@ data "azurerm_storage_account_blob_container_sas" "kusto_script_sas" {
 }
 
 resource "azurerm_kusto_script" "kusto_script" {
+  depends_on          = [azurerm_kusto_database.database]
   name                               = "initdb"
   database_id                        = azurerm_kusto_database.database.id
   url                                = azurerm_storage_blob.kusto_script_blob.id
