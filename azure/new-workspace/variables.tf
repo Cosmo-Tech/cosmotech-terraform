@@ -73,3 +73,9 @@ variable "aad_groups_and_assignements" {
   type = bool
   default = true
 }
+
+variable "kusto_script" {
+  description = "Run the database script"
+  type = bool
+  default = true
+}
