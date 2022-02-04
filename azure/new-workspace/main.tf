@@ -171,14 +171,6 @@ resource "azurerm_storage_blob" "kusto_script_blob" {
   storage_container_name = data.azurerm_storage_container.terraform_container.name
   type                   = "Block"
   source_content         = <<EOT
-//
-// Streaming ingestion
-.alter database ['${local.resource_name}'] policy streamingingestion enable
-//
-// Batching ingestion
-.alter database ['${local.resource_name}'] policy ingestionbatching '{"MaximumBatchingTimeSpan": "00:00:15"}'
-//
-// ProbesMeasures table
 .create table ProbesMeasures(
 SimulationRun:guid,
 SimulationDate:datetime,
