@@ -1,6 +1,7 @@
 locals {
   resource_name         = lower("${var.organization_id}-${var.workspace_key}")
   eventhub_consumer_adx = "adx"
+  eventhub_probesmeasures = "probesmeasures"
 }
 
 data "azuread_user" "owner" {
@@ -101,7 +102,7 @@ resource "azurerm_role_assignment" "eventhub_namespace_owner" {
 }
 
 resource "azurerm_eventhub" "eventhub" {
-  name                = local.resource_name
+  name                = var.dedicated_eventhub_namespace ? local.eventhub_probesmeasures : local.resource_name
   namespace_name      = var.dedicated_eventhub_namespace ? azurerm_eventhub_namespace.eventhub_namespace[0].name : var.eventhub_namespace_name
   resource_group_name = var.resource_group
   partition_count     = 1
