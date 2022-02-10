@@ -65,7 +65,7 @@ variable "dedicated_eventhub_namespace" {
 variable "eventhub_namespace_capacity" {
   description = "The event hub namespace capacity in terms of throughput units"
   type = number
-  default = 3
+  default = 2
 }
 
 variable "aad_groups_and_assignements" {
