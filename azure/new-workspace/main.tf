@@ -142,6 +142,7 @@ resource "azurerm_kusto_database" "database" {
 }
 
 resource "azurerm_kusto_database_principal_assignment" "adx_assignment_group" {
+  count = var.aad_groups_and_assignements ? 1 : 0
   name                = "WorkspaceGroupAssignment"
   resource_group_name = var.resource_group
   cluster_name        = var.adx_name
@@ -154,6 +155,7 @@ resource "azurerm_kusto_database_principal_assignment" "adx_assignment_group" {
 }
 
 resource "azurerm_kusto_database_principal_assignment" "adx_assignment_platform" {
+  count = var.aad_groups_and_assignements ? 1 : 0
   name                = "PlatformAssignment"
   resource_group_name = var.resource_group
   cluster_name        = var.adx_name
@@ -242,7 +244,7 @@ resource "azurerm_kusto_script" "kusto_script" {
 resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_connection" {
   depends_on          = [azurerm_kusto_script.kusto_script]
   count                              = var.kusto_script ? 1 : 0
-  name                = "${local.resource_name}-probesmeasures"
+  name                = substr("${local.resource_name}-probesmeasures", 0, 40)
   resource_group_name = var.resource_group
   location            = var.location
   cluster_name        = var.adx_name
