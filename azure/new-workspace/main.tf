@@ -180,6 +180,9 @@ resource "azurerm_storage_blob" "kusto_script_blob" {
   type                   = "Block"
   source_content         = <<EOT
 //
+// Streaming ingestion
+.alter database ['${local.resource_name}'] policy streamingingestion disable
+//
 // Batching ingestion
 .alter database ['${local.resource_name}'] policy ingestionbatching '{"MaximumBatchingTimeSpan": "00:00:15"}'
 //
