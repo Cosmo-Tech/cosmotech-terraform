@@ -81,7 +81,7 @@ variable "kusto_script" {
 }
 
 variable "aad_group_members" {
-  description = "Group member list for Workspace security group"
+  description = "Group member list of mail addresses for Workspace security group"
   type = list(string)
   default = []
 }
