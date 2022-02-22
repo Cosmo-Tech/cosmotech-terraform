@@ -9,6 +9,11 @@ data "azuread_user" "owner" {
   user_principal_name = "${var.owner_sp_name}"
 }
 
+data "azuread_users" "members" {
+  count = var.aad_groups_and_assignements ? 1 : 0
+  user_principal_names = var.aad_group_members
+}
+
 data "azurerm_eventhub_namespace" "eventhub_namespace" {
   count               = var.dedicated_eventhub_namespace ? 0 : 1
   name                = var.eventhub_namespace_name
@@ -41,7 +46,7 @@ resource "azuread_group" "workspace_group" {
   display_name     = "Workspace-${local.resource_name}"
   owners           = [data.azuread_user.owner[0].object_id]
   security_enabled = true
-  members          = [data.azuread_user.owner[0].object_id]
+  members          = data.azuread_users.members[0].object_ids
 }
 
 # ADT instance

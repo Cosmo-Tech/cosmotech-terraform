@@ -79,3 +79,9 @@ variable "kusto_script" {
   type = bool
   default = true
 }
+
+variable "aad_group_members" {
+  description = "Group member list for Workspace security group"
+  type = list(string)
+  default = []
+}
