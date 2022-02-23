@@ -2,6 +2,7 @@ locals {
   resource_name         = lower("${var.organization_id}-${var.workspace_key}")
   eventhub_consumer_adx = "adx"
   eventhub_probesmeasures = "probesmeasures"
+  eventhub_scenariorun  = "scenariorun"
 }
 
 data "azuread_user" "owner" {
@@ -106,7 +107,7 @@ resource "azurerm_role_assignment" "eventhub_namespace_owner" {
   principal_id         = azuread_group.workspace_group[0].object_id
 }
 
-resource "azurerm_eventhub" "eventhub" {
+resource "azurerm_eventhub" "eventhub_probesmeasures" {
   name                = var.dedicated_eventhub_namespace ? local.eventhub_probesmeasures : local.resource_name
   namespace_name      = var.dedicated_eventhub_namespace ? azurerm_eventhub_namespace.eventhub_namespace[0].name : var.eventhub_namespace_name
   resource_group_name = var.resource_group
@@ -114,26 +115,56 @@ resource "azurerm_eventhub" "eventhub" {
   message_retention   = 1
 }
 
-resource "azurerm_eventhub_consumer_group" "eventhub_consumer_adx" {
+resource "azurerm_eventhub_consumer_group" "eventhub_probesmeasures_consumer_adx" {
   name               = local.eventhub_consumer_adx
   namespace_name      = var.dedicated_eventhub_namespace ? azurerm_eventhub_namespace.eventhub_namespace[0].name : var.eventhub_namespace_name
-  eventhub_name       = azurerm_eventhub.eventhub.name
+  eventhub_name       = azurerm_eventhub.eventhub_probesmeasures.name
   resource_group_name = var.resource_group
 }
 
-resource "azurerm_role_assignment" "eventhub_owner" {
+resource "azurerm_role_assignment" "eventhub_probesmeasures_owner" {
   count = var.aad_groups_and_assignements ? 1 : 0
-  scope                = azurerm_eventhub.eventhub.id
+  scope                = azurerm_eventhub.eventhub_probesmeasures.id
   role_definition_name = "Owner"
   principal_id         = azuread_group.workspace_group[0].object_id
 }
 
-resource "azurerm_role_assignment" "eventhub_owner_app" {
+resource "azurerm_role_assignment" "eventhub_probesmeasures_owner_app" {
   count = var.aad_groups_and_assignements ? 1 : 0
-  scope                = azurerm_eventhub.eventhub.id
+  scope                = azurerm_eventhub.eventhub_probesmeasures.id
   role_definition_name = "Azure Event Hubs Data Sender"
   principal_id         = data.azuread_service_principal.app_platform[0].id
 }
+
+resource "azurerm_eventhub" "eventhub_scenariorun" {
+  name                = var.dedicated_eventhub_namespace ? local.eventhub_scenariorun : "${local.resource_name}-${local.eventhub_scenariorun}"
+  namespace_name      = var.dedicated_eventhub_namespace ? azurerm_eventhub_namespace.eventhub_namespace[0].name : var.eventhub_namespace_name
+  resource_group_name = var.resource_group
+  partition_count     = 1
+  message_retention   = 1
+}
+
+resource "azurerm_eventhub_consumer_group" "eventhub_scenariorun_consumer_adx" {
+  name               = local.eventhub_consumer_adx
+  namespace_name      = var.dedicated_eventhub_namespace ? azurerm_eventhub_namespace.eventhub_namespace[0].name : var.eventhub_namespace_name
+  eventhub_name       = azurerm_eventhub.eventhub_scenariorun.name
+  resource_group_name = var.resource_group
+}
+
+resource "azurerm_role_assignment" "eventhub_scenariorun_owner" {
+  count = var.aad_groups_and_assignements ? 1 : 0
+  scope                = azurerm_eventhub.eventhub_scenariorun.id
+  role_definition_name = "Owner"
+  principal_id         = azuread_group.workspace_group[0].object_id
+}
+
+resource "azurerm_role_assignment" "eventhub_scenariorun_owner_app" {
+  count = var.aad_groups_and_assignements ? 1 : 0
+  scope                = azurerm_eventhub.eventhub_scenariorun.id
+  role_definition_name = "Azure Event Hubs Data Sender"
+  principal_id         = data.azuread_service_principal.app_platform[0].id
+}
+
 
 # ADX
 resource "azurerm_kusto_database" "database" {
@@ -181,7 +212,7 @@ resource "azurerm_storage_blob" "kusto_script_blob" {
   source_content         = <<EOT
 //
 // Streaming ingestion
-.alter database ['${local.resource_name}'] policy streamingingestion enable
+.alter database ['${local.resource_name}'] policy streamingingestion disable
 //
 // Batching ingestion
 .alter database ['${local.resource_name}'] policy ingestionbatching '{"MaximumBatchingTimeSpan": "00:00:15"}'
@@ -199,7 +230,7 @@ SimulatedDate:datetime,
 CommonRaw:dynamic,
 FactsRaw:dynamic)
 //
-// Ingestion mapping
+// Probes measures Ingestion mapping
 .create table ProbesMeasures ingestion json mapping "ProbesMeasuresMapping"
     '['
     '    { "column" : "SimulationRun", "Properties":{"Path":"$.simulation.run"}},'
@@ -212,6 +243,24 @@ FactsRaw:dynamic)
     '    { "column" : "SimulatedDate", "Properties":{"Path":"$.facts_common.MeasureDate"}},'
     '    { "column" : "CommonRaw", "Properties":{"Path":"$.facts_common"}},'
     '    { "column" : "FactsRaw", "Properties":{"Path":"$.facts"}},'
+    ']'
+//
+// Scenario Run Simulation total facts
+.create table SimulationTotalFacts(
+SimulationId:string,
+State:string,
+Type:string,
+SentMessagesTotal: long,
+SentFactsTotal: long)
+//
+// Simulation total facts ingestion mapping
+.create table SimulationTotalFacts ingestion json mapping "SimulationTotalFactsMapping"
+    '['
+    '    { "column" : "SimulationId", "Properties":{"Path":"$.sagaId"}},'
+    '    { "column" : "State", "Properties":{"Path":"$.state"}},'
+    '    { "column" : "Type", "Properties":{"Path":"$.type"}},'
+    '    { "column" : "SentMessagesTotal", "Properties":{"Path":"$.sentMessagesTotal"}},'
+    '    { "column" : "SentFactsTotal", "Properties":{"Path":"$.sentFactsTotal"}},'
     ']'
 EOT
 }
@@ -246,20 +295,38 @@ resource "azurerm_kusto_script" "kusto_script" {
   force_an_update_when_value_changed = "first"
 }
 
-resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_connection" {
+resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_probesmeasures_connection" {
   depends_on          = [azurerm_kusto_script.kusto_script]
   count                              = var.kusto_script ? 1 : 0
-  name                = substr("${local.resource_name}-probesmeasures", 0, 40)
+  name                = substr("${local.resource_name}-${local.eventhub_probesmeasures}", 0, 40)
   resource_group_name = var.resource_group
   location            = var.location
   cluster_name        = var.adx_name
   database_name       = azurerm_kusto_database.database.name
 
-  eventhub_id    = azurerm_eventhub.eventhub.id
-  consumer_group = azurerm_eventhub_consumer_group.eventhub_consumer_adx.name
+  eventhub_id    = azurerm_eventhub.eventhub_probesmeasures.id
+  consumer_group = azurerm_eventhub_consumer_group.eventhub_probesmeasures_consumer_adx.name
 
   table_name        = "ProbesMeasures"
   mapping_rule_name = "ProbesMeasuresMapping"
   data_format       = "JSON"
   compression       = "GZip"
+}
+
+resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorun_connection" {
+  depends_on          = [azurerm_kusto_script.kusto_script]
+  count                              = var.kusto_script ? 1 : 0
+  name                = substr("${local.resource_name}-${local.eventhub_scenariorun}", 0, 40)
+  resource_group_name = var.resource_group
+  location            = var.location
+  cluster_name        = var.adx_name
+  database_name       = azurerm_kusto_database.database.name
+
+  eventhub_id    = azurerm_eventhub.eventhub_scenariorun.id
+  consumer_group = azurerm_eventhub_consumer_group.eventhub_scenariorun_consumer_adx.name
+
+  table_name        = "SimulationTotalFacts"
+  mapping_rule_name = "SimulationTotalFactsMapping"
+  data_format       = "JSON"
+  compression       = "None"
 }
