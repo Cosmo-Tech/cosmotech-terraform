@@ -385,7 +385,7 @@ resource "azuread_application" "restish" {
 
   web {
     homepage_url  = var.platform_url
-    redirect_uris = ["http://localhost:8484"]
+    redirect_uris = ["http://localhost:8484/"]
 
     implicit_grant {
       access_token_issuance_enabled = true
@@ -437,6 +437,6 @@ resource "azuread_application" "webapp" {
   }
 
   single_page_application {
-    redirect_uris = ["http://localhost:3000/scenario", "${var.webapp_url}"]
+    redirect_uris = ["http://localhost:3000/scenario", "${var.webapp_url}/platform"]
   }
 }
