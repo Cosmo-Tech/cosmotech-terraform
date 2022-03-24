@@ -1,7 +1,10 @@
-resource "random_uuid" "api_id" {}
+locals {
+  pre_name = "Cosmo Tech "
+  post_name = " ${var.stage} For ${var.customer} ${var.project}"
+}
 
 resource "azuread_application" "platform" {
-  display_name     = "Cosmo Tech ${var.stage} Platform For ${var.customer} ${var.project}"
+  display_name     = "${local.pre_name}Platform${local.post_name}"
   identifier_uris  = [var.identifier_uri]
   logo_image       = filebase64("cosmotech.png")
   owners           = var.owner_list
@@ -37,7 +40,7 @@ resource "azuread_application" "platform" {
       admin_consent_description  = "Allow the application to use the Cosmo Tech Platform with user account"
       admin_consent_display_name = "Cosmo Tech Platform Impersonate"
       enabled                    = true
-      id                         = random_uuid.api_id.result
+      id                         = "6332363e-bcba-4c4a-a605-c25f23117400"
       type                       = "User"
       user_consent_description   = "Allow the application to use the Cosmo Tech Platform with your account"
       user_consent_display_name  = "Cosmo Tech Platform Usage"
@@ -297,3 +300,143 @@ resource "azuread_application" "platform" {
     value = "Platform.Admin"
   }
 } 
+
+resource "azuread_application" "network_adt" {
+  display_name     = "${local.pre_name}Network and ADT${local.post_name}"
+  logo_image       = filebase64("cosmotech.png")
+  owners           = var.owner_list
+  sign_in_audience = "AzureADMyOrg"
+
+  feature_tags {
+    enterprise = true
+    hide       = true
+  }
+}
+
+resource "azuread_application" "swagger" {
+  display_name     = "${local.pre_name}Swagger${local.post_name}"
+  logo_image       = filebase64("cosmotech.png")
+  owners           = var.owner_list
+  sign_in_audience = var.audience
+
+  feature_tags {
+    enterprise = true
+    hide       = true
+  }
+
+  required_resource_access {
+    resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
+
+    resource_access {
+      id   = "e1fe6dd8-ba31-4d61-89e7-88639da4683d" # User.Read
+      type = "Scope"
+    }
+  }
+
+  required_resource_access {
+    resource_app_id = azuread_application.platform.application_id # Cosmo Tech Platform
+
+    resource_access {
+      id   = "6332363e-bcba-4c4a-a605-c25f23117400" # platform
+      type = "Scope"
+    }
+  }
+
+  web {
+    homepage_url  = var.platform_url
+    redirect_uris = ["${var.platform_url}/swagger-ui/oauth2-redirect.html"]
+
+    implicit_grant {
+      access_token_issuance_enabled = true
+      id_token_issuance_enabled     = true
+    }
+  }
+}
+
+resource "azuread_application" "restish" {
+  count            = var.create_restish ? 1 : 0
+  display_name     = "${local.pre_name}Restish${local.post_name}"
+  logo_image       = filebase64("cosmotech.png")
+  owners           = var.owner_list
+  sign_in_audience = var.audience
+
+  feature_tags {
+    enterprise = true
+    hide       = true
+  }
+
+  required_resource_access {
+    resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
+
+    resource_access {
+      id   = "e1fe6dd8-ba31-4d61-89e7-88639da4683d" # User.Read
+      type = "Scope"
+    }
+  }
+
+  required_resource_access {
+    resource_app_id = azuread_application.platform.application_id # Cosmo Tech Platform
+
+    resource_access {
+      id   = "6332363e-bcba-4c4a-a605-c25f23117400" # platform
+      type = "Scope"
+    }
+  }
+
+  web {
+    homepage_url  = var.platform_url
+    redirect_uris = ["http://localhost:8484"]
+
+    implicit_grant {
+      access_token_issuance_enabled = true
+      id_token_issuance_enabled     = true
+    }
+  }
+}
+
+resource "azuread_application" "powerbi" {
+  count            = var.create_powerbi ? 1 : 0
+  display_name     = "${local.pre_name}PowerBI${local.post_name}"
+  logo_image       = filebase64("cosmotech.png")
+  owners           = var.owner_list
+  sign_in_audience = "AzureADMyOrg"
+
+  feature_tags {
+    enterprise = true
+    hide       = true
+  }
+}
+
+resource "azuread_application" "webapp" {
+  display_name     = "${local.pre_name}Web App${local.post_name}"
+  logo_image       = filebase64("cosmotech.png")
+  owners           = var.owner_list
+  sign_in_audience = var.audience
+
+  feature_tags {
+    enterprise = true
+    hide       = true
+  }
+
+  required_resource_access {
+    resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
+
+    resource_access {
+      id   = "e1fe6dd8-ba31-4d61-89e7-88639da4683d" # User.Read
+      type = "Scope"
+    }
+  }
+
+  required_resource_access {
+    resource_app_id = azuread_application.platform.application_id # Cosmo Tech Platform
+
+    resource_access {
+      id   = "6332363e-bcba-4c4a-a605-c25f23117400" # platform
+      type = "Scope"
+    }
+  }
+
+  single_page_application {
+    redirect_uris = ["http://localhost:3000/scenario", "${var.webapp_url}"]
+  }
+}

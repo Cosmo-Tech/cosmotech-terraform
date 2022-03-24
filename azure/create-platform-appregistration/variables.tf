@@ -63,3 +63,20 @@ variable "audience" {
   }
   default = "AzureADMultipleOrgs"
 }
+
+variable "webapp_url" {
+  description = "The Web Application URL"
+}
+
+variable "create_restish" {
+  description = "Create the Azure Active Directory Application for Restish"
+  type = bool
+  default = true
+}
+
+variable "create_powerbi" {
+  description = "Create the Azure Active Directory Application for PowerBI"
+  type = bool
+  default = true
+}
+
