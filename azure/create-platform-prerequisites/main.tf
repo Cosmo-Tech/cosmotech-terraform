@@ -319,6 +319,11 @@ resource "azuread_application" "network_adt" {
   }
 }
 
+data "azuread_service_principal" "app_network_adt" {
+  display_name = azuread_application.network_adt.display_name
+}
+
+
 resource "azuread_application" "swagger" {
   display_name     = "${local.pre_name}Swagger${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
@@ -494,10 +499,11 @@ resource "azurerm_role_assignment" "publicip_contributor" {
   count                = var.create_publicip ? 1 : 0
   scope                = azurerm_resource_group.platform_rg.id
   role_definition_name = "Contributor"
-  principal_id         = azuread_application.network_adt.object_id
+  principal_id         = data.azuread_service_principal.app_network_adt.id
 }
 
 resource "azurerm_dns_a_record" "platform_fqdn" {
+  depends_on          = [azurerm_public_ip.publicip]
   count               = var.create_publicip && var.create_dnsrecord ? 1 : 0
   name                = var.dns_record
   zone_name           = var.dns_zone_name
@@ -531,5 +537,5 @@ resource "azurerm_role_assignment" "vnet_network_contributor" {
   count                = var.create_vnet ? 1 : 0
   scope                = azurerm_virtual_network.platform_vnet[0].id
   role_definition_name = "Network Contributor"
-  principal_id         = azuread_application.network_adt.object_id
+  principal_id         = data.azuread_service_principal.app_network_adt.id
 }
