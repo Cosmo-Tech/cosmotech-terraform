@@ -49,7 +49,6 @@ variable "project" {
 variable "owner_list" {
   description = "List of mail addresses for App Registration owners"
   type = list(string)
-  default = []
 }
 
 variable "audience" {
