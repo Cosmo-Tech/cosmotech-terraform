@@ -314,6 +314,11 @@ resource "azuread_service_principal" "platform" {
   tags = ["cosmotech", var.stage, var.customer, var.project]
 }
 
+resource "azuread_application_password" "platform_password" {
+  application_object_id = azuread_application.platform.object_id
+}
+
+
 resource "azuread_application" "network_adt" {
   display_name     = "${local.pre_name}Network and ADT${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
@@ -331,6 +336,10 @@ resource "azuread_service_principal" "network_adt" {
   app_role_assignment_required = false
 
   tags = ["cosmotech", var.stage, var.customer, var.project]
+}
+
+resource "azuread_application_password" "network_adt_password" {
+  application_object_id = azuread_application.network_adt.object_id
 }
 
 resource "azuread_application" "swagger" {
@@ -580,4 +589,11 @@ resource "azurerm_role_assignment" "vnet_network_contributor" {
   scope                = azurerm_virtual_network.platform_vnet[0].id
   role_definition_name = "Network Contributor"
   principal_id         = azuread_service_principal.network_adt.id
+}
+
+output "out_platform_password" {
+  value = azuread_application_password.platform_password.value
+}
+output "out_network_adt_password" {
+  value = azuread_application_password.network_adt_password.value
 }
