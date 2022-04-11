@@ -544,17 +544,12 @@ resource "azurerm_role_assignment" "publicip_contributor" {
   principal_id         = azuread_service_principal.network_adt.id
 }
 
-data "azurerm_dns_zone" "platform_dnszone" {
-  name                = var.dns_zone_name
-  resource_group_name = var.dns_zone_rg
-}
-
 resource "azurerm_dns_a_record" "platform_fqdn" {
   depends_on          = [azurerm_public_ip.publicip]
   count               = var.create_publicip && var.create_dnsrecord ? 1 : 0
   name                = var.dns_record
-  zone_name           = data.azurerm_dns_zone.platform_dnszone.name
-  resource_group_name = azurerm_resource_group.platform_rg.name
+  zone_name           = var.dns_zone_name
+  resource_group_name = var.dns_zone_rg
   ttl                 = 300
   target_resource_id  = azurerm_public_ip.publicip[0].id
 }
