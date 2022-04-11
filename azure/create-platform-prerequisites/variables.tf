@@ -107,6 +107,12 @@ variable "dns_zone_name" {
   default = ""
 }
 
+variable "dns_zone_rg" {
+  description = "The DNS zone resource group"
+  type = string
+  default = ""
+}
+
 variable "dns_record" {
   description = "The DNS zone name to create platform subdomain. Example: myplatform"
   type = string
