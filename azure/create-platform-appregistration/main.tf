@@ -465,6 +465,12 @@ resource "azurerm_resource_group" "platform_rg" {
   }
 }
 
+resource "azurerm_role_assignment" "rg_owner" {
+  scope                = azurerm_resource_group.platform_rg.id
+  role_definition_name = "Owner"
+  principal_id         = azuread_group.platform_group.object_id
+}
+
 # Public IP
 resource "azurerm_public_ip" "publicip" {
   count               = var.create_publicip ? 1 : 0
@@ -481,11 +487,19 @@ resource "azurerm_public_ip" "publicip" {
   }
 }
 
-resource "azurerm_role_assignment" "public_owner" {
+resource "azurerm_role_assignment" "publicip_owner" {
   count                = var.create_publicip ? 1 : 0
-  scope                = azurerm_public_ip.publicip[0].id
+  scope                = azurerm_resource_group.platform_rg.id
   role_definition_name = "Owner"
-  principal_id         = azuread_group.platform_group.object_id
+  principal_id         = azuread_application.network_adt.object_id
 }
 
+resource "azurerm_dns_a_record" "platform_fqdn" {
+  count               = var.create_publicip && var.create_dnsrecord ? 1 : 0
+  name                = var.dns_record
+  zone_name           = var.dns_zone_name
+  resource_group_name = azurerm_resource_group.platform_rg.name
+  ttl                 = 300
+  target_resource_id  = azurerm_public_ip.publicip[0].id
+}
 

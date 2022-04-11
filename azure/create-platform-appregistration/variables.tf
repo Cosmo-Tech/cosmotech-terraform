@@ -95,3 +95,21 @@ variable "create_publicip" {
   type = bool
   default = true
 }
+
+variable "create_dnsrecord" {
+  description = "Create the DNS record"
+  type = bool
+  default = true
+}
+
+variable "dns_zone_name" {
+  description = "The DNS zone name to create platform subdomain. Example: api.cosmotech.com"
+  type = string
+  default = ""
+}
+
+variable "dns_record" {
+  description = "The DNS zone name to create platform subdomain. Example: myplatform"
+  type = string
+  default = ""
+}
