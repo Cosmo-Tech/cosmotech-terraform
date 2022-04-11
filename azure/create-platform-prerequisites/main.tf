@@ -459,6 +459,7 @@ resource "azurerm_resource_group" "platform_rg" {
   name     = var.resource_group
   location = var.location
   tags = {
+    vendor   = "cosmotech"
     stage    = var.stage
     customer = var.customer
     project  = var.project
@@ -481,6 +482,7 @@ resource "azurerm_public_ip" "publicip" {
   sku                 = "Standard"
 
   tags = {
+    vendor   = "cosmotech"
     stage    = var.stage
     customer = var.customer
     project  = var.project
@@ -503,4 +505,30 @@ resource "azurerm_dns_a_record" "platform_fqdn" {
   target_resource_id  = azurerm_public_ip.publicip[0].id
 }
 
-# 
+# Virtual Network
+resource "azurerm_virtual_network" "platform_vnet" {
+  count               = var.create_vnet ? 1 : 0
+  name                = "CosmoTech${var.customer}${var.project}${var.stage}VNet"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.platform_rg.name
+  address_space       = [var.vnet_iprange]
+
+  subnet {
+    name           = "default"
+    address_prefix = var.vnet_iprange
+  }
+
+  tags = {
+    vendor   = "cosmotech"
+    stage    = var.stage
+    customer = var.customer
+    project  = var.project
+  }
+}
+
+resource "azurerm_role_assignment" "vnet_network_contributor" {
+  count                = var.create_vnet ? 1 : 0
+  scope                = azurerm_virtual_network.platform_vnet[0].id
+  role_definition_name = "Network Contributor"
+  principal_id         = azuread_application.network_adt.object_id
+}

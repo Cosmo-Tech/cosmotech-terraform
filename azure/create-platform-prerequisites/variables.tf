@@ -113,3 +113,16 @@ variable "dns_record" {
   type = string
   default = ""
 }
+
+variable "create_vnet" {
+  description = "Create the Virtual Network for AKS"
+  type = bool
+  default = true
+}
+
+variable "vnet_iprange" {
+  description = "The Virtual Network IP range. Minimum /27 NetMaskLength" 
+  type = string
+  default = ""
+}
+
