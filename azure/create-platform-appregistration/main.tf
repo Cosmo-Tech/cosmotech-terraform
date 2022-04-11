@@ -487,10 +487,10 @@ resource "azurerm_public_ip" "publicip" {
   }
 }
 
-resource "azurerm_role_assignment" "publicip_owner" {
+resource "azurerm_role_assignment" "publicip_contributor" {
   count                = var.create_publicip ? 1 : 0
   scope                = azurerm_resource_group.platform_rg.id
-  role_definition_name = "Owner"
+  role_definition_name = "Contributor"
   principal_id         = azuread_application.network_adt.object_id
 }
 
@@ -503,3 +503,4 @@ resource "azurerm_dns_a_record" "platform_fqdn" {
   target_resource_id  = azurerm_public_ip.publicip[0].id
 }
 
+# 
