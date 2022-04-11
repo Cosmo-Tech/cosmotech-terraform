@@ -595,7 +595,9 @@ resource "azurerm_role_assignment" "vnet_network_contributor" {
 
 output "out_platform_password" {
   value = azuread_application_password.platform_password.value
+  sensitive = true
 }
 output "out_network_adt_password" {
   value = azuread_application_password.network_adt_password.value
+  sensitive = true
 }
