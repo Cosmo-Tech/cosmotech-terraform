@@ -454,11 +454,22 @@ resource "azuread_group" "platform_group" {
   security_enabled = true
 }
 
+# Resource group
+resource "azurerm_resource_group" "platform_rg" {
+  name     = var.resource_group
+  location = var.location
+  tags = {
+    stage    = var.stage
+    customer = var.customer
+    project  = var.project
+  }
+}
+
 # Public IP
 resource "azurerm_public_ip" "publicip" {
   count               = var.create_publicip ? 1 : 0
   name                = "CosmoTech${var.customer}${var.project}${var.stage}PublicIP"
-  resource_group_name = var.resource_group
+  resource_group_name = azurerm_resource_group.platform_rg.name
   location            = var.location
   allocation_method   = "Static"
   sku                 = "Standard"
