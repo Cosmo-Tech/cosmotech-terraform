@@ -15,12 +15,9 @@ resource "azuread_application" "platform" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags {
+  feature_tags {
     enterprise = true
     hide       = true
-    stage      = var.stage
-    customer   = var.customer
-    project    = var.project
   }
 
   required_resource_access {
@@ -315,12 +312,9 @@ resource "azuread_application" "network_adt" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
-  tags {
+  feature_tags {
     enterprise = true
     hide       = true
-    stage      = var.stage
-    customer   = var.customer
-    project    = var.project
   }
 }
 
@@ -330,12 +324,9 @@ resource "azuread_application" "swagger" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags {
+  feature_tags {
     enterprise = true
     hide       = true
-    stage      = var.stage
-    customer   = var.customer
-    project    = var.project
   }
 
   required_resource_access {
@@ -374,12 +365,9 @@ resource "azuread_application" "restish" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags {
+  feature_tags {
     enterprise = true
     hide       = true
-    stage      = var.stage
-    customer   = var.customer
-    project    = var.project
   }
 
   required_resource_access {
@@ -418,12 +406,9 @@ resource "azuread_application" "powerbi" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
-  tags {
+  feature_tags {
     enterprise = true
     hide       = true
-    stage      = var.stage
-    customer   = var.customer
-    project    = var.project
   }
 }
 
@@ -433,12 +418,9 @@ resource "azuread_application" "webapp" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags {
+  feature_tags {
     enterprise = true
     hide       = true
-    stage      = var.stage
-    customer   = var.customer
-    project    = var.project
   }
 
   required_resource_access {
