@@ -316,6 +316,7 @@ resource "azuread_service_principal" "platform" {
 
 resource "azuread_application_password" "platform_password" {
   application_object_id = azuread_application.platform.object_id
+  end_date_relative = "4464h"
 }
 
 
@@ -340,6 +341,7 @@ resource "azuread_service_principal" "network_adt" {
 
 resource "azuread_application_password" "network_adt_password" {
   application_object_id = azuread_application.network_adt.object_id
+  end_date_relative = "4464h"
 }
 
 resource "azuread_application" "swagger" {
