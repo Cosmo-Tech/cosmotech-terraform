@@ -452,6 +452,7 @@ resource "azuread_group" "platform_group" {
   display_name     = "Cosmotech-Platform-${var.customer}-${var.project}-${var.stage}"
   owners           = data.azuread_users.owners.object_ids
   security_enabled = true
+  members          = data.azuread_users.owners.object_ids
 }
 
 # Resource group
