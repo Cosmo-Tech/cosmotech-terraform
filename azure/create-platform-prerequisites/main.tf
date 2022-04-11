@@ -307,6 +307,13 @@ resource "azuread_application" "platform" {
   }
 } 
 
+resource "azuread_service_principal" "platform" {
+  application_id               = azuread_application.platform.application_id
+  app_role_assignment_required = false
+
+  tags = ["cosmotech", var.stage, var.customer, var.project]
+}
+
 resource "azuread_application" "network_adt" {
   display_name     = "${local.pre_name}Network and ADT${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
@@ -319,10 +326,12 @@ resource "azuread_application" "network_adt" {
   }
 }
 
-data "azuread_service_principal" "app_network_adt" {
-  display_name = azuread_application.network_adt.display_name
-}
+resource "azuread_service_principal" "network_adt" {
+  application_id               = azuread_application.network_adt.application_id
+  app_role_assignment_required = false
 
+  tags = ["cosmotech", var.stage, var.customer, var.project]
+}
 
 resource "azuread_application" "swagger" {
   display_name     = "${local.pre_name}Swagger${local.post_name}"
@@ -363,6 +372,14 @@ resource "azuread_application" "swagger" {
     }
   }
 }
+
+resource "azuread_service_principal" "swagger" {
+  application_id               = azuread_application.swagger.application_id
+  app_role_assignment_required = false
+
+  tags = ["cosmotech", var.stage, var.customer, var.project]
+}
+
 
 resource "azuread_application" "restish" {
   count            = var.create_restish ? 1 : 0
@@ -405,6 +422,15 @@ resource "azuread_application" "restish" {
   }
 }
 
+resource "azuread_service_principal" "restish" {
+  count            = var.create_restish ? 1 : 0
+  application_id               = azuread_application.restish[0].application_id
+  app_role_assignment_required = false
+
+  tags = ["cosmotech", var.stage, var.customer, var.project]
+}
+
+
 resource "azuread_application" "powerbi" {
   count            = var.create_powerbi ? 1 : 0
   display_name     = "${local.pre_name}PowerBI${local.post_name}"
@@ -417,6 +443,15 @@ resource "azuread_application" "powerbi" {
     hide       = true
   }
 }
+
+resource "azuread_service_principal" "powerbi" {
+  count            = var.create_powerbi ? 1 : 0
+  application_id               = azuread_application.powerbi[0].application_id
+  app_role_assignment_required = false
+
+  tags = ["cosmotech", var.stage, var.customer, var.project]
+}
+
 
 resource "azuread_application" "webapp" {
   display_name     = "${local.pre_name}Web App${local.post_name}"
@@ -450,6 +485,13 @@ resource "azuread_application" "webapp" {
   single_page_application {
     redirect_uris = ["http://localhost:3000/scenario", "${var.webapp_url}/platform"]
   }
+}
+
+resource "azuread_service_principal" "webapp" {
+  application_id               = azuread_application.webapp.application_id
+  app_role_assignment_required = false
+
+  tags = ["cosmotech", var.stage, var.customer, var.project]
 }
 
 # create the Azure AD resource group
@@ -499,7 +541,7 @@ resource "azurerm_role_assignment" "publicip_contributor" {
   count                = var.create_publicip ? 1 : 0
   scope                = azurerm_resource_group.platform_rg.id
   role_definition_name = "Contributor"
-  principal_id         = data.azuread_service_principal.app_network_adt.id
+  principal_id         = azuread_service_principal.network_adt.id
 }
 
 resource "azurerm_dns_a_record" "platform_fqdn" {
@@ -537,5 +579,5 @@ resource "azurerm_role_assignment" "vnet_network_contributor" {
   count                = var.create_vnet ? 1 : 0
   scope                = azurerm_virtual_network.platform_vnet[0].id
   role_definition_name = "Network Contributor"
-  principal_id         = data.azuread_service_principal.app_network_adt.id
+  principal_id         = azuread_service_principal.network_adt.id
 }
