@@ -8,6 +8,7 @@ data "azuread_users" "owners" {
 }
 
 
+# Azure AD
 resource "azuread_application" "platform" {
   display_name     = "${local.pre_name}Platform${local.post_name}"
   identifier_uris  = [var.identifier_uri]
@@ -445,3 +446,35 @@ resource "azuread_application" "webapp" {
     redirect_uris = ["http://localhost:3000/scenario", "${var.webapp_url}/platform"]
   }
 }
+
+# create the Azure AD resource group
+resource "azuread_group" "platform_group" {
+  display_name     = "Cosmotech-Platform-${var.customer}-${var.project}-${var.stage}"
+  owners           = data.azuread_users.owners.object_ids
+  security_enabled = true
+}
+
+# Public IP
+resource "azurerm_public_ip" "publicip" {
+  count               = var.create_publicip ? 1 : 0
+  name                = "CosmoTech${var.customer}${var.project}${var.stage}PublicIP"
+  resource_group_name = var.resource_group
+  location            = var.location
+  allocation_method   = "Static"
+  sku                 = "Standard"
+
+  tags = {
+    stage    = var.stage
+    customer = var.customer
+    project  = var.project
+  }
+}
+
+resource "azurerm_role_assignment" "public_owner" {
+  count                = var.create_publicip ? 1 : 0
+  scope                = azurerm_public_ip.publicip[0].id
+  role_definition_name = "Owner"
+  principal_id         = azuread_group.platform_group.object_id
+}
+
+

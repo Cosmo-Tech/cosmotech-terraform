@@ -80,3 +80,18 @@ variable "create_powerbi" {
   default = true
 }
 
+variable "location" {
+  description = "The Azure location"
+  default = "West Europe"
+}
+
+variable "resource_group" {
+  description = "Resource group to create which will contain created Azure resources"
+  type = string
+}
+
+variable "create_publicip" {
+  description = "Create the public IP for the platform"
+  type = bool
+  default = true
+}
