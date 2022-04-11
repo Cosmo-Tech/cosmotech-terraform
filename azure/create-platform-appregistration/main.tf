@@ -18,6 +18,9 @@ resource "azuread_application" "platform" {
   feature_tags {
     enterprise = true
     hide       = true
+    stage      = var.stage
+    customer   = var.customer
+    project    = var.project
   }
 
   required_resource_access {
@@ -315,6 +318,9 @@ resource "azuread_application" "network_adt" {
   feature_tags {
     enterprise = true
     hide       = true
+    stage      = var.stage
+    customer   = var.customer
+    project    = var.project
   }
 }
 
@@ -327,6 +333,9 @@ resource "azuread_application" "swagger" {
   feature_tags {
     enterprise = true
     hide       = true
+    stage      = var.stage
+    customer   = var.customer
+    project    = var.project
   }
 
   required_resource_access {
@@ -368,6 +377,9 @@ resource "azuread_application" "restish" {
   feature_tags {
     enterprise = true
     hide       = true
+    stage      = var.stage
+    customer   = var.customer
+    project    = var.project
   }
 
   required_resource_access {
@@ -409,6 +421,9 @@ resource "azuread_application" "powerbi" {
   feature_tags {
     enterprise = true
     hide       = true
+    stage      = var.stage
+    customer   = var.customer
+    project    = var.project
   }
 }
 
@@ -421,6 +436,9 @@ resource "azuread_application" "webapp" {
   feature_tags {
     enterprise = true
     hide       = true
+    stage      = var.stage
+    customer   = var.customer
+    project    = var.project
   }
 
   required_resource_access {
