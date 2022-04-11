@@ -15,7 +15,7 @@ resource "azuread_application" "platform" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  feature_tags {
+  tags {
     enterprise = true
     hide       = true
     stage      = var.stage
@@ -315,7 +315,7 @@ resource "azuread_application" "network_adt" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
-  feature_tags {
+  tags {
     enterprise = true
     hide       = true
     stage      = var.stage
@@ -330,7 +330,7 @@ resource "azuread_application" "swagger" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  feature_tags {
+  tags {
     enterprise = true
     hide       = true
     stage      = var.stage
@@ -374,7 +374,7 @@ resource "azuread_application" "restish" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  feature_tags {
+  tags {
     enterprise = true
     hide       = true
     stage      = var.stage
@@ -418,7 +418,7 @@ resource "azuread_application" "powerbi" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
-  feature_tags {
+  tags {
     enterprise = true
     hide       = true
     stage      = var.stage
@@ -433,7 +433,7 @@ resource "azuread_application" "webapp" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  feature_tags {
+  tags {
     enterprise = true
     hide       = true
     stage      = var.stage
