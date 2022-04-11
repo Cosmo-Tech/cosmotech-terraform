@@ -3,11 +3,16 @@ locals {
   post_name = " ${var.stage} For ${var.customer} ${var.project}"
 }
 
+data "azuread_users" "owners" {
+  user_principal_names = var.owner_list
+}
+
+
 resource "azuread_application" "platform" {
   display_name     = "${local.pre_name}Platform${local.post_name}"
   identifier_uris  = [var.identifier_uri]
   logo_image       = filebase64("cosmotech.png")
-  owners           = var.owner_list
+  owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
   feature_tags {
@@ -304,7 +309,7 @@ resource "azuread_application" "platform" {
 resource "azuread_application" "network_adt" {
   display_name     = "${local.pre_name}Network and ADT${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
-  owners           = var.owner_list
+  owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
   feature_tags {
@@ -316,7 +321,7 @@ resource "azuread_application" "network_adt" {
 resource "azuread_application" "swagger" {
   display_name     = "${local.pre_name}Swagger${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
-  owners           = var.owner_list
+  owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
   feature_tags {
@@ -357,7 +362,7 @@ resource "azuread_application" "restish" {
   count            = var.create_restish ? 1 : 0
   display_name     = "${local.pre_name}Restish${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
-  owners           = var.owner_list
+  owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
   feature_tags {
@@ -398,7 +403,7 @@ resource "azuread_application" "powerbi" {
   count            = var.create_powerbi ? 1 : 0
   display_name     = "${local.pre_name}PowerBI${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
-  owners           = var.owner_list
+  owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
   feature_tags {
@@ -410,7 +415,7 @@ resource "azuread_application" "powerbi" {
 resource "azuread_application" "webapp" {
   display_name     = "${local.pre_name}Web App${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
-  owners           = var.owner_list
+  owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
   feature_tags {
