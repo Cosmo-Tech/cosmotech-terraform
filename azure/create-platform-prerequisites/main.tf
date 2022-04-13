@@ -327,6 +327,7 @@ resource "azuread_application" "network_adt" {
 }
 
 resource "azuread_service_principal" "network_adt" {
+  depends_on          = [azuread_service_principal.platform]
   application_id               = azuread_application.network_adt.application_id
   app_role_assignment_required = false
 
@@ -376,6 +377,7 @@ resource "azuread_application" "swagger" {
 }
 
 resource "azuread_service_principal" "swagger" {
+  depends_on          = [azuread_service_principal.network_adt]
   application_id               = azuread_application.swagger.application_id
   app_role_assignment_required = false
 
@@ -422,6 +424,7 @@ resource "azuread_application" "restish" {
 }
 
 resource "azuread_service_principal" "restish" {
+  depends_on          = [azuread_service_principal.swagger]
   count            = var.create_restish ? 1 : 0
   application_id               = azuread_application.restish[0].application_id
   app_role_assignment_required = false
@@ -441,6 +444,7 @@ resource "azuread_application" "powerbi" {
 }
 
 resource "azuread_service_principal" "powerbi" {
+  depends_on          = [azuread_service_principal.swagger]
   count            = var.create_powerbi ? 1 : 0
   application_id               = azuread_application.powerbi[0].application_id
   app_role_assignment_required = false
@@ -481,6 +485,7 @@ resource "azuread_application" "webapp" {
 }
 
 resource "azuread_service_principal" "webapp" {
+  depends_on          = [azuread_service_principal.swagger]
   application_id               = azuread_application.webapp.application_id
   app_role_assignment_required = false
 
