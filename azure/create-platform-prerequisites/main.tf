@@ -593,11 +593,72 @@ resource "azurerm_role_assignment" "vnet_network_contributor" {
   principal_id         = azuread_service_principal.network_adt.id
 }
 
+output "out_platform_name" {
+  value = azuread_application.platform.display_name
+}
+
+output "out_platform_clientid" {
+  value = azuread_application.platform.application_id
+}
+
 output "out_platform_password" {
   value = azuread_application_password.platform_password.value
   sensitive = true
 }
+
+output "out_nerworkadt_name" {
+  value = azuread_application.network_adt.display_name
+}
+
+output "out_networkadt_clientid" {
+  value = azuread_application.network_adt.application_id
+}
+
 output "out_network_adt_password" {
   value = azuread_application_password.network_adt_password.value
   sensitive = true
+}
+
+output "out_swagger_name" {
+  value = azuread_application.swagger.display_name
+}
+
+output "out_swagger_clientid" {
+  value = azuread_application.swagger.application_id
+}
+
+output "out_restish_name" {
+  value = azuread_application.restish[0].display_name
+}
+
+output "out_restish_clientid" {
+  value = azuread_application.restish[0].application_id
+}
+
+output "out_powerbi_name" {
+  value = azuread_application.powerbi[0].display_name
+}
+
+output "out_powerbi_clientid" {
+  value = azuread_application.powerbi[0].application_id
+}
+
+output "out_webapp_name" {
+  value = azuread_application.webapp.display_name
+}
+
+output "out_webapp_clientid" {
+  value = azuread_application.webapp.application_id
+}
+
+output "out_public_ip" {
+  value = azurerm_public_ip.publicip[0].ip_address
+}
+
+output "out_fqdn" {
+  value = "${azurerm_dns_a_record.platform_fqdn[0].name}.${var.dns_zone_name}"
+}
+
+output "out_vnet" {
+  value = azurerm_virtual_network.platform_vnet[0].name
 }
