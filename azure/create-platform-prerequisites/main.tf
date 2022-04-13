@@ -10,6 +10,7 @@ data "azuread_users" "owners" {
 
 # Azure AD
 resource "azuread_application" "platform" {
+  depends_on          = [azuread_service_principal.network_adt]
   display_name     = "${local.pre_name}Platform${local.post_name}"
   identifier_uris  = [var.identifier_uri]
   logo_image       = filebase64("cosmotech.png")
@@ -313,7 +314,6 @@ resource "azuread_service_principal" "platform" {
 
 
 resource "azuread_application" "network_adt" {
-  depends_on          = [azuread_service_principal.platform]
   display_name     = "${local.pre_name}Network and ADT${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
