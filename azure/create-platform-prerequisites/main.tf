@@ -16,7 +16,7 @@ resource "azuread_application" "platform" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraform"]
+  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project ]
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -323,7 +323,7 @@ resource "azuread_application" "network_adt" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
-  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraform"]
+  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project ]
 }
 
 resource "azuread_service_principal" "network_adt" {
@@ -344,7 +344,7 @@ resource "azuread_application" "swagger" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraform"]
+  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project ]
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -390,7 +390,7 @@ resource "azuread_application" "restish" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraform"]
+  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project ]
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -437,7 +437,7 @@ resource "azuread_application" "powerbi" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
-  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraform"]
+  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project ]
 }
 
 resource "azuread_service_principal" "powerbi" {
@@ -455,7 +455,7 @@ resource "azuread_application" "webapp" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraform"]
+  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project ]
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
