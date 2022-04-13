@@ -10,14 +10,16 @@ data "azuread_users" "owners" {
 
 # Azure AD
 resource "azuread_application" "platform" {
-  depends_on          = [azuread_service_principal.network_adt]
   display_name     = "${local.pre_name}Platform${local.post_name}"
   identifier_uris  = [var.identifier_uri]
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+  feature_tags {
+    enterprise = true
+    hide       = true
+  }
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -312,6 +314,11 @@ resource "azuread_service_principal" "platform" {
   tags = ["cosmotech", var.stage, var.customer, var.project]
 }
 
+resource "azuread_application_password" "platform_password" {
+  application_object_id = azuread_application.platform.object_id
+  end_date_relative = "4464h"
+}
+
 
 resource "azuread_application" "network_adt" {
   display_name     = "${local.pre_name}Network and ADT${local.post_name}"
@@ -319,7 +326,10 @@ resource "azuread_application" "network_adt" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
-  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+  feature_tags {
+    enterprise = true
+    hide       = true
+  }
 }
 
 resource "azuread_service_principal" "network_adt" {
@@ -329,14 +339,21 @@ resource "azuread_service_principal" "network_adt" {
   tags = ["cosmotech", var.stage, var.customer, var.project]
 }
 
+resource "azuread_application_password" "network_adt_password" {
+  application_object_id = azuread_application.network_adt.object_id
+  end_date_relative = "4464h"
+}
+
 resource "azuread_application" "swagger" {
-  depends_on          = [azuread_service_principal.network_adt]
   display_name     = "${local.pre_name}Swagger${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+  feature_tags {
+    enterprise = true
+    hide       = true
+  }
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -376,14 +393,16 @@ resource "azuread_service_principal" "swagger" {
 
 
 resource "azuread_application" "restish" {
-  depends_on          = [azuread_service_principal.swagger]
   count            = var.create_restish ? 1 : 0
   display_name     = "${local.pre_name}Restish${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+  feature_tags {
+    enterprise = true
+    hide       = true
+  }
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -424,14 +443,16 @@ resource "azuread_service_principal" "restish" {
 
 
 resource "azuread_application" "powerbi" {
-  depends_on          = [azuread_service_principal.swagger]
   count            = var.create_powerbi ? 1 : 0
   display_name     = "${local.pre_name}PowerBI${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
-  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+  feature_tags {
+    enterprise = true
+    hide       = true
+  }
 }
 
 resource "azuread_service_principal" "powerbi" {
@@ -444,13 +465,15 @@ resource "azuread_service_principal" "powerbi" {
 
 
 resource "azuread_application" "webapp" {
-  depends_on          = [azuread_service_principal.swagger]
   display_name     = "${local.pre_name}Web App${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+  feature_tags {
+    enterprise = true
+    hide       = true
+  }
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -484,7 +507,6 @@ resource "azuread_service_principal" "webapp" {
 
 # create the Azure AD resource group
 resource "azuread_group" "platform_group" {
-  depends_on          = [azuread_service_principal.platform]
   display_name     = "Cosmotech-Platform-${var.customer}-${var.project}-${var.stage}"
   owners           = data.azuread_users.owners.object_ids
   security_enabled = true
@@ -493,7 +515,6 @@ resource "azuread_group" "platform_group" {
 
 # Resource group
 resource "azurerm_resource_group" "platform_rg" {
-  depends_on          = [azuread_service_principal.platform]
   name     = var.resource_group
   location = var.location
   tags = {
@@ -512,7 +533,6 @@ resource "azurerm_role_assignment" "rg_owner" {
 
 # Public IP
 resource "azurerm_public_ip" "publicip" {
-  depends_on          = [azuread_service_principal.platform]
   count               = var.create_publicip ? 1 : 0
   name                = "CosmoTech${var.customer}${var.project}${var.stage}PublicIP"
   resource_group_name = azurerm_resource_group.platform_rg.name
@@ -547,7 +567,6 @@ resource "azurerm_dns_a_record" "platform_fqdn" {
 
 # Virtual Network
 resource "azurerm_virtual_network" "platform_vnet" {
-  depends_on          = [azuread_service_principal.platform]
   count               = var.create_vnet ? 1 : 0
   name                = "CosmoTech${var.customer}${var.project}${var.stage}VNet"
   location            = var.location
@@ -582,12 +601,22 @@ output "out_platform_clientid" {
   value = azuread_application.platform.application_id
 }
 
+output "out_platform_password" {
+  value = azuread_application_password.platform_password.value
+  sensitive = true
+}
+
 output "out_nerworkadt_name" {
   value = azuread_application.network_adt.display_name
 }
 
 output "out_networkadt_clientid" {
   value = azuread_application.network_adt.application_id
+}
+
+output "out_network_adt_password" {
+  value = azuread_application_password.network_adt_password.value
+  sensitive = true
 }
 
 output "out_swagger_name" {
