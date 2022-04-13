@@ -484,6 +484,7 @@ resource "azuread_service_principal" "webapp" {
 
 # create the Azure AD resource group
 resource "azuread_group" "platform_group" {
+  depends_on          = [azuread_service_principal.platform]
   display_name     = "Cosmotech-Platform-${var.customer}-${var.project}-${var.stage}"
   owners           = data.azuread_users.owners.object_ids
   security_enabled = true
@@ -492,6 +493,7 @@ resource "azuread_group" "platform_group" {
 
 # Resource group
 resource "azurerm_resource_group" "platform_rg" {
+  depends_on          = [azuread_service_principal.platform]
   name     = var.resource_group
   location = var.location
   tags = {
@@ -510,6 +512,7 @@ resource "azurerm_role_assignment" "rg_owner" {
 
 # Public IP
 resource "azurerm_public_ip" "publicip" {
+  depends_on          = [azuread_service_principal.platform]
   count               = var.create_publicip ? 1 : 0
   name                = "CosmoTech${var.customer}${var.project}${var.stage}PublicIP"
   resource_group_name = azurerm_resource_group.platform_rg.name
@@ -544,6 +547,7 @@ resource "azurerm_dns_a_record" "platform_fqdn" {
 
 # Virtual Network
 resource "azurerm_virtual_network" "platform_vnet" {
+  depends_on          = [azuread_service_principal.platform]
   count               = var.create_vnet ? 1 : 0
   name                = "CosmoTech${var.customer}${var.project}${var.stage}VNet"
   location            = var.location
