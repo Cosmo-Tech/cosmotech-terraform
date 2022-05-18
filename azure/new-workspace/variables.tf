@@ -25,6 +25,7 @@ variable "resource_group" {
 
 variable "owner_sp_name" {
   description = "The security group owner service principal name in the form user@domain"
+  default = ""
 }
 
 variable "organization_id" {
