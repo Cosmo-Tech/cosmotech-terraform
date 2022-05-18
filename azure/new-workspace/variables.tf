@@ -43,6 +43,7 @@ variable "eventhub_namespace_name" {
 
 variable "adx_name" {
   description = "The Azure Data Explorer cluster name"
+  default = ""
 }
 
 variable "app_platform_name" {
