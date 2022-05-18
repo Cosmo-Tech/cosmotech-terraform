@@ -262,6 +262,48 @@ SentFactsTotal: long)
     '    { "column" : "SentMessagesTotal", "Properties":{"Path":"$.sentMessagesTotal"}},'
     '    { "column" : "SentFactsTotal", "Properties":{"Path":"$.sentFactsTotal"}},'
     ']'
+//
+// ScenarioMetadata table
+    .create table ScenarioMetadata(
+	OrganizationId:string,
+	WorkspaceId:string,
+	ScenarioId:string,
+	Name:string,
+	Description:string,
+	ParentId:string,
+	SolutionName:string,
+	RunTemplateName:string,
+	ValidationStatus:string,
+	UpdateTime:datetime)
+//
+// Scenario metadata ingestion mapping
+.create table ScenarioMetadata ingestion csv mapping "ScenarioMetadataMapping"
+    '['
+'   { "column" : "OrganizationId", "DataType":"string", "Properties":{"Ordinal":"0"}},'
+'   { "column" : "WorkspaceId", "DataType":"string", "Properties":{"Ordinal":"1"}},'
+'   { "column" : "ScenarioId", "DataType":"string", "Properties":{"Ordinal":"2"}},'
+'   { "column" : "Name", "DataType":"string", "Properties":{"Ordinal":"3"}},'
+'   { "column" : "Description", "DataType":"string", "Properties":{"Ordinal":"4"}},'
+'   { "column" : "ParentId", "DataType":"string", "Properties":{"Ordinal":"5"}},'
+'   { "column" : "SolutionName", "DataType":"string", "Properties":{"Ordinal":"6"}},'
+'   { "column" : "RunTemplateName", "DataType":"string", "Properties":{"Ordinal":"7"}},'
+'   { "column" : "ValidationStatus", "DataType":"string", "Properties":{"Ordinal":"8"}},'
+'   { "column" : "UpdateTime", "DataType":"datetime", "Properties":{"Ordinal":"9"}},'
+    ']'
+//
+// ScenarioRunMetadata table
+.create table ScenarioRunMetadata(
+	SimulationRun:guid,
+	ScenarioId:string,
+	ScenarioRunStartTime:datetime)
+//
+// ScenarioRun Metadata ingestion mapping
+.create table ScenarioRunMetadata ingestion csv mapping "ScenarioRunMetadataMapping"
+    '['
+'   { "column" : "SimulationRun", "DataType":"guid", "Properties":{"Ordinal":"0"}},'
+'   { "column" : "ScenarioId", "DataType":"string", "Properties":{"Ordinal":"1"}},'
+'   { "column" : "ScenarioRunStartTime", "DataType":"datetime", "Properties":{"Ordinal":"2"}},'
+    ']'
 EOT
 }
 
