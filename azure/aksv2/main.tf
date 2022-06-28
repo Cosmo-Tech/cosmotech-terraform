@@ -50,7 +50,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "services" {
   min_count       = 4
   max_count       = 8
   node_labels     = {
-    "kubernetes.io/os"    = "linux"
     "cosmotech.com/tier"  = "services"
   }
 #  node_taints     = ["vendor=cosmotech:NoSchedule"]
@@ -72,7 +71,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "db" {
   min_count       = 2
   max_count       = 4
   node_labels     = {
-    "kubernetes.io/os"    = "linux"
     "cosmotech.com/tier"  = "db"
   }
 #  node_taints     = ["vendor=cosmotech:NoSchedule"]
@@ -94,8 +92,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "basicpool" {
   min_count       = 0
   max_count       = 4
   node_labels     = {
-    "kubernetes.io/os"    = "linux"
-    "agentpool"           = "basicpool"
     "cosmotech.com/tier"  = "compute"
     "cosmotech.com/size"  = "basic"
   }
@@ -118,8 +114,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "highcpupool" {
   min_count       = 0
   max_count       = 2
   node_labels     = {
-    "kubernetes.io/os"    = "linux"
-    "agentpool"           = "highcpupool"
     "cosmotech.com/tier"  = "compute"
     "cosmotech.com/size"  = "highcpu"
   }
@@ -142,8 +136,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "memorypool" {
   min_count       = 0
   max_count       = 2
   node_labels     = {
-    "kubernetes.io/os"    = "linux"
-    "agentpool"           = "memorypool"
     "cosmotech.com/tier"  = "compute"
     "cosmotech.com/size"  = "highmemory"
   }
