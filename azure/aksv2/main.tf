@@ -1,5 +1,5 @@
 data "azuread_group" "owner" {
-  display_name = "${var.owner_sp_name}"
+  display_name = var.owner_group
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
@@ -8,11 +8,12 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = var.resource_group
   azure_policy_enabled  = true
   kubernetes_version  = var.k8s_version
+  dns_prefix         = var.aks_name
   network_profile {
     network_plugin  = "kubenet"
     network_policy  = "calico"
     outbound_type   = "loadBalancer"
-    load_balander_sku = "standard"
+    load_balancer_sku = "standard"
   }
   sku_tier          = "Paid"
   default_node_pool {
@@ -28,7 +29,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     type = "SystemAssigned"
   }
 
-  tags {
+  tags              = {
     Environment = var.tag
   }
 }
@@ -48,7 +49,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "services" {
   enable_auto_scaling = true
   min_count       = 4
   max_count       = 8
-  node_labels {
+  node_labels     = {
     "kubernetes.io/os"    = "linux"
     "cosmotech.com/tier"  = "services"
   }
@@ -56,7 +57,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "services" {
   os_type         = "Linux"
   os_sku          = "Ubuntu"
 
-  tags {
+  tags          = {
     Environment = var.tag
   }
 }
@@ -70,7 +71,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "db" {
   enable_auto_scaling = true
   min_count       = 2
   max_count       = 4
-  node_labels {
+  node_labels     = {
     "kubernetes.io/os"    = "linux"
     "cosmotech.com/tier"  = "db"
   }
@@ -78,7 +79,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "db" {
   os_type         = "Linux"
   os_sku          = "Ubuntu"
 
-  tags {
+  tags          = {
     Environment = var.tag
   }
 }
@@ -92,7 +93,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "basicpool" {
   enable_auto_scaling = true
   min_count       = 0
   max_count       = 4
-  node_labels {
+  node_labels     = {
     "kubernetes.io/os"    = "linux"
     "agentpool"           = "basicpool"
     "cosmotech.com/tier"  = "compute"
@@ -102,7 +103,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "basicpool" {
   os_type         = "Linux"
   os_sku          = "Ubuntu"
 
-  tags {
+  tags          = {
     Environment = var.tag
   }
 }
@@ -116,7 +117,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "highcpupool" {
   enable_auto_scaling = true
   min_count       = 0
   max_count       = 2
-  node_labels {
+  node_labels     = {
     "kubernetes.io/os"    = "linux"
     "agentpool"           = "highcpupool"
     "cosmotech.com/tier"  = "compute"
@@ -126,7 +127,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "highcpupool" {
   os_type         = "Linux"
   os_sku          = "Ubuntu"
 
-  tags {
+  tags          = {
     Environment = var.tag
   }
 }
@@ -140,7 +141,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "memorypool" {
   enable_auto_scaling = true
   min_count       = 0
   max_count       = 2
-  node_labels {
+  node_labels     = {
     "kubernetes.io/os"    = "linux"
     "agentpool"           = "memorypool"
     "cosmotech.com/tier"  = "compute"
@@ -150,13 +151,13 @@ resource "azurerm_kubernetes_cluster_node_pool" "memorypool" {
   os_type         = "Linux"
   os_sku          = "Ubuntu"
 
-  tags {
+  tags          = {
     Environment = var.tag
   }
 }
 
 output "kube_config" {
-  value = azurerm_kubernetes_cluster.example.kube_config_raw
+  value = azurerm_kubernetes_cluster.aks.kube_config_raw
 
   sensitive = true
 }
