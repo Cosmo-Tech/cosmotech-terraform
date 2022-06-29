@@ -23,7 +23,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     enable_auto_scaling = true
     min_count       = 2
     max_count       = 6
-    node_taints     = ["CriticalAddonsOnly=true:NoSchedule"]
+#    node_taints     = ["CriticalAddonsOnly=true:NoSchedule"]
   }
 
   identity {
@@ -53,7 +53,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "services" {
   node_labels     = {
     "cosmotech.com/tier"  = "services"
   }
-#  node_taints     = ["vendor=cosmotech:NoSchedule"]
+  node_taints     = ["vendor=cosmotech:NoSchedule"]
   os_type         = "Linux"
   os_sku          = "Ubuntu"
 
