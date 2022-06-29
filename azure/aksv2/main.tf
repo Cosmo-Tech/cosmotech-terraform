@@ -23,6 +23,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     enable_auto_scaling = true
     min_count       = 2
     max_count       = 6
+    node_taints     = ["CriticalAddonsOnly=true:NoSchedule"]
   }
 
   identity {
@@ -52,7 +53,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "services" {
   node_labels     = {
     "cosmotech.com/tier"  = "services"
   }
-#  node_taints     = ["vendor=cosmotech:NoSchedule"]
+  node_taints     = ["vendor=cosmotech:NoSchedule"]
   os_type         = "Linux"
   os_sku          = "Ubuntu"
 
@@ -73,7 +74,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "db" {
   node_labels     = {
     "cosmotech.com/tier"  = "db"
   }
-#  node_taints     = ["vendor=cosmotech:NoSchedule"]
+  node_taints     = ["vendor=cosmotech:NoSchedule"]
   os_type         = "Linux"
   os_sku          = "Ubuntu"
 
@@ -95,7 +96,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "basicpool" {
     "cosmotech.com/tier"  = "compute"
     "cosmotech.com/size"  = "basic"
   }
-#  node_taints     = ["vendor=cosmotech:NoSchedule"]
+  node_taints     = ["vendor=cosmotech:NoSchedule"]
   os_type         = "Linux"
   os_sku          = "Ubuntu"
 
@@ -117,7 +118,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "highcpupool" {
     "cosmotech.com/tier"  = "compute"
     "cosmotech.com/size"  = "highcpu"
   }
-#  node_taints     = ["vendor=cosmotech:NoSchedule"]
+  node_taints     = ["vendor=cosmotech:NoSchedule"]
   os_type         = "Linux"
   os_sku          = "Ubuntu"
 
@@ -139,7 +140,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "memorypool" {
     "cosmotech.com/tier"  = "compute"
     "cosmotech.com/size"  = "highmemory"
   }
-#  node_taints     = ["vendor=cosmotech:NoSchedule"]
+  node_taints     = ["vendor=cosmotech:NoSchedule"]
   os_type         = "Linux"
   os_sku          = "Ubuntu"
 
