@@ -53,7 +53,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "services" {
   node_labels     = {
     "cosmotech.com/tier"  = "services"
   }
-  node_taints     = ["vendor=cosmotech:NoSchedule"]
+#  node_taints     = ["vendor=cosmotech:NoSchedule"]
   os_type         = "Linux"
   os_sku          = "Ubuntu"
 
