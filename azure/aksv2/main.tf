@@ -66,11 +66,11 @@ resource "azurerm_kubernetes_cluster_node_pool" "db" {
   name                  = "db"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
   mode            = "User"
-  vm_size         = "Standard_A2_v2"
+  vm_size         = "Standard_D2ads_v5"
   node_count      = 2
   enable_auto_scaling = true
   min_count       = 2
-  max_count       = 4
+  max_count       = 3
   node_labels     = {
     "cosmotech.com/tier"  = "db"
   }
