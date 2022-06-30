@@ -149,6 +149,32 @@ resource "azurerm_kubernetes_cluster_node_pool" "memorypool" {
   }
 }
 
+resource "azurerm_managed_disk" "redis-master-disk" {
+  name                 = "csmredismaster"
+  location             = var.location
+  resource_group_name  = var.resource_group
+  storage_account_type = "StandardSSD_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = "64"
+
+  tags = {
+    environment = var.tag
+  }
+}
+
+resource "azurerm_managed_disk" "redis-replica1-disk" {
+  name                 = "csmreplica1master"
+  location             = var.location
+  resource_group_name  = var.resource_group
+  storage_account_type = "StandardSSD_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = "64"
+
+  tags = {
+    environment = var.tag
+  }
+}
+
 output "kube_config" {
   value = azurerm_kubernetes_cluster.aks.kube_config_raw
 
