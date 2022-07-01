@@ -163,7 +163,7 @@ resource "azurerm_managed_disk" "redis-master-disk" {
 }
 
 resource "azurerm_managed_disk" "redis-replica1-disk" {
-  name                 = "csmreplica1master"
+  name                 = "csmredisreplica1"
   location             = var.location
   resource_group_name  = var.resource_group
   storage_account_type = "StandardSSD_LRS"
