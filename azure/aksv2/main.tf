@@ -2,6 +2,14 @@ data "azuread_group" "owner" {
   display_name = var.owner_group
 }
 
+resource "azurerm_log_analytics_workspace" "log_analytics" {
+  name                = "${var.resource_group}-log-analytics"
+  location            = var.location
+  resource_group_name = var.resource_group
+  sku                 = "PerGB2018"
+  retention_in_days   = 60
+}
+
 resource "azurerm_kubernetes_cluster" "aks" {
   name              = var.aks_name
   location          = var.location
@@ -32,6 +40,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   tags              = {
     Environment = var.tag
+  }
+
+  microsoft_defender {
+    log_analytics_workspace_id  = azurerm_log_analytics_workspace.log_analytics.id
   }
 }
 
