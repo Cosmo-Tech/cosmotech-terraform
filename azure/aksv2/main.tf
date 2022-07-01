@@ -177,7 +177,7 @@ resource "azurerm_managed_disk" "redis-master-disk" {
 resource "azurerm_role_assignment" "aks-redis-master" {
   scope                = azurerm_managed_disk.redis-master-disk.id
   role_definition_name = "Contributor"
-  principal_id         = azurerm_kubernetes_cluster.aks.id
+  principal_id         = azurerm_kubernetes_cluster.aks.identity[0].principal_id
 }
 
 resource "azurerm_managed_disk" "redis-replica1-disk" {
@@ -196,7 +196,7 @@ resource "azurerm_managed_disk" "redis-replica1-disk" {
 resource "azurerm_role_assignment" "aks-redis-replica1" {
   scope                = azurerm_managed_disk.redis-replica1-disk.id
   role_definition_name = "Contributor"
-  principal_id         = azurerm_kubernetes_cluster.aks.id
+  principal_id         = azurerm_kubernetes_cluster.aks.identity[0].principal_id
 }
 
 
