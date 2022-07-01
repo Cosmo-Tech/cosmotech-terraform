@@ -47,7 +47,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 }
 
-resource "azurerm_role_assignment" "aks_owner" {
+resource "azurerm_role_assignment" "aks-owner" {
   scope                = azurerm_kubernetes_cluster.aks.id
   role_definition_name = "Owner"
   principal_id         = data.azuread_group.owner.object_id
@@ -174,6 +174,12 @@ resource "azurerm_managed_disk" "redis-master-disk" {
   }
 }
 
+resource "azurerm_role_assignment" "aks-redis-master" {
+  scope                = azurerm_managed_disk.redis-master-disk.id
+  role_definition_name = "Contributor"
+  principal_id         = azurerm_kubernetes_cluster.aks.id
+}
+
 resource "azurerm_managed_disk" "redis-replica1-disk" {
   name                 = "csmredisreplica1"
   location             = var.location
@@ -186,6 +192,13 @@ resource "azurerm_managed_disk" "redis-replica1-disk" {
     environment = var.tag
   }
 }
+
+resource "azurerm_role_assignment" "aks-redis-replica1" {
+  scope                = azurerm_managed_disk.redis-replica1-disk.id
+  role_definition_name = "Contributor"
+  principal_id         = azurerm_kubernetes_cluster.aks.id
+}
+
 
 output "kube_config" {
   value = azurerm_kubernetes_cluster.aks.kube_config_raw
