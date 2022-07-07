@@ -309,7 +309,8 @@ resource "azuread_application" "platform" {
 
 resource "azuread_service_principal" "platform" {
   application_id               = azuread_application.platform.application_id
-  app_role_assignment_required = false
+  # assignment required to secure Function Apps using thi App Registration as identity provider
+  app_role_assignment_required = true
 
   tags = ["cosmotech", var.stage, var.customer, var.project]
 }
