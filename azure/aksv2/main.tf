@@ -57,10 +57,10 @@ resource "azurerm_kubernetes_cluster_node_pool" "services" {
   name                  = "services"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
   mode            = "User"
-  vm_size         = "Standard_B2s"
-  node_count      = 4
+  vm_size         = "Standard_A2m_v2"
+  node_count      = 3
   enable_auto_scaling = true
-  min_count       = 4
+  min_count       = 3
   max_count       = 5
   node_labels     = {
     "cosmotech.com/tier"  = "services"
