@@ -215,7 +215,7 @@ resource "azurerm_storage_blob" "kusto_script_blob" {
 .alter database ['${local.resource_name}'] policy streamingingestion disable
 //
 // Batching ingestion
-.alter database ['${local.resource_name}'] policy ingestionbatching '{"MaximumBatchingTimeSpan": "00:00:15"}'
+.alter database ['${local.resource_name}'] policy ingestionbatching '{"MaximumBatchingTimeSpan": "00:00:10"}'
 //
 // ProbesMeasures table
 .create table ProbesMeasures(
