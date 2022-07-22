@@ -99,6 +99,23 @@ resource "azurerm_kubernetes_cluster_node_pool" "basicpool" {
   name                  = "basicpool"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
   mode            = "User"
+  vm_size         = "Standard_F8s_v2"
+  node_count      = 0
+  enable_auto_scaling = true
+  min_count       = 1
+  max_count       = 2
+  os_type         = "Linux"
+  os_sku          = "Ubuntu"
+
+  tags          = {
+    Environment = var.tag
+  }
+}
+
+resource "azurerm_kubernetes_cluster_node_pool" "standardpool" {
+  name                  = "standardpool"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+  mode            = "User"
   vm_size         = "Standard_F4s_v2"
   node_count      = 0
   enable_auto_scaling = true
