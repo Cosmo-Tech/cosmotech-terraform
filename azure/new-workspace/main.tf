@@ -3,6 +3,8 @@ locals {
   eventhub_consumer_adx = "adx"
   eventhub_probesmeasures = "probesmeasures"
   eventhub_scenariorun  = "scenariorun"
+  eventhub_scenariometadata = "scenariometadata"
+  eventhub_scenariorunmetadata = "scenariorunmetadata"
 }
 
 data "azuread_user" "owner" {
@@ -107,6 +109,7 @@ resource "azurerm_role_assignment" "eventhub_namespace_owner" {
   principal_id         = azuread_group.workspace_group[0].object_id
 }
 
+# probes measures
 resource "azurerm_eventhub" "eventhub_probesmeasures" {
   name                = var.dedicated_eventhub_namespace ? local.eventhub_probesmeasures : local.resource_name
   namespace_name      = var.dedicated_eventhub_namespace ? azurerm_eventhub_namespace.eventhub_namespace[0].name : var.eventhub_namespace_name
@@ -136,6 +139,7 @@ resource "azurerm_role_assignment" "eventhub_probesmeasures_owner_app" {
   principal_id         = data.azuread_service_principal.app_platform[0].id
 }
 
+# scenariorun
 resource "azurerm_eventhub" "eventhub_scenariorun" {
   name                = var.dedicated_eventhub_namespace ? local.eventhub_scenariorun : "${local.resource_name}-${local.eventhub_scenariorun}"
   namespace_name      = var.dedicated_eventhub_namespace ? azurerm_eventhub_namespace.eventhub_namespace[0].name : var.eventhub_namespace_name
@@ -165,6 +169,69 @@ resource "azurerm_role_assignment" "eventhub_scenariorun_owner_app" {
   principal_id         = data.azuread_service_principal.app_platform[0].id
 }
 
+# scenariometadata
+resource "azurerm_eventhub" "eventhub_scenariometadata" {
+  count = var.dedicated_eventhub_namespace ? 1 : 0
+  name                = local.eventhub_scenariometadata
+  namespace_name      = azurerm_eventhub_namespace.eventhub_namespace[0].name
+  resource_group_name = var.resource_group
+  partition_count     = 1
+  message_retention   = 1
+}
+
+resource "azurerm_eventhub_consumer_group" "eventhub_scenariometadata_consumer_adx" {
+  count = var.dedicated_eventhub_namespace ? 1 : 0
+  name               = local.eventhub_consumer_adx
+  namespace_name      = azurerm_eventhub_namespace.eventhub_namespace[0].name
+  eventhub_name       = azurerm_eventhub.eventhub_scenariometadata[0].name
+  resource_group_name = var.resource_group
+}
+
+resource "azurerm_role_assignment" "eventhub_scenariometadata_owner" {
+  count = var.aad_groups_and_assignements && var.dedicated_eventhub_namespace ? 1 : 0
+  scope                = azurerm_eventhub.eventhub_scenariometadata[0].id
+  role_definition_name = "Owner"
+  principal_id         = azuread_group.workspace_group[0].object_id
+}
+
+resource "azurerm_role_assignment" "eventhub_scenariometadata_owner_app" {
+  count = var.aad_groups_and_assignements && var.dedicated_eventhub_namespace ? 1 : 0
+  scope                = azurerm_eventhub.eventhub_scenariometadata[0].id
+  role_definition_name = "Azure Event Hubs Data Sender"
+  principal_id         = data.azuread_service_principal.app_platform[0].id
+}
+
+# scenariorunmetadata
+resource "azurerm_eventhub" "eventhub_scenariorunmetadata" {
+  count = var.dedicated_eventhub_namespace ? 1 : 0
+  name                = local.eventhub_scenariorunmetadata
+  namespace_name      = azurerm_eventhub_namespace.eventhub_namespace[0].name
+  resource_group_name = var.resource_group
+  partition_count     = 1
+  message_retention   = 1
+}
+
+resource "azurerm_eventhub_consumer_group" "eventhub_scenariorunmetadata_consumer_adx" {
+  count = var.dedicated_eventhub_namespace ? 1 : 0
+  name               = local.eventhub_consumer_adx
+  namespace_name      = azurerm_eventhub_namespace.eventhub_namespace[0].name
+  eventhub_name       = azurerm_eventhub.eventhub_scenariorunmetadata[0].name
+  resource_group_name = var.resource_group
+}
+
+resource "azurerm_role_assignment" "eventhub_scenariorunmetadata_owner" {
+  count = var.aad_groups_and_assignements && var.dedicated_eventhub_namespace ? 1 : 0
+  scope                = azurerm_eventhub.eventhub_scenariorunmetadata[0].id
+  role_definition_name = "Owner"
+  principal_id         = azuread_group.workspace_group[0].object_id
+}
+
+resource "azurerm_role_assignment" "eventhub_scenariorunmetadata_owner_app" {
+  count = var.aad_groups_and_assignements && var.dedicated_eventhub_namespace ? 1 : 0
+  scope                = azurerm_eventhub.eventhub_scenariorunmetadata[0].id
+  role_definition_name = "Azure Event Hubs Data Sender"
+  principal_id         = data.azuread_service_principal.app_platform[0].id
+}
 
 # ADX
 resource "azurerm_kusto_database" "database" {
@@ -264,45 +331,45 @@ SentFactsTotal: long)
     ']'
 //
 // ScenarioMetadata table
-    .create table ScenarioMetadata(
-	OrganizationId:string,
-	WorkspaceId:string,
-	ScenarioId:string,
-	Name:string,
-	Description:string,
-	ParentId:string,
-	SolutionName:string,
-	RunTemplateName:string,
-	ValidationStatus:string,
-	UpdateTime:datetime)
+.create table ScenarioMetadata(
+  OrganizationId:string,
+  WorkspaceId:string,
+  ScenarioId:string,
+  Name:string,
+  Description:string,
+  ParentId:string,
+  SolutionName:string,
+  RunTemplateName:string,
+  ValidationStatus:string,
+  UpdateTime:datetime)
 //
 // Scenario metadata ingestion mapping
 .create table ScenarioMetadata ingestion csv mapping "ScenarioMetadataMapping"
     '['
-'   { "column" : "OrganizationId", "DataType":"string", "Properties":{"Ordinal":"0"}},'
-'   { "column" : "WorkspaceId", "DataType":"string", "Properties":{"Ordinal":"1"}},'
-'   { "column" : "ScenarioId", "DataType":"string", "Properties":{"Ordinal":"2"}},'
-'   { "column" : "Name", "DataType":"string", "Properties":{"Ordinal":"3"}},'
-'   { "column" : "Description", "DataType":"string", "Properties":{"Ordinal":"4"}},'
-'   { "column" : "ParentId", "DataType":"string", "Properties":{"Ordinal":"5"}},'
-'   { "column" : "SolutionName", "DataType":"string", "Properties":{"Ordinal":"6"}},'
-'   { "column" : "RunTemplateName", "DataType":"string", "Properties":{"Ordinal":"7"}},'
-'   { "column" : "ValidationStatus", "DataType":"string", "Properties":{"Ordinal":"8"}},'
-'   { "column" : "UpdateTime", "DataType":"datetime", "Properties":{"Ordinal":"9"}},'
+    '    { "column" : "OrganizationId", "DataType":"string", "Properties":{"Ordinal":"0"}},'
+    '    { "column" : "WorkspaceId", "DataType":"string", "Properties":{"Ordinal":"1"}},'
+    '    { "column" : "ScenarioId", "DataType":"string", "Properties":{"Ordinal":"2"}},'
+    '    { "column" : "Name", "DataType":"string", "Properties":{"Ordinal":"3"}},'
+    '    { "column" : "Description", "DataType":"string", "Properties":{"Ordinal":"4"}},'
+    '    { "column" : "ParentId", "DataType":"string", "Properties":{"Ordinal":"5"}},'
+    '    { "column" : "SolutionName", "DataType":"string", "Properties":{"Ordinal":"6"}},'
+    '    { "column" : "RunTemplateName", "DataType":"string", "Properties":{"Ordinal":"7"}},'
+    '    { "column" : "ValidationStatus", "DataType":"string", "Properties":{"Ordinal":"8"}},'
+    '    { "column" : "UpdateTime", "DataType":"datetime", "Properties":{"Ordinal":"9"}},'
     ']'
 //
 // ScenarioRunMetadata table
 .create table ScenarioRunMetadata(
-	SimulationRun:guid,
-	ScenarioId:string,
-	ScenarioRunStartTime:datetime)
+  SimulationRun:guid,
+  ScenarioId:string,
+  ScenarioRunStartTime:datetime)
 //
 // ScenarioRun Metadata ingestion mapping
 .create table ScenarioRunMetadata ingestion csv mapping "ScenarioRunMetadataMapping"
     '['
-'   { "column" : "SimulationRun", "DataType":"guid", "Properties":{"Ordinal":"0"}},'
-'   { "column" : "ScenarioId", "DataType":"string", "Properties":{"Ordinal":"1"}},'
-'   { "column" : "ScenarioRunStartTime", "DataType":"datetime", "Properties":{"Ordinal":"2"}},'
+    '    { "column" : "SimulationRun", "DataType":"guid", "Properties":{"Ordinal":"0"}},'
+    '    { "column" : "ScenarioId", "DataType":"string", "Properties":{"Ordinal":"1"}},'
+    '    { "column" : "ScenarioRunStartTime", "DataType":"datetime", "Properties":{"Ordinal":"2"}},'
     ']'
 EOT
 }
@@ -370,5 +437,41 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorun_conn
   table_name        = "SimulationTotalFacts"
   mapping_rule_name = "SimulationTotalFactsMapping"
   data_format       = "JSON"
+  compression       = "None"
+}
+
+resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariometadata_connection" {
+  depends_on          = [azurerm_kusto_script.kusto_script]
+  count                              = var.kusto_script && var.dedicated_eventhub_namespace ? 1 : 0
+  name                = substr("${local.resource_name}-${local.eventhub_scenariometadata}", 0, 40)
+  resource_group_name = var.resource_group
+  location            = var.location
+  cluster_name        = var.adx_name
+  database_name       = azurerm_kusto_database.database.name
+
+  eventhub_id    = azurerm_eventhub.eventhub_scenariometadata[0].id
+  consumer_group = azurerm_eventhub_consumer_group.eventhub_scenariometadata_consumer_adx[0].name
+
+  table_name        = "ScenarioMetadata"
+  mapping_rule_name = "ScenarioMetadataMapping"
+  data_format       = "CSV"
+  compression       = "None"
+}
+
+resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorunmetadata_connection" {
+  depends_on          = [azurerm_kusto_script.kusto_script]
+  count                              = var.kusto_script && var.dedicated_eventhub_namespace ? 1 : 0
+  name                = substr("${local.resource_name}-${local.eventhub_scenariorunmetadata}", 0, 40)
+  resource_group_name = var.resource_group
+  location            = var.location
+  cluster_name        = var.adx_name
+  database_name       = azurerm_kusto_database.database.name
+
+  eventhub_id    = azurerm_eventhub.eventhub_scenariorunmetadata[0].id
+  consumer_group = azurerm_eventhub_consumer_group.eventhub_scenariorunmetadata_consumer_adx[0].name
+
+  table_name        = "ScenarioRunMetadata"
+  mapping_rule_name = "ScenarioRunMetadataMapping"
+  data_format       = "CSV"
   compression       = "None"
 }
