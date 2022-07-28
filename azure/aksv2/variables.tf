@@ -40,3 +40,9 @@ variable "k8s_version" {
   description = "The Kubernetes version"
   default = "1.21.9"
 }
+
+variable "deploy_v1" {
+  description = "Deploy v1 stack"
+  type = bool
+  default = false
+}
