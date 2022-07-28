@@ -100,7 +100,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "basicpool" {
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
   mode            = "User"
   vm_size         = "Standard_F8s_v2"
-  node_count      = 0
+  node_count      = 1
   enable_auto_scaling = true
   min_count       = 1
   max_count       = 2
@@ -117,9 +117,9 @@ resource "azurerm_kubernetes_cluster_node_pool" "standardpool" {
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
   mode            = "User"
   vm_size         = "Standard_F4s_v2"
-  node_count      = 0
+  node_count      = 1
   enable_auto_scaling = true
-  min_count       = 0
+  min_count       = 1
   max_count       = 4
   node_labels     = {
     "cosmotech.com/tier"  = "compute"
