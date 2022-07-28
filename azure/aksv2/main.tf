@@ -25,7 +25,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
   sku_tier          = "Paid"
   default_node_pool {
-    name            = "systempool"
+    name            = "system"
     vm_size         = "Standard_A2_v2"
     node_count      = 3
     enable_auto_scaling = true
@@ -95,25 +95,9 @@ resource "azurerm_kubernetes_cluster_node_pool" "db" {
   }
 }
 
-resource "azurerm_kubernetes_cluster_node_pool" "basicpool" {
-  name                  = "basicpool"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
-  mode            = "User"
-  vm_size         = "Standard_F8s_v2"
-  node_count      = 1
-  enable_auto_scaling = true
-  min_count       = 1
-  max_count       = 2
-  os_type         = "Linux"
-  os_sku          = "Ubuntu"
 
-  tags          = {
-    Environment = var.tag
-  }
-}
-
-resource "azurerm_kubernetes_cluster_node_pool" "standardpool" {
-  name                  = "standardpool"
+resource "azurerm_kubernetes_cluster_node_pool" "standard" {
+  name                  = "cstandard"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
   mode            = "User"
   vm_size         = "Standard_F4s_v2"
@@ -134,8 +118,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "standardpool" {
   }
 }
 
-resource "azurerm_kubernetes_cluster_node_pool" "highcpupool" {
-  name                  = "highcpupool"
+resource "azurerm_kubernetes_cluster_node_pool" "highcpu" {
+  name                  = "chighcpu"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
   mode            = "User"
   vm_size         = "Standard_F72s_v2"
@@ -156,8 +140,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "highcpupool" {
   }
 }
 
-resource "azurerm_kubernetes_cluster_node_pool" "memorypool" {
-  name                  = "memorypool"
+resource "azurerm_kubernetes_cluster_node_pool" "highmemory" {
+  name                  = "chighmemory"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
   mode            = "User"
   vm_size         = "Standard_E16ads_v5"
@@ -222,3 +206,59 @@ output "kube_config" {
 
   sensitive = true
 }
+
+# V1 stack
+resource "azurerm_kubernetes_cluster_node_pool" "basicpool" {
+  count = var.deploy_v1 ? 1 : 0
+  name                  = "basicpool"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+  mode            = "User"
+  vm_size         = "Standard_F8s_v2"
+  node_count      = 1
+  enable_auto_scaling = true
+  min_count       = 1
+  max_count       = 3
+  os_type         = "Linux"
+  os_sku          = "Ubuntu"
+
+  tags          = {
+    Environment = var.tag
+  }
+}
+
+resource "azurerm_kubernetes_cluster_node_pool" "highcpupool" {
+  count = var.deploy_v1 ? 1 : 0
+  name                  = "highcpupool"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+  mode            = "User"
+  vm_size         = "Standard_F72s_v2"
+  node_count      = 0
+  enable_auto_scaling = true
+  min_count       = 0
+  max_count       = 1
+  os_type         = "Linux"
+  os_sku          = "Ubuntu"
+
+  tags          = {
+    Environment = var.tag
+  }
+}
+
+resource "azurerm_kubernetes_cluster_node_pool" "memorypool" {
+  count = var.deploy_v1 ? 1 : 0
+  name                  = "memorypool"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+  mode            = "User"
+  vm_size         = "Standard_E4ads_v5"
+  node_count      = 0
+  enable_auto_scaling = true
+  min_count       = 0
+  max_count       = 1
+  os_type         = "Linux"
+  os_sku          = "Ubuntu"
+
+  tags          = {
+    Environment = var.tag
+  }
+}
+
