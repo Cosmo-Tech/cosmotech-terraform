@@ -46,3 +46,9 @@ variable "deploy_v1" {
   type = bool
   default = false
 }
+
+variable "standard_sizing" {
+  description = "The standard pool sizing"
+  default = "Standard_F4s_v2"
+}
+
