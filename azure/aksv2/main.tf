@@ -100,7 +100,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "standard" {
   name                  = "cstandard"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
   mode            = "User"
-  vm_size         = "Standard_F4s_v2"
+  vm_size         = var.standard_sizing
   node_count      = 1
   enable_auto_scaling = true
   min_count       = 1
