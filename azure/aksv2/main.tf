@@ -249,7 +249,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "memorypool" {
   name                  = "memorypool"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
   mode            = "User"
-  vm_size         = "Standard_E4ads_v5"
+  vm_size         = "Standard_E16ads_v5"
   node_count      = 0
   enable_auto_scaling = true
   min_count       = 0
