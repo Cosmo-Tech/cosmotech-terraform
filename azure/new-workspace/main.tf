@@ -281,6 +281,9 @@ resource "azurerm_storage_blob" "kusto_script_blob" {
 //
 // Streaming ingestion
 .alter database ['${local.resource_name}'] policy streamingingestion disable
+// Disable streamingingestion at database's level doesn't work, have to do it at table's level. Strange
+.alter table ScenarioMetadata policy streamingingestion '{"IsEnabled": false}'
+.alter table ScenarioRunMetadata policy streamingingestion '{"IsEnabled": false}'
 //
 // Batching ingestion
 .alter database ['${local.resource_name}'] policy ingestionbatching '{"MaximumBatchingTimeSpan": "00:00:10"}'
