@@ -394,19 +394,19 @@ data "azurerm_storage_account_blob_container_sas" "kusto_script_sas" {
   }
 }
 
-resource "azurerm_kusto_script" "kusto_script" {
-  depends_on                         = [azurerm_kusto_database.database]
-  count                              = var.kusto_script ? 1 : 0
-  name                               = "initdb"
-  database_id                        = azurerm_kusto_database.database.id
-  url                                = azurerm_storage_blob.kusto_script_blob[0].id
-  sas_token                          = data.azurerm_storage_account_blob_container_sas.kusto_script_sas[0].sas
-  continue_on_errors_enabled         = true
-  force_an_update_when_value_changed = "first"
-}
+# resource "azurerm_kusto_script" "kusto_script" {
+#   depends_on                         = [azurerm_kusto_database.database]
+#   count                              = var.kusto_script ? 1 : 0
+#   name                               = "initdb"
+#   database_id                        = azurerm_kusto_database.database.id
+#   url                                = azurerm_storage_blob.kusto_script_blob[0].id
+#   sas_token                          = data.azurerm_storage_account_blob_container_sas.kusto_script_sas[0].sas
+#   continue_on_errors_enabled         = true
+#   force_an_update_when_value_changed = "first"
+# }
 
 resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_probesmeasures_connection" {
-  depends_on          = [azurerm_kusto_script.kusto_script]
+#   depends_on          = [azurerm_kusto_script.kusto_script]
   count                              = var.kusto_script ? 1 : 0
   name                = substr("${local.resource_name}-${local.eventhub_probesmeasures}", 0, 40)
   resource_group_name = var.resource_group
@@ -424,7 +424,7 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_probesmeasures_c
 }
 
 resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorun_connection" {
-  depends_on          = [azurerm_kusto_script.kusto_script]
+#   depends_on          = [azurerm_kusto_script.kusto_script]
   count                              = var.kusto_script ? 1 : 0
   name                = substr("${local.resource_name}-${local.eventhub_scenariorun}", 0, 40)
   resource_group_name = var.resource_group
@@ -442,7 +442,7 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorun_conn
 }
 
 resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariometadata_connection" {
-  depends_on          = [azurerm_kusto_script.kusto_script]
+#   depends_on          = [azurerm_kusto_script.kusto_script]
   count                              = var.kusto_script && var.dedicated_eventhub_namespace ? 1 : 0
   name                = substr("${local.resource_name}-${local.eventhub_scenariometadata}", 0, 40)
   resource_group_name = var.resource_group
