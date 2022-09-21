@@ -141,7 +141,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "highcpu" {
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "highmemory" {
-  name                  = "chighmemory"
+  name                  = "highmemory"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
   mode            = "User"
   vm_size         = "Standard_E16ads_v5"
