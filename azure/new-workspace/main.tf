@@ -46,7 +46,7 @@ data "azurerm_storage_container" "terraform_container" {
 
 data "azurerm_kusto_cluster" "adx_cluster" {
   name                 = var.adx_name
-  resource_groupe_name = var.resource_group
+  resource_group_name = var.resource_group
 }
 
 # create the Azure AD resource group
