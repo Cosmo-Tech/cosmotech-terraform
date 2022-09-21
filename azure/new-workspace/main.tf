@@ -421,7 +421,7 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_probesmeasures_c
 
   eventhub_id    = azurerm_eventhub.eventhub_probesmeasures.id
   consumer_group = azurerm_eventhub_consumer_group.eventhub_probesmeasures_consumer_adx.name
-  identity_id    = data.adx_cluster.id
+  identity_id    = data.azurerm_kusto_cluster.adx_cluster.id
 
   table_name        = "ProbesMeasures"
   mapping_rule_name = "ProbesMeasuresMapping"
@@ -440,7 +440,7 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorun_conn
 
   eventhub_id    = azurerm_eventhub.eventhub_scenariorun.id
   consumer_group = azurerm_eventhub_consumer_group.eventhub_scenariorun_consumer_adx.name
-  identity_id    = data.adx_cluster.id
+  identity_id    = data.azurerm_kusto_cluster.adx_cluster.id
 
   table_name        = "SimulationTotalFacts"
   mapping_rule_name = "SimulationTotalFactsMapping"
@@ -459,7 +459,7 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariometadata
 
   eventhub_id    = azurerm_eventhub.eventhub_scenariometadata[0].id
   consumer_group = azurerm_eventhub_consumer_group.eventhub_scenariometadata_consumer_adx[0].name
-  identity_id    = data.adx_cluster.id
+  identity_id    = data.azurerm_kusto_cluster.adx_cluster.id
 
   table_name        = "ScenarioMetadata"
   mapping_rule_name = "ScenarioMetadataMapping"
@@ -478,7 +478,7 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorunmetad
 
   eventhub_id    = azurerm_eventhub.eventhub_scenariorunmetadata[0].id
   consumer_group = azurerm_eventhub_consumer_group.eventhub_scenariorunmetadata_consumer_adx[0].name
-  identity_id    = data.adx_cluster.id
+  identity_id    = data.azurerm_kusto_cluster.adx_cluster.id
 
   table_name        = "ScenarioRunMetadata"
   mapping_rule_name = "ScenarioRunMetadataMapping"
