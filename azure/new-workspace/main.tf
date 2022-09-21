@@ -44,6 +44,11 @@ data "azurerm_storage_container" "terraform_container" {
   storage_account_name = data.azurerm_storage_account.terraform_account.name
 }
 
+data "azurerm_kusto_cluster" "adx_cluster" {
+  name                 = var.adx_name
+  resource_groupe_name = var.resource_group
+}
+
 # create the Azure AD resource group
 resource "azuread_group" "workspace_group" {
   count = var.aad_groups_and_assignements ? 1 : 0
@@ -416,6 +421,7 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_probesmeasures_c
 
   eventhub_id    = azurerm_eventhub.eventhub_probesmeasures.id
   consumer_group = azurerm_eventhub_consumer_group.eventhub_probesmeasures_consumer_adx.name
+  identity_id    = data.adx_cluster.id
 
   table_name        = "ProbesMeasures"
   mapping_rule_name = "ProbesMeasuresMapping"
@@ -434,6 +440,7 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorun_conn
 
   eventhub_id    = azurerm_eventhub.eventhub_scenariorun.id
   consumer_group = azurerm_eventhub_consumer_group.eventhub_scenariorun_consumer_adx.name
+  identity_id    = data.adx_cluster.id
 
   table_name        = "SimulationTotalFacts"
   mapping_rule_name = "SimulationTotalFactsMapping"
@@ -452,6 +459,7 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariometadata
 
   eventhub_id    = azurerm_eventhub.eventhub_scenariometadata[0].id
   consumer_group = azurerm_eventhub_consumer_group.eventhub_scenariometadata_consumer_adx[0].name
+  identity_id    = data.adx_cluster.id
 
   table_name        = "ScenarioMetadata"
   mapping_rule_name = "ScenarioMetadataMapping"
@@ -470,6 +478,7 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorunmetad
 
   eventhub_id    = azurerm_eventhub.eventhub_scenariorunmetadata[0].id
   consumer_group = azurerm_eventhub_consumer_group.eventhub_scenariorunmetadata_consumer_adx[0].name
+  identity_id    = data.adx_cluster.id
 
   table_name        = "ScenarioRunMetadata"
   mapping_rule_name = "ScenarioRunMetadataMapping"
