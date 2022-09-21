@@ -4,6 +4,7 @@ locals {
   eventhub_probesmeasures = "probesmeasures"
   eventhub_scenariorun  = "scenariorun"
   eventhub_scenariometadata = "scenariometadata"
+  eventhub_scenariometadata_connection = "smetadata"
   eventhub_scenariorunmetadata = "scenariorunmetadata"
   eventhub_scenariorunmetadata_connection = "srunmetadata"
 }
@@ -451,7 +452,7 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorun_conn
 resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariometadata_connection" {
   depends_on          = [azurerm_kusto_script.kusto_script]
   count                              = var.kusto_script && var.dedicated_eventhub_namespace ? 1 : 0
-  name                = substr("${local.resource_name}-${local.eventhub_scenariometadata}", 0, 40)
+  name                = substr("${local.resource_name}-${local.eventhub_scenariometadata_connection}", 0, 40)
   resource_group_name = var.resource_group
   location            = var.location
   cluster_name        = var.adx_name
