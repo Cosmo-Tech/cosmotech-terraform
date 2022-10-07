@@ -313,7 +313,7 @@ resource "azuread_service_principal" "platform" {
   # assignment required to secure Function Apps using thi App Registration as identity provider
   app_role_assignment_required = true
 
-  tags = ["cosmotech", var.stage, var.customer, var.project]
+  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 resource "azuread_application_password" "platform_password" {
@@ -338,7 +338,7 @@ resource "azuread_service_principal" "network_adt" {
   application_id               = azuread_application.network_adt.application_id
   app_role_assignment_required = false
 
-  tags = ["cosmotech", var.stage, var.customer, var.project]
+  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 resource "azuread_application_password" "network_adt_password" {
@@ -390,7 +390,7 @@ resource "azuread_service_principal" "swagger" {
   application_id               = azuread_application.swagger.application_id
   app_role_assignment_required = false
 
-  tags = ["cosmotech", var.stage, var.customer, var.project]
+  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 
@@ -440,7 +440,7 @@ resource "azuread_service_principal" "restish" {
   application_id               = azuread_application.restish[0].application_id
   app_role_assignment_required = false
 
-  tags = ["cosmotech", var.stage, var.customer, var.project]
+  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 
@@ -462,7 +462,7 @@ resource "azuread_service_principal" "powerbi" {
   application_id               = azuread_application.powerbi[0].application_id
   app_role_assignment_required = false
 
-  tags = ["cosmotech", var.stage, var.customer, var.project]
+  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 
@@ -504,7 +504,7 @@ resource "azuread_service_principal" "webapp" {
   application_id               = azuread_application.webapp.application_id
   app_role_assignment_required = false
 
-  tags = ["cosmotech", var.stage, var.customer, var.project]
+  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 # create the Azure AD resource group
