@@ -1,6 +1,7 @@
 locals {
   pre_name = "Cosmo Tech "
   post_name = " ${var.stage} For ${var.customer} ${var.project}"
+  subnet_name = "default"
 }
 
 data "azuread_users" "owners" {
@@ -575,7 +576,7 @@ resource "azurerm_virtual_network" "platform_vnet" {
   address_space       = [var.vnet_iprange]
 
   subnet {
-    name           = "default"
+    name           = local.subnet_name
     address_prefix = var.vnet_iprange
   }
 
@@ -598,6 +599,10 @@ output "out_platform_name" {
   value = azuread_application.platform.display_name
 }
 
+output "out_tenant_id" {
+  value = var.tenant_id
+}
+
 output "out_platform_clientid" {
   value = azuread_application.platform.application_id
 }
@@ -618,6 +623,14 @@ output "out_networkadt_clientid" {
 output "out_network_adt_password" {
   value = azuread_application_password.network_adt_password.value
   sensitive = true
+}
+
+output "out_platform_url" {
+  value = var.platform_url
+}
+
+output "out_identifier_uri" {
+  value = var.identifier_uri
 }
 
 output "out_swagger_name" {
@@ -656,10 +669,18 @@ output "out_public_ip" {
   value = azurerm_public_ip.publicip[0].ip_address
 }
 
+output "out_public_ip_name" {
+  value = azurerm_public_ip.publicip[0].name
+}
+
 output "out_fqdn" {
   value = "${azurerm_dns_a_record.platform_fqdn[0].name}.${var.dns_zone_name}"
 }
 
 output "out_vnet" {
   value = azurerm_virtual_network.platform_vnet[0].name
+}
+
+output "out_subnet" {
+  value = local.subnet_name
 }
