@@ -126,7 +126,7 @@ variable "create_vnet" {
 }
 
 variable "vnet_iprange" {
-  description = "The Virtual Network IP range. Minimum /27 NetMaskLength" 
+  description = "The Virtual Network IP range. Minimum /26 NetMaskLength" 
   type = string
   default = ""
 }
