@@ -432,6 +432,7 @@ resource "azuread_service_principal" "restish" {
 }
 
 resource "azuread_application_password" "restish_password" {
+  count            = var.create_restish ? 1 : 0
   application_object_id = azuread_application.restish[0].object_id
   end_date_relative = "4464h"
 }
@@ -625,6 +626,11 @@ output "out_swagger_name" {
 
 output "out_swagger_clientid" {
   value = azuread_application.swagger.application_id
+}
+
+output "out_restish_password" {
+  value = azuread_application_password.restish_password.value
+  sensitive = true
 }
 
 output "out_restish_name" {
