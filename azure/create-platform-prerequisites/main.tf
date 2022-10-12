@@ -443,6 +443,10 @@ resource "azuread_service_principal" "restish" {
   tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
+resource "azuread_application_password" "restish_password" {
+  application_object_id = azuread_application.restish.object_id
+  end_date_relative = "4464h"
+}
 
 resource "azuread_application" "powerbi" {
   count            = var.create_powerbi ? 1 : 0
