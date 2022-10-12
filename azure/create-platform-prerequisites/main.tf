@@ -629,7 +629,7 @@ output "out_swagger_clientid" {
 }
 
 output "out_restish_password" {
-  value = azuread_application_password.restish_password.value
+  value = azuread_application_password.restish_password[0].value
   sensitive = true
 }
 
