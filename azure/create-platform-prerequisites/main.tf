@@ -444,7 +444,7 @@ resource "azuread_service_principal" "restish" {
 }
 
 resource "azuread_application_password" "restish_password" {
-  application_object_id = azuread_application.restish.object_id
+  application_object_id = azuread_application.restish[0].object_id
   end_date_relative = "4464h"
 }
 
