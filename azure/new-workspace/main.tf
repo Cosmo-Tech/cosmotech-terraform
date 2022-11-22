@@ -378,6 +378,19 @@ SentFactsTotal: long)
     '    { "column" : "ScenarioId", "DataType":"string", "Properties":{"Ordinal":"1"}},'
     '    { "column" : "ScenarioRunStartTime", "DataType":"datetime", "Properties":{"Ordinal":"2"}},'
     ']'
+//
+// GetScenarios function to get the list of scenarios, with their latest name when renamed, and their lastest run
+.create-or-alter function with (folder = "", docstring = "", skipvalidation = "true") GetScenarios() { 
+    ScenarioMetadata
+    | summarize arg_max(UpdateTime, *) by ScenarioId
+    | lookup kind=inner
+    (
+        ScenarioRunMetadata
+        | summarize arg_max(ScenarioRunStartTime, *) by ScenarioId
+    ) on ScenarioId
+    // add columns for compatibility with "old" GetScenarios function
+    | extend LastSimulationRun = SimulationRun, ScenarioDate = ScenarioRunStartTime, ScenarioName = Name
+}
 EOT
 }
 
