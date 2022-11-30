@@ -137,3 +137,14 @@ variable "new_tenant" {
   default = false
 }
 
+variable "tenant_name" {
+    description = "The tenant name"
+    type = string
+    default = "phoenix"
+}
+
+variable "api_version" {
+    description = "The API version"
+    type = string
+    default = "v2"
+}

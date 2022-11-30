@@ -2,6 +2,7 @@ locals {
   pre_name = "Cosmo Tech "
   post_name = " ${var.stage} For ${var.customer} ${var.project}"
   subnet_name = "default"
+  api_url_path = (var.api_version == "v1") ? "/v1" : "/${var.tenant_name}/${var.api_version}"
 }
 
 data "azuread_users" "owners" {
@@ -30,7 +31,7 @@ resource "azuread_application" "platform" {
 
   web {
     homepage_url  = var.platform_url
-    redirect_uris = ["${var.platform_url}/swagger-ui/oauth2-redirect.html"]
+    redirect_uris = ["${var.platform_url}${local.api_url_path}/swagger-ui/oauth2-redirect.html"]
 
     implicit_grant {
       access_token_issuance_enabled = false
@@ -369,7 +370,7 @@ resource "azuread_application" "swagger" {
 
   web {
     homepage_url  = var.platform_url
-    redirect_uris = ["${var.platform_url}/swagger-ui/oauth2-redirect.html"]
+    redirect_uris = ["${var.platform_url}${local.api_url_path}/swagger-ui/oauth2-redirect.html"]
 
     implicit_grant {
       access_token_issuance_enabled = true
