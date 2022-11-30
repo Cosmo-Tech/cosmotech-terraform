@@ -634,24 +634,24 @@ output "out_swagger_clientid" {
 }
 
 output "out_restish_password" {
-  value = length(azuread_application_password.restish_password) ? azuread_application_password.restish_password[0].value : null
+  value = length(azuread_application_password.restish_password) > 0 ? azuread_application_password.restish_password[0].value : null
   sensitive = true
 }
 
 output "out_restish_name" {
-  value = length(azuread_application.restish) ? azuread_application.restish[0].display_name : null
+  value = length(azuread_application.restish) > 0 ? azuread_application.restish[0].display_name : null
 }
 
 output "out_restish_clientid" {
-  value = length(azuread_application.restish) ? azuread_application.restish[0].application_id : null
+  value = length(azuread_application.restish) > 0 ? azuread_application.restish[0].application_id : null
 }
 
 output "out_powerbi_name" {
-  value = length(azuread_application.powerbi) ? azuread_application.powerbi[0].display_name : null
+  value = length(azuread_application.powerbi) > 0 ? azuread_application.powerbi[0].display_name : null
 }
 
 output "out_powerbi_clientid" {
-  value = length(azuread_application.powerbi) ? azuread_application.powerbi[0].application_id : null
+  value = length(azuread_application.powerbi) > 0 ? azuread_application.powerbi[0].application_id : null
 }
 
 output "out_webapp_name" {
@@ -663,19 +663,19 @@ output "out_webapp_clientid" {
 }
 
 output "out_public_ip" {
-  value = length(azurerm_public_ip.publicip) ? azurerm_public_ip.publicip[0].ip_address : null
+  value = length(azurerm_public_ip.publicip) > 0 ? azurerm_public_ip.publicip[0].ip_address : null
 }
 
 output "out_public_ip_name" {
-  value = length(azurerm_public_ip.publicip) ? azurerm_public_ip.publicip[0].name : null
+  value = length(azurerm_public_ip.publicip) > 0 ? azurerm_public_ip.publicip[0].name : null
 }
 
 output "out_fqdn" {
-  value = length(azurerm_dns_a_record.platform_fqdn) ? "${azurerm_dns_a_record.platform_fqdn[0].name}.${var.dns_zone_name}" : null
+  value = length(azurerm_dns_a_record.platform_fqdn) > 0 ? "${azurerm_dns_a_record.platform_fqdn[0].name}.${var.dns_zone_name}" : null
 }
 
 output "out_vnet" {
-  value = length(azurerm_virtual_network.platform_vnet) ? azurerm_virtual_network.platform_vnet[0].name : null
+  value = length(azurerm_virtual_network.platform_vnet) > 0 ? azurerm_virtual_network.platform_vnet[0].name : null
 }
 
 output "out_subnet" {
