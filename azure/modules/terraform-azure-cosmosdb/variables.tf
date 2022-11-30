@@ -22,7 +22,7 @@ variable "private_endpoint_enabled" {
 
 variable "private_endpoint_vnet_name" {
     type        = string
-    description = "The name of the virtual network to create"
+    description = "The name of the virtual network for the private endpoints"
     default     = ""
 }
 

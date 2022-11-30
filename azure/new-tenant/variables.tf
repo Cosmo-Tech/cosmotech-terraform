@@ -19,17 +19,12 @@ variable "client_secret" {
   description = "The client secret"
 }
 
-variable "resource_group" {
+variable "resource_group_name" {
   description = "The Azure Resource Group"
 }
 
 variable "tenant_name" {
   description = "The new Tenant name"
-}
-
-variable "adx_name" {
-  description = "The Azure Data Explorer cluster name"
-  default = ""
 }
 
 variable "app_platform_name" {
@@ -50,4 +45,22 @@ variable "aad_groups_and_assignements" {
   description = "Create the Azure Active Directory workspace group and do roles assignements on resources"
   type = bool
   default = true
+}
+
+variable "private_endpoint_enabled" {
+  type        = bool
+  description = "Use private endpoints for services"
+  default     = true
+}
+
+variable "private_endpoint_vnet_name" {
+  type        = string
+  description = "The name of the virtual network for the private endpoints"
+  default     = ""
+}
+
+variable "private_endpoint_subnet_name" {
+  type        = string
+  description = "The name of the subnet to create the private endpoint in"
+  default     = ""
 }
