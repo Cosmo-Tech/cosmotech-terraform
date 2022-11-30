@@ -1,6 +1,6 @@
 locals {
   pre_name = "Cosmo Tech "
-  post_name = " ${var.stage} For ${var.customer} ${var.project}"
+  post_name = " ${var.stage} For ${var.customer} ${var.project} Tenant ${var.tenant_name}"
   subnet_name = "default"
   api_url_path = (var.api_version == "v1") ? "/v1" : "/${var.tenant_name}/${var.api_version}"
 }
