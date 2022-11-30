@@ -85,3 +85,12 @@ output "cosmosdb_account_name" {
 output "cosmosdb_sql_database_name" {
   value = azurerm_cosmosdb_sql_database.db.name
 }
+
+output "cosmosdb_account_key" {
+  sensitive = true
+  value = azurerm_cosmosdb_account.db.primary_key
+}
+
+output "cosmosdb_account_uri" {
+  value = azurerm_cosmosdb_account.db.endpoint
+}
