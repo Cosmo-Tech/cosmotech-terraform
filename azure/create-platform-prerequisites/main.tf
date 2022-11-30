@@ -684,3 +684,11 @@ output "out_vnet" {
 output "out_subnet" {
   value = local.subnet_name
 }
+
+output "out_api_version" {
+  value = var.api_version
+}
+
+output "out_tenant_name" {
+  value = var.tenant_name
+}
