@@ -33,8 +33,8 @@ resource "azuread_application" "platform" {
     redirect_uris = ["${var.platform_url}/swagger-ui/oauth2-redirect.html"]
 
     implicit_grant {
-      access_token_issuance_enabled = true
-      id_token_issuance_enabled     = true
+      access_token_issuance_enabled = false
+      id_token_issuance_enabled     = false
     }
   }
 
@@ -373,7 +373,7 @@ resource "azuread_application" "swagger" {
 
     implicit_grant {
       access_token_issuance_enabled = true
-      id_token_issuance_enabled     = true
+      id_token_issuance_enabled     = false
     }
   }
 }
@@ -527,7 +527,7 @@ resource "azurerm_role_assignment" "rg_owner" {
 
 # Public IP
 resource "azurerm_public_ip" "publicip" {
-  count               = var.create_publicip ? 1 : 0
+  count               = var.create_publicip && !var.new_tenant ? 1 : 0
   name                = "CosmoTech${var.customer}${var.project}${var.stage}PublicIP"
   resource_group_name = azurerm_resource_group.platform_rg.name
   location            = var.location
@@ -543,7 +543,7 @@ resource "azurerm_public_ip" "publicip" {
 }
 
 resource "azurerm_role_assignment" "publicip_contributor" {
-  count                = var.create_publicip ? 1 : 0
+  count                = var.create_publicip && !var.new_tenant  ? 1 : 0
   scope                = azurerm_resource_group.platform_rg.id
   role_definition_name = "Contributor"
   principal_id         = azuread_service_principal.network_adt.id
@@ -551,7 +551,7 @@ resource "azurerm_role_assignment" "publicip_contributor" {
 
 resource "azurerm_dns_a_record" "platform_fqdn" {
   depends_on          = [azurerm_public_ip.publicip]
-  count               = var.create_publicip && var.create_dnsrecord ? 1 : 0
+  count               = var.create_publicip && var.create_dnsrecord && !var.new_tenant  ? 1 : 0
   name                = var.dns_record
   zone_name           = var.dns_zone_name
   resource_group_name = var.dns_zone_rg
@@ -561,7 +561,7 @@ resource "azurerm_dns_a_record" "platform_fqdn" {
 
 # Virtual Network
 resource "azurerm_virtual_network" "platform_vnet" {
-  count               = var.create_vnet ? 1 : 0
+  count               = var.create_vnet && !var.new_tenant  ? 1 : 0
   name                = "CosmoTech${var.customer}${var.project}${var.stage}VNet"
   location            = var.location
   resource_group_name = azurerm_resource_group.platform_rg.name
@@ -581,7 +581,7 @@ resource "azurerm_virtual_network" "platform_vnet" {
 }
 
 resource "azurerm_role_assignment" "vnet_network_contributor" {
-  count                = var.create_vnet ? 1 : 0
+  count                = var.create_vnet && !var.new_tenant  ? 1 : 0
   scope                = azurerm_virtual_network.platform_vnet[0].id
   role_definition_name = "Network Contributor"
   principal_id         = azuread_service_principal.network_adt.id

@@ -131,3 +131,9 @@ variable "vnet_iprange" {
   default = ""
 }
 
+variable "new_tenant" {
+  description = "Pre-requisites for a new tenant"
+  type = bool
+  default = false
+}
+
