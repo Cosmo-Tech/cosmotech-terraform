@@ -3,10 +3,27 @@ locals {
   dbName = "phoenix-core"
 }
 
+data "azurerm_resource_group" "rg" {
+  name = var.resource_group_name
+}
+
+data "azurerm_virtual_network" "vnet" {
+  count               = var.private_endpoint_enabled ? 1 : 0
+  name                = var.private_endpoint_vnet_name
+  resource_group_name = data.azurerm_resource_group.rg.name
+}
+
+data "azurerm_subnet" "subnet" {
+  count                = var.private_endpoint_enabled ? 1 : 0
+  name                 = var.private_endpoint_subnet_name
+  virtual_network_name = data.azurerm_virtual_network.vnet[0].name
+  resource_group_name  = data.azurerm_resource_group.rg.name
+}
+
 resource "azurerm_cosmosdb_account" "db" {
   name                = "${local.tenant_prefix}db"
   location            = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = data.azurerm_resource_group.rg.name
   offer_type          = "Standard"
   kind                = "GlobalDocumentDB"
   consistency_policy {
@@ -21,6 +38,8 @@ resource "azurerm_cosmosdb_account" "db" {
   capabilities {
     name = "EnableServerless"
   }
+
+  public_network_access_enabled   = !var.private_endpoint_enabled
   enable_automatic_failover       = false
   enable_multiple_write_locations = false
   is_virtual_network_filter_enabled = false
@@ -37,8 +56,22 @@ resource "azurerm_cosmosdb_account" "db" {
 
 resource "azurerm_cosmosdb_sql_database" "db" {
   name                = local.dbName
-  resource_group_name = var.resource_group_name
+  resource_group_name = data.azurerm_resource_group.rg.name
   account_name        = azurerm_cosmosdb_account.db.name
+}
+
+resource "azurerm_private_endpoint" "pe" {
+  count               = var.private_endpoint_enabled ? 1 : 0
+  name                = "${local.tenant_prefix}pe"
+  location            = var.location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  subnet_id           = data.azurerm_subnet.subnet[0].id
+  private_service_connection {
+    name                           = "${local.tenant_prefix}pe"
+    is_manual_connection           = false
+    private_connection_resource_id = azurerm_cosmosdb_account.db.id
+    subresource_names              = ["sql"]
+  }
 }
 
 output "cosmosdb_account_resource_group_name" {
