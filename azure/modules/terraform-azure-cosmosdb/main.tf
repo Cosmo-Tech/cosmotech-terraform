@@ -45,7 +45,6 @@ resource "azurerm_cosmosdb_account" "db" {
   is_virtual_network_filter_enabled = false
   enable_free_tier                = false
   analytical_storage_enabled      = false
-  create_mode                     = "Default"
   backup {
     type                = "Periodic"
     interval_in_minutes = 240
