@@ -1,4 +1,10 @@
 terraform {
+  cloud {
+    organization = "cosmotech"
+    workspaces {
+      name = "cosmotech-phoenixarch"
+    }
+  }
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
