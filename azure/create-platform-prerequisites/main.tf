@@ -316,11 +316,6 @@ resource "azuread_service_principal" "platform" {
   tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
-resource "azuread_application_password" "platform_password" {
-  application_object_id = azuread_application.platform.object_id
-  end_date_relative = "4464h"
-}
-
 
 resource "azuread_application" "network_adt" {
   depends_on          = [azuread_service_principal.platform]
@@ -341,11 +336,6 @@ resource "azuread_service_principal" "network_adt" {
   app_role_assignment_required = false
 
   tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
-}
-
-resource "azuread_application_password" "network_adt_password" {
-  application_object_id = azuread_application.network_adt.object_id
-  end_date_relative = "4464h"
 }
 
 resource "azuread_application" "swagger" {
@@ -620,11 +610,6 @@ output "out_tenant_id" {
 
 output "out_platform_clientid" {
   value = azuread_application.platform.application_id
-}
-
-output "out_platform_password" {
-  value = azuread_application_password.platform_password.value
-  sensitive = true
 }
 
 output "out_nerworkadt_name" {
