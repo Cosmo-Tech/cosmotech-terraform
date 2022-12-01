@@ -316,6 +316,11 @@ resource "azuread_service_principal" "platform" {
   tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
+resource "azuread_application_password" "platform_password" {
+  application_object_id = azuread_application.platform.object_id
+  end_date_relative = "4464h"
+}
+
 
 resource "azuread_application" "network_adt" {
   depends_on          = [azuread_service_principal.platform]
@@ -338,8 +343,12 @@ resource "azuread_service_principal" "network_adt" {
   tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
+resource "azuread_application_password" "network_adt_password" {
+  application_object_id = azuread_application.network_adt.object_id
+  end_date_relative = "4464h"
+}
+
 resource "azuread_application" "swagger" {
-  depends_on          = [azuread_service_principal.network_adt]
   display_name     = "${local.pre_name}Swagger${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
@@ -389,7 +398,6 @@ resource "azuread_service_principal" "swagger" {
 
 
 resource "azuread_application" "restish" {
-  depends_on          = [azuread_service_principal.swagger]
   count            = var.create_restish ? 1 : 0
   display_name     = "${local.pre_name}Restish${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
@@ -446,7 +454,6 @@ resource "azuread_application_password" "restish_password" {
 }
 
 resource "azuread_application" "powerbi" {
-  depends_on          = [azuread_service_principal.swagger]
   count            = var.create_powerbi ? 1 : 0
   display_name     = "${local.pre_name}PowerBI${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
@@ -470,7 +477,6 @@ resource "azuread_service_principal" "powerbi" {
 
 
 resource "azuread_application" "webapp" {
-  depends_on          = [azuread_service_principal.swagger]
   display_name     = "${local.pre_name}Web App${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
@@ -610,6 +616,11 @@ output "out_tenant_id" {
 
 output "out_platform_clientid" {
   value = azuread_application.platform.application_id
+}
+
+output "out_platform_password" {
+  value = azuread_application_password.platform_password.value
+  sensitive = true
 }
 
 output "out_nerworkadt_name" {
