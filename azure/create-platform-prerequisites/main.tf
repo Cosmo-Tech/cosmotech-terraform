@@ -369,7 +369,7 @@ resource "azuread_application" "swagger" {
 
   web {
     homepage_url  = var.platform_url
-    redirect_uris = ["${var.platform_url}/swagger-ui/oauth2-redirect.html"]
+    redirect_uris = ["${var.platform_url}${var.api_version_path}swagger-ui/oauth2-redirect.html"]
 
     implicit_grant {
       access_token_issuance_enabled = true
