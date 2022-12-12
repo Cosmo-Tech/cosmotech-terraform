@@ -146,6 +146,13 @@ resource "azurerm_role_assignment" "eventhub_probesmeasures_owner_app" {
   principal_id         = data.azuread_service_principal.app_platform[0].id
 }
 
+resource "azurerm_role_assignment" "eventhub_probesmeasures_receiver_adx" {
+  count = var.aad_groups_and_assignements && var.kusto_script ? 1 : 0
+  scope                = azurerm_eventhub.eventhub_probesmeasures.id
+  role_definition_name = "Azure Event Hubs Data Receiver"
+  principal_id         = data.azurerm_kusto_cluster.adx_cluster.id
+}
+
 # scenariorun
 resource "azurerm_eventhub" "eventhub_scenariorun" {
   name                = var.dedicated_eventhub_namespace ? local.eventhub_scenariorun : "${local.resource_name}-${local.eventhub_scenariorun}"
@@ -174,6 +181,13 @@ resource "azurerm_role_assignment" "eventhub_scenariorun_owner_app" {
   scope                = azurerm_eventhub.eventhub_scenariorun.id
   role_definition_name = "Azure Event Hubs Data Sender"
   principal_id         = data.azuread_service_principal.app_platform[0].id
+}
+
+resource "azurerm_role_assignment" "eventhub_scenariorun_receiver_adx" {
+  count = var.aad_groups_and_assignements && var.kusto_script ? 1 : 0
+  scope                = azurerm_eventhub.eventhub_scenariorun.id
+  role_definition_name = "Azure Event Hubs Data Receiver"
+  principal_id         = data.azurerm_kusto_cluster.adx_cluster.id
 }
 
 # scenariometadata
@@ -208,6 +222,13 @@ resource "azurerm_role_assignment" "eventhub_scenariometadata_owner_app" {
   principal_id         = data.azuread_service_principal.app_platform[0].id
 }
 
+resource "azurerm_role_assignment" "eventhub_scenariometadata_receiver_adx" {
+  count = var.aad_groups_and_assignements && var.kusto_script ? 1 : 0
+  scope                = azurerm_eventhub.eventhub_scenariometadata[0].id
+  role_definition_name = "Azure Event Hubs Data Receiver"
+  principal_id         = data.azurerm_kusto_cluster.adx_cluster.id
+}
+
 # scenariorunmetadata
 resource "azurerm_eventhub" "eventhub_scenariorunmetadata" {
   count = var.dedicated_eventhub_namespace ? 1 : 0
@@ -238,6 +259,13 @@ resource "azurerm_role_assignment" "eventhub_scenariorunmetadata_owner_app" {
   scope                = azurerm_eventhub.eventhub_scenariorunmetadata[0].id
   role_definition_name = "Azure Event Hubs Data Sender"
   principal_id         = data.azuread_service_principal.app_platform[0].id
+}
+
+resource "azurerm_role_assignment" "eventhub_scenariorunmetadata_receiver_adx" {
+  count = var.aad_groups_and_assignements && var.kusto_script ? 1 : 0
+  scope                = azurerm_eventhub.eventhub_scenariorunmetadata[0].id
+  role_definition_name = "Azure Event Hubs Data Receiver"
+  principal_id         = data.azurerm_kusto_cluster.adx_cluster.id
 }
 
 # ADX
