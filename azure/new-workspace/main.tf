@@ -4,8 +4,10 @@ locals {
   eventhub_probesmeasures = "probesmeasures"
   eventhub_scenariorun  = "scenariorun"
   eventhub_scenariometadata = "scenariometadata"
+  eventhub_scenariometadata_shared = "smetadata"
   eventhub_scenariometadata_connection = "smetadata"
   eventhub_scenariorunmetadata = "scenariorunmetadata"
+  eventhub_scenariorunmetadata_shared = "srmetadata"
   eventhub_scenariorunmetadata_connection = "srunmetadata"
 }
 
@@ -192,8 +194,7 @@ resource "azurerm_role_assignment" "eventhub_scenariorun_receiver_adx" {
 
 # scenariometadata
 resource "azurerm_eventhub" "eventhub_scenariometadata" {
-  count = var.dedicated_eventhub_namespace ? 1 : 0
-  name                = local.eventhub_scenariometadata
+  name                = var.dedicated_eventhub_namespace ? local.eventhub_scenariometadata : "${local.resource_name}-${local.eventhub_scenariometadata_shared}"
   namespace_name      = azurerm_eventhub_namespace.eventhub_namespace[0].name
   resource_group_name = var.resource_group
   partition_count     = 1
@@ -201,38 +202,36 @@ resource "azurerm_eventhub" "eventhub_scenariometadata" {
 }
 
 resource "azurerm_eventhub_consumer_group" "eventhub_scenariometadata_consumer_adx" {
-  count = var.dedicated_eventhub_namespace ? 1 : 0
   name               = local.eventhub_consumer_adx
   namespace_name      = azurerm_eventhub_namespace.eventhub_namespace[0].name
-  eventhub_name       = azurerm_eventhub.eventhub_scenariometadata[0].name
+  eventhub_name       = azurerm_eventhub.eventhub_scenariometadata.name
   resource_group_name = var.resource_group
 }
 
 resource "azurerm_role_assignment" "eventhub_scenariometadata_owner" {
-  count = var.aad_groups_and_assignements && var.dedicated_eventhub_namespace ? 1 : 0
-  scope                = azurerm_eventhub.eventhub_scenariometadata[0].id
+  count = var.aad_groups_and_assignements ? 1 : 0
+  scope                = azurerm_eventhub.eventhub_scenariometadata.id
   role_definition_name = "Owner"
   principal_id         = azuread_group.workspace_group[0].object_id
 }
 
 resource "azurerm_role_assignment" "eventhub_scenariometadata_owner_app" {
-  count = var.aad_groups_and_assignements && var.dedicated_eventhub_namespace ? 1 : 0
-  scope                = azurerm_eventhub.eventhub_scenariometadata[0].id
+  count = var.aad_groups_and_assignements ? 1 : 0
+  scope                = azurerm_eventhub.eventhub_scenariometadata.id
   role_definition_name = "Azure Event Hubs Data Sender"
   principal_id         = data.azuread_service_principal.app_platform[0].id
 }
 
 resource "azurerm_role_assignment" "eventhub_scenariometadata_receiver_adx" {
   count = var.aad_groups_and_assignements && var.kusto_script ? 1 : 0
-  scope                = azurerm_eventhub.eventhub_scenariometadata[0].id
+  scope                = azurerm_eventhub.eventhub_scenariometadata.id
   role_definition_name = "Azure Event Hubs Data Receiver"
   principal_id         = data.azurerm_kusto_cluster.adx_cluster.id
 }
 
 # scenariorunmetadata
 resource "azurerm_eventhub" "eventhub_scenariorunmetadata" {
-  count = var.dedicated_eventhub_namespace ? 1 : 0
-  name                = local.eventhub_scenariorunmetadata
+  name                = var.dedicated_eventhub_namespace ? local.eventhub_scenariorunmetadata : "${local.resource_name}-${local.eventhub_scenariorunmetadata_shared}"
   namespace_name      = azurerm_eventhub_namespace.eventhub_namespace[0].name
   resource_group_name = var.resource_group
   partition_count     = 1
@@ -240,30 +239,29 @@ resource "azurerm_eventhub" "eventhub_scenariorunmetadata" {
 }
 
 resource "azurerm_eventhub_consumer_group" "eventhub_scenariorunmetadata_consumer_adx" {
-  count = var.dedicated_eventhub_namespace ? 1 : 0
-  name               = local.eventhub_consumer_adx
+  name                = local.eventhub_consumer_adx
   namespace_name      = azurerm_eventhub_namespace.eventhub_namespace[0].name
-  eventhub_name       = azurerm_eventhub.eventhub_scenariorunmetadata[0].name
+  eventhub_name       = azurerm_eventhub.eventhub_scenariorunmetadata.name
   resource_group_name = var.resource_group
 }
 
 resource "azurerm_role_assignment" "eventhub_scenariorunmetadata_owner" {
-  count = var.aad_groups_and_assignements && var.dedicated_eventhub_namespace ? 1 : 0
-  scope                = azurerm_eventhub.eventhub_scenariorunmetadata[0].id
+  count = var.aad_groups_and_assignements ? 1 : 0
+  scope                = azurerm_eventhub.eventhub_scenariorunmetadata.id
   role_definition_name = "Owner"
   principal_id         = azuread_group.workspace_group[0].object_id
 }
 
 resource "azurerm_role_assignment" "eventhub_scenariorunmetadata_owner_app" {
-  count = var.aad_groups_and_assignements && var.dedicated_eventhub_namespace ? 1 : 0
-  scope                = azurerm_eventhub.eventhub_scenariorunmetadata[0].id
+  count = var.aad_groups_and_assignements ? 1 : 0
+  scope                = azurerm_eventhub.eventhub_scenariorunmetadata.id
   role_definition_name = "Azure Event Hubs Data Sender"
   principal_id         = data.azuread_service_principal.app_platform[0].id
 }
 
 resource "azurerm_role_assignment" "eventhub_scenariorunmetadata_receiver_adx" {
   count = var.aad_groups_and_assignements && var.kusto_script ? 1 : 0
-  scope                = azurerm_eventhub.eventhub_scenariorunmetadata[0].id
+  scope                = azurerm_eventhub.eventhub_scenariorunmetadata.id
   role_definition_name = "Azure Event Hubs Data Receiver"
   principal_id         = data.azurerm_kusto_cluster.adx_cluster.id
 }
@@ -492,15 +490,15 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorun_conn
 
 resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariometadata_connection" {
   depends_on          = [azurerm_kusto_script.kusto_script]
-  count                              = var.kusto_script && var.dedicated_eventhub_namespace ? 1 : 0
+  count                              = var.kusto_script ? 1 : 0
   name                = substr("${local.resource_name}-${local.eventhub_scenariometadata_connection}", 0, 40)
   resource_group_name = var.resource_group
   location            = var.location
   cluster_name        = var.adx_name
   database_name       = azurerm_kusto_database.database.name
 
-  eventhub_id    = azurerm_eventhub.eventhub_scenariometadata[0].id
-  consumer_group = azurerm_eventhub_consumer_group.eventhub_scenariometadata_consumer_adx[0].name
+  eventhub_id    = azurerm_eventhub.eventhub_scenariometadata.id
+  consumer_group = azurerm_eventhub_consumer_group.eventhub_scenariometadata_consumer_adx.name
   identity_id    = data.azurerm_kusto_cluster.adx_cluster.id
 
   table_name        = "ScenarioMetadata"
@@ -511,15 +509,15 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariometadata
 
 resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorunmetadata_connection" {
   depends_on          = [azurerm_kusto_script.kusto_script]
-  count                              = var.kusto_script && var.dedicated_eventhub_namespace ? 1 : 0
+  count                              = var.kusto_script ? 1 : 0
   name                = substr("${local.resource_name}-${local.eventhub_scenariorunmetadata_connection}", 0, 40)
   resource_group_name = var.resource_group
   location            = var.location
   cluster_name        = var.adx_name
   database_name       = azurerm_kusto_database.database.name
 
-  eventhub_id    = azurerm_eventhub.eventhub_scenariorunmetadata[0].id
-  consumer_group = azurerm_eventhub_consumer_group.eventhub_scenariorunmetadata_consumer_adx[0].name
+  eventhub_id    = azurerm_eventhub.eventhub_scenariorunmetadata.id
+  consumer_group = azurerm_eventhub_consumer_group.eventhub_scenariorunmetadata_consumer_adx.name
   identity_id    = data.azurerm_kusto_cluster.adx_cluster.id
 
   table_name        = "ScenarioRunMetadata"
