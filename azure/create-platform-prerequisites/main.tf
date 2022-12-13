@@ -665,6 +665,7 @@ output "out_powerbi_clientid" {
 
 output "out_powerbi_password" {
   value = azuread_application_password.powerbi_password[0].value
+  sensitive = true
 }
 
 output "out_webapp_name" {
