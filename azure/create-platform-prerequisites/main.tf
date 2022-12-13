@@ -459,6 +459,11 @@ resource "azuread_service_principal" "powerbi" {
   tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
+resource "azuread_application_password" "powerbi_password" {
+  count            = var.create_powerbi ? 1 : 0
+  application_object_id = azuread_application.powerbi[0].object_id
+  end_date_relative = "4464h"
+}
 
 resource "azuread_application" "webapp" {
   display_name     = "${local.pre_name}Web App${local.post_name}"
@@ -656,6 +661,10 @@ output "out_powerbi_name" {
 
 output "out_powerbi_clientid" {
   value = azuread_application.powerbi[0].application_id
+}
+
+output "out_powerbi_password" {
+  value = azuread_application_password.powerbi_password[0].value
 }
 
 output "out_webapp_name" {
