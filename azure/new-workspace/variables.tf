@@ -82,6 +82,12 @@ variable "kusto_script" {
   default = true
 }
 
+variable "adx_identity_uid" {
+  description = "The kusto cluster managed identity uid"
+  type = string
+  default = ""
+}
+
 variable "aad_group_members" {
   description = "Group member list of mail addresses for Workspace security group"
   type = list(string)
