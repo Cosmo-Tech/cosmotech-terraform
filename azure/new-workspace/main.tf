@@ -203,7 +203,7 @@ resource "azurerm_eventhub" "eventhub_scenariometadata" {
 
 resource "azurerm_eventhub_consumer_group" "eventhub_scenariometadata_consumer_adx" {
   name               = local.eventhub_consumer_adx
-  namespace_name      = azurerm_eventhub_namespace.eventhub_namespace[0].name
+  namespace_name      = var.dedicated_eventhub_namespace ? azurerm_eventhub_namespace.eventhub_namespace[0].name : var.eventhub_namespace_name
   eventhub_name       = azurerm_eventhub.eventhub_scenariometadata.name
   resource_group_name = var.resource_group
 }
@@ -240,7 +240,7 @@ resource "azurerm_eventhub" "eventhub_scenariorunmetadata" {
 
 resource "azurerm_eventhub_consumer_group" "eventhub_scenariorunmetadata_consumer_adx" {
   name                = local.eventhub_consumer_adx
-  namespace_name      = azurerm_eventhub_namespace.eventhub_namespace[0].name
+  namespace_name      = var.dedicated_eventhub_namespace ? azurerm_eventhub_namespace.eventhub_namespace[0].name : var.eventhub_namespace_name
   eventhub_name       = azurerm_eventhub.eventhub_scenariorunmetadata.name
   resource_group_name = var.resource_group
 }
