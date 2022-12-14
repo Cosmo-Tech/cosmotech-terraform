@@ -195,7 +195,7 @@ resource "azurerm_role_assignment" "eventhub_scenariorun_receiver_adx" {
 # scenariometadata
 resource "azurerm_eventhub" "eventhub_scenariometadata" {
   name                = var.dedicated_eventhub_namespace ? local.eventhub_scenariometadata : "${local.resource_name}-${local.eventhub_scenariometadata_shared}"
-  namespace_name      = azurerm_eventhub_namespace.eventhub_namespace[0].name
+  namespace_name      = var.dedicated_eventhub_namespace ? azurerm_eventhub_namespace.eventhub_namespace[0].name : var.eventhub_namespace_name
   resource_group_name = var.resource_group
   partition_count     = 1
   message_retention   = 1
@@ -232,7 +232,7 @@ resource "azurerm_role_assignment" "eventhub_scenariometadata_receiver_adx" {
 # scenariorunmetadata
 resource "azurerm_eventhub" "eventhub_scenariorunmetadata" {
   name                = var.dedicated_eventhub_namespace ? local.eventhub_scenariorunmetadata : "${local.resource_name}-${local.eventhub_scenariorunmetadata_shared}"
-  namespace_name      = azurerm_eventhub_namespace.eventhub_namespace[0].name
+  namespace_name      = var.dedicated_eventhub_namespace ? azurerm_eventhub_namespace.eventhub_namespace[0].name : var.eventhub_namespace_name
   resource_group_name = var.resource_group
   partition_count     = 1
   message_retention   = 1
