@@ -152,7 +152,7 @@ resource "azurerm_role_assignment" "eventhub_probesmeasures_receiver_adx" {
   count = var.aad_groups_and_assignements && var.kusto_script ? 1 : 0
   scope                = azurerm_eventhub.eventhub_probesmeasures.id
   role_definition_name = "Azure Event Hubs Data Receiver"
-  principal_id         = data.azurerm_kusto_cluster.adx_cluster.id
+  principal_id         = var.adx_identity_uid
 }
 
 # scenariorun
@@ -189,7 +189,7 @@ resource "azurerm_role_assignment" "eventhub_scenariorun_receiver_adx" {
   count = var.aad_groups_and_assignements && var.kusto_script ? 1 : 0
   scope                = azurerm_eventhub.eventhub_scenariorun.id
   role_definition_name = "Azure Event Hubs Data Receiver"
-  principal_id         = data.azurerm_kusto_cluster.adx_cluster.id
+  principal_id         = var.adx_identity_uid
 }
 
 # scenariometadata
@@ -226,7 +226,7 @@ resource "azurerm_role_assignment" "eventhub_scenariometadata_receiver_adx" {
   count = var.aad_groups_and_assignements && var.kusto_script ? 1 : 0
   scope                = azurerm_eventhub.eventhub_scenariometadata.id
   role_definition_name = "Azure Event Hubs Data Receiver"
-  principal_id         = data.azurerm_kusto_cluster.adx_cluster.id
+  principal_id         = var.adx_identity_uid
 }
 
 # scenariorunmetadata
@@ -263,7 +263,7 @@ resource "azurerm_role_assignment" "eventhub_scenariorunmetadata_receiver_adx" {
   count = var.aad_groups_and_assignements && var.kusto_script ? 1 : 0
   scope                = azurerm_eventhub.eventhub_scenariorunmetadata.id
   role_definition_name = "Azure Event Hubs Data Receiver"
-  principal_id         = data.azurerm_kusto_cluster.adx_cluster.id
+  principal_id         = var.adx_identity_uid
 }
 
 # ADX
