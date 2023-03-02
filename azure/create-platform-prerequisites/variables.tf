@@ -109,7 +109,8 @@ variable "location" {
 
 variable "resource_group" {
   description = "Resource group to create which will contain created Azure resources"
-  type        = string
+  type = string
+  default = ""
 }
 
 variable "create_publicip" {
@@ -170,4 +171,10 @@ variable "user_app_role" {
     role_value = string
   }))
   description = "App role for azuread_application"
+  default = [ {
+    description = ""
+    display_name = ""
+    id = ""
+    role_value = ""
+  } ]
 }
