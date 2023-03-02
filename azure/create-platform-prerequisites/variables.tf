@@ -1,37 +1,31 @@
 variable "tenant_id" {
   description = "The tenant id"
-  type = string
-  default = ""
+  type        = string
 }
 
 variable "subscription_id" {
   description = "The subscription id"
-  type = string
-  default = ""
+  type        = string
 }
 
 variable "client_id" {
   description = "The client id"
-  type = string
-  default = ""
+  type        = string
 }
 
 variable "client_secret" {
   description = "The client secret"
-  type = string
-  default = ""
+  type        = string
 }
 
 variable "platform_url" {
   description = "The platform url"
-  type = string
-  default = ""
+  type        = string
 }
 
 variable "identifier_uri" {
   description = "The platform identifier uri"
-  type = string
-  default = ""
+  type        = string
 }
 
 variable "project_stage" {
@@ -52,30 +46,26 @@ variable "project_stage" {
     ], var.project_stage)
     error_message = "Stage must be either: OnBoarding, Dev, QA, IA, EA, Demo, Prod, Uat."
   }
-  default = "Dev"
 }
 
 variable "customer_name" {
   description = "The customer name"
-  type = string
-  default = ""
+  type        = string
 }
 
 variable "project_name" {
   description = "The project name"
-  type = string
-  default = ""
+  type        = string
 }
 
 variable "owner_list" {
   description = "List of mail addresses for App Registration owners"
-  type = list(string)
-  default = [ "" ]
+  type        = list(string)
 }
 
 variable "audience" {
   description = "The App Registration audience type"
-  type = string
+  type        = string
   validation {
     condition = contains([
       "AzureADMyOrg",
@@ -88,8 +78,7 @@ variable "audience" {
 
 variable "webapp_url" {
   description = "The Web Application URL"
-  type = string
-  default = ""
+  type        = string
 }
 
 variable "create_restish" {
@@ -111,8 +100,7 @@ variable "location" {
 
 variable "resource_group" {
   description = "Resource group to create which will contain created Azure resources"
-  type = string
-  default = ""
+  type        = string
 }
 
 variable "create_publicip" {
@@ -161,8 +149,8 @@ variable "vnet_iprange" {
 
 variable "api_version_path" {
   description = "The API version path"
-  type = string
-  default = "/"
+  type        = string
+  default     = "/"
 }
 
 variable "user_app_role" {
@@ -173,12 +161,6 @@ variable "user_app_role" {
     role_value   = string
   }))
   description = "App role for azuread_application"
-  default = [ {
-    description = ""
-    display_name = ""
-    id = ""
-    role_value = ""
-  } ]
 }
 
 variable "azuread_service_principal_tags" {
