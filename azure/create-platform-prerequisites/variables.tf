@@ -1,32 +1,36 @@
 variable "tenant_id" {
   description = "The tenant id"
-  type        = string
+  type = string
+  default = ""
 }
 
 variable "subscription_id" {
   description = "The subscription id"
-  type        = string
+  type = string
+  default = ""
 }
 
 variable "client_id" {
   description = "The client id"
-  type        = string
+  type = string
+  default = ""
 }
 
 variable "client_secret" {
   description = "The client secret"
-  type        = string
+  type = string
+  default = ""
 }
 
 variable "platform_url" {
   description = "The platform url"
-  type        = string
+  type = string
   default = ""
 }
 
 variable "identifier_uri" {
   description = "The platform identifier uri"
-  type        = string
+  type = string
   default = ""
 }
 
@@ -48,27 +52,30 @@ variable "project_stage" {
     ], var.project_stage)
     error_message = "Stage must be either: OnBoarding, Dev, QA, IA, EA, Demo, Prod, Uat."
   }
+  default = "Dev"
 }
 
 variable "customer_name" {
   description = "The customer name"
-  type        = string
+  type = string
+  default = ""
 }
 
 variable "project_name" {
   description = "The project name"
-  type        = string
+  type = string
   default = ""
 }
 
 variable "owner_list" {
   description = "List of mail addresses for App Registration owners"
-  type        = list(string)
+  type = list(string)
+  default = [ "" ]
 }
 
 variable "audience" {
   description = "The App Registration audience type"
-  type        = string
+  type = string
   validation {
     condition = contains([
       "AzureADMyOrg",
@@ -81,7 +88,8 @@ variable "audience" {
 
 variable "webapp_url" {
   description = "The Web Application URL"
-  type        = string
+  type = string
+  default = ""
 }
 
 variable "create_restish" {
@@ -152,8 +160,8 @@ variable "vnet_iprange" {
 
 variable "api_version_path" {
   description = "The API version path"
-  type        = string
-  default     = "/"
+  type = string
+  default = "/"
 }
 
 variable "user_app_role" {
