@@ -64,7 +64,7 @@ resource "azuread_application" "platform" {
       display_name = app_role.value.display_name
       id = app_role.value.id
       enabled = true
-      value = app_role.value.role_value
+      role_value = app_role.value.role_value
     }
   }
 }
