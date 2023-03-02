@@ -153,3 +153,21 @@ variable "user_app_role" {
   }))
   description = "App role for azuread_application"
 }
+
+variable "azuread_service_principal_tags" {
+  type = list(string)
+  description = "Common tags for AZ AD service principal"
+  default = [ "" ]
+}
+
+variable "azuread_application_tags" {
+  type = list(string)
+  description = "Common tags for AZ AD application"
+  default = [ "" ]
+}
+
+variable "common_tags" {
+  type = list(string)
+  description = "Common tags"
+  default = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
+}
