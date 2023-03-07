@@ -16,7 +16,7 @@ resource "azuread_application" "platform" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = concat(var.common_tags, var.stage, var.customer, var.project)
+  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -74,7 +74,7 @@ resource "azuread_service_principal" "platform" {
   # assignment required to secure Function Apps using thi App Registration as identity provider
   app_role_assignment_required = true
 
-  tags = concat(var.common_tags, "cosmotech", var.stage, var.customer, var.project)
+  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 resource "azuread_application_password" "platform_password" {
@@ -89,7 +89,7 @@ resource "azuread_application" "network_adt" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
-  tags = concat(var.common_tags, var.stage, var.customer, var.project)
+  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
 }
 
 resource "azuread_service_principal" "network_adt" {
@@ -97,7 +97,7 @@ resource "azuread_service_principal" "network_adt" {
   application_id               = azuread_application.network_adt.application_id
   app_role_assignment_required = false
 
-  tags = concat(var.common_tags, "cosmotech", var.stage, var.customer, var.project)
+  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 resource "azuread_application_password" "network_adt_password" {
@@ -111,7 +111,7 @@ resource "azuread_application" "swagger" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = concat(var.common_tags, var.stage, var.customer, var.project)
+  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -147,7 +147,7 @@ resource "azuread_service_principal" "swagger" {
   application_id               = azuread_application.swagger.application_id
   app_role_assignment_required = false
 
-  tags = concat(var.common_tags, "cosmotech", var.stage, var.customer, var.project)
+  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 
@@ -158,7 +158,7 @@ resource "azuread_application" "restish" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = concat(var.common_tags, var.stage, var.customer, var.project)
+  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -195,7 +195,7 @@ resource "azuread_service_principal" "restish" {
   application_id               = azuread_application.restish[0].application_id
   app_role_assignment_required = false
 
-  tags = concat(var.common_tags, "cosmotech", var.stage, var.customer, var.project)
+  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 resource "azuread_application_password" "restish_password" {
@@ -211,7 +211,7 @@ resource "azuread_application" "powerbi" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
-  tags = concat(var.common_tags, var.stage, var.customer, var.project)
+  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
 }
 
 resource "azuread_service_principal" "powerbi" {
@@ -220,7 +220,7 @@ resource "azuread_service_principal" "powerbi" {
   application_id               = azuread_application.powerbi[0].application_id
   app_role_assignment_required = false
 
-  tags = concat(var.common_tags, "cosmotech", var.stage, var.customer, var.project)
+  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 resource "azuread_application_password" "powerbi_password" {
@@ -235,7 +235,7 @@ resource "azuread_application" "webapp" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = concat(var.common_tags, var.stage, var.customer, var.project)
+  tags = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -265,7 +265,7 @@ resource "azuread_service_principal" "webapp" {
   application_id               = azuread_application.webapp.application_id
   app_role_assignment_required = false
 
-  tags = concat(var.common_tags, "cosmotech", var.stage, var.customer, var.project)
+  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 # create the Azure AD resource group
