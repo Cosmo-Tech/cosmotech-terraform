@@ -21,11 +21,13 @@ variable "client_secret" {
 variable "platform_url" {
   description = "The platform url"
   type        = string
+  default = ""
 }
 
 variable "identifier_uri" {
   description = "The platform identifier uri"
   type        = string
+  default = ""
 }
 
 variable "stage" {
@@ -53,6 +55,7 @@ variable "customer" {
 variable "project" {
   description = "The project name"
   type        = string
+  default = ""
 }
 
 variable "owner_list" {
