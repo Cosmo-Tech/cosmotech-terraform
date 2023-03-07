@@ -16,7 +16,7 @@ resource "azuread_application" "platform" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = concat(var.common_tags, var.stage, var.customer, var.project)
+  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -74,7 +74,7 @@ resource "azuread_service_principal" "platform" {
   # assignment required to secure Function Apps using thi App Registration as identity provider
   app_role_assignment_required = true
 
-  tags = concat(var.common_tags, "cosmotech", var.stage, var.customer, var.project)
+  tags = ["cosmotech", var.project_stage, var.customer_name, var.project_name, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 resource "azuread_application_password" "platform_password" {
