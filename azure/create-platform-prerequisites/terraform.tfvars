@@ -13,6 +13,7 @@
   dns_zone_rg = ""
   dns_record = ""
   vnet_iprange = ""
+  resource_group = ""
   
   user_app_role = [ {
     description = "Workspace Writer",
