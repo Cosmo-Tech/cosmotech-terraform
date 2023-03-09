@@ -13,7 +13,7 @@ data "azuread_users" "owners" {
 resource "azuread_application" "platform" {
   display_name     = "${local.pre_name}Platform${local.post_name}"
   identifier_uris  = [var.identifier_uri]
-  logo_image       = filebase64("create-platform-prerequisites/cosmotech.png")
+  logo_image       = filebase64(var.image_path)
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
@@ -321,7 +321,7 @@ resource "azuread_application_password" "platform_password" {
 
 resource "azuread_application" "network_adt" {
   display_name     = "${local.pre_name}Network and ADT${local.post_name}"
-  logo_image       = filebase64("cosmotech.png")
+  logo_image       = filebase64(var.image_path)
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
@@ -343,7 +343,7 @@ resource "azuread_application_password" "network_adt_password" {
 
 resource "azuread_application" "swagger" {
   display_name     = "${local.pre_name}Swagger${local.post_name}"
-  logo_image       = filebase64("cosmotech.png")
+  logo_image       = filebase64(var.image_path)
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
@@ -390,7 +390,7 @@ resource "azuread_service_principal" "swagger" {
 resource "azuread_application" "restish" {
   count            = var.create_restish ? 1 : 0
   display_name     = "${local.pre_name}Restish${local.post_name}"
-  logo_image       = filebase64("cosmotech.png")
+  logo_image       = filebase64(var.image_path)
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
@@ -443,7 +443,7 @@ resource "azuread_application_password" "restish_password" {
 resource "azuread_application" "powerbi" {
   count            = var.create_powerbi ? 1 : 0
   display_name     = "${local.pre_name}PowerBI${local.post_name}"
-  logo_image       = filebase64("cosmotech.png")
+  logo_image       = filebase64(var.image_path)
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
@@ -467,7 +467,7 @@ resource "azuread_application_password" "powerbi_password" {
 
 resource "azuread_application" "webapp" {
   display_name     = "${local.pre_name}Web App${local.post_name}"
-  logo_image       = filebase64("cosmotech.png")
+  logo_image       = filebase64(var.image_path)
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 

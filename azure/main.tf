@@ -25,6 +25,7 @@ module "create-platform-prerequisite" {
   create_vnet = var.create_vnet
   vnet_iprange = var.vnet_iprange
   api_version_path = var.api_version_path
+  image_path = var.image_path
 }
 
 module "create-cluster" {
