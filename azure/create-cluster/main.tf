@@ -2,7 +2,7 @@
 resource "azurerm_kubernetes_cluster" "phoenixperftestAKS" {
   name                = "phoenixperftestAKS-aks1"
   location            = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = var.resource_group
   dns_prefix          = "phoenixperftestAKSaks1"
   kubernetes_version = "1.25.5"
 
