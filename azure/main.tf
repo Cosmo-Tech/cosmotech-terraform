@@ -20,7 +20,7 @@ module "create-platform-prerequisite" {
   create_publicip = var.create_publicip
   create_dnsrecord = var.create_dnsrecord
   dns_zone_name = var.dns_zone_name
-  dns_zone_rg = var.dns_zone_name
+  dns_zone_rg = var.dns_zone_rg
   dns_record = var.dns_record
   create_vnet = var.create_vnet
   vnet_iprange = var.vnet_iprange
