@@ -9,6 +9,6 @@ output "kube_config" {
   sensitive = true
 }
 
-output "cluster_name" {
-  value = azurerm_kubernetes_cluster.phoenixperftestAKS.name
+output "cluster" {
+  value = azurerm_kubernetes_cluster.phoenixperftestAKS
 }
