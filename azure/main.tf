@@ -2,8 +2,8 @@ module "create-platform-prerequisite" {
   source = "./create-platform-prerequisites"
 
   providers = {
-    azuread = "azuread"
-    azurerm = "azurerm"
+    azuread = azuread
+    azurerm = azurerm
    }
 
   tenant_id = var.tenant_id
@@ -37,8 +37,8 @@ module "create-cluster" {
   source = "./create-cluster"
 
   providers = {
-    azuread = "azuread"
-    azurerm = "azurerm"
+    azuread = azuread
+    azurerm = azurerm
    }
 
   location = var.location
@@ -53,13 +53,25 @@ module "create-cluster" {
   ]
 }
 
+data "azurerm_kubernetes_cluster" "example" {
+  name                = var.cluster_name
+  resource_group_name = var.resource_group
+}
+
+provider "kubernetes" {
+  host                   = "${data.azurerm_kubernetes_cluster.example.kube_config.0.host}"
+  client_certificate     = "${base64decode(data.azurerm_kubernetes_cluster.example.kube_config.0.client_certificate)}"
+  client_key             = "${base64decode(data.azurerm_kubernetes_cluster.example.kube_config.0.client_key)}"
+  cluster_ca_certificate = "${base64decode(data.azurerm_kubernetes_cluster.example.kube_config.0.cluster_ca_certificate)}"
+}
+
 module "deploy-cosmo-platform" {
   source = "./deploy-cosmo-platform"
 
   providers = {
-    azuread = "azuread"
-    azurerm = "azurerm"
-    kubernetes = "kubernetes"
+    azuread = azuread
+    azurerm = azurerm
+    kubernetes = kubernetes
    }
 
   cluster_name = module.create-cluster.cluster_name
