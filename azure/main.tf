@@ -44,7 +44,7 @@ module "create-cluster" {
 }
 
 data "azurerm_kubernetes_cluster" "example" {
-  name                = module.create-cluster.cluster_name
+  name                = module.create-cluster.azurerm_kubernetes_cluster.phoenixperftestAKS.name
   resource_group_name = var.resource_group
 }
 
@@ -58,7 +58,7 @@ provider "kubernetes" {
 module "deploy-cosmo-platform" {
   source = "./deploy-cosmo-platform"
 
-  cluster_name = module.create-cluster.cluster_name
+  cluster_name = module.create-cluster.azurerm_kubernetes_cluster.phoenixperftestAKS.name
   resource_group = var.resource_group
 
   depends_on = [
