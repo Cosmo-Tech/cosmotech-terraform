@@ -2,8 +2,8 @@ module "create-platform-prerequisite" {
   source = "./create-platform-prerequisites"
 
   providers = {
-    azuread = azuread
-    azurerm = azurerm
+    azuread = provider.azuread
+    azurerm = provider.azurerm
    }
 
   tenant_id = var.tenant_id
@@ -37,8 +37,8 @@ module "create-cluster" {
   source = "./create-cluster"
 
   providers = {
-    azuread = azuread
-    azurerm = azurerm
+    azuread = provider.azuread
+    azurerm = provider.azurerm
    }
 
   location = var.location
@@ -69,9 +69,9 @@ module "deploy-cosmo-platform" {
   source = "./deploy-cosmo-platform"
 
   providers = {
-    azuread = azuread
-    azurerm = azurerm
-    kubernetes = kubernetes
+    azuread = provider.azuread
+    azurerm = provider.azurerm
+    kubernetes = provider.kubernetes
    }
 
   cluster_name = module.create-cluster.cluster_name

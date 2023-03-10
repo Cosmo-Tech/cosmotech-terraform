@@ -28,6 +28,7 @@ variable "image_path" {
 
 variable "cluster_name" {
   type = string
+  default = ""
 }
 
 variable "stage" {
