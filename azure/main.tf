@@ -49,7 +49,7 @@ locals {
 
 
 data "azurerm_kubernetes_cluster" "example" {
-  name                = locals.cluster.name
+  name                = local.cluster.name
   resource_group_name = var.resource_group
 }
 

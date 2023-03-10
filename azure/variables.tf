@@ -26,11 +26,6 @@ variable "image_path" {
   type = string
 }
 
-# variable "cluster_name" {
-#   type = string
-#   default = ""
-# }
-
 variable "stage" {
   description = "The platform stage"
   validation {
