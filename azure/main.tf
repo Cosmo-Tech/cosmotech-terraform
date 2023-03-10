@@ -44,7 +44,7 @@ module "create-cluster" {
 }
 
 data "azurerm_kubernetes_cluster" "example" {
-  name                = var.cluster_name
+  name                = module.create-cluster.cluster_name
   resource_group_name = var.resource_group
 }
 
