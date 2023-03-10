@@ -42,31 +42,3 @@ module "create-cluster" {
     module.create-platform-prerequisite
   ]
 }
-
-locals {
-  cluster = module.create-cluster.cluster
-}
-
-
-data "azurerm_kubernetes_cluster" "example" {
-  name                = local.cluster.name
-  resource_group_name = var.resource_group
-}
-
-provider "kubernetes" {
-  host                   = "${data.azurerm_kubernetes_cluster.example.kube_config.0.host}"
-  client_certificate     = "${base64decode(data.azurerm_kubernetes_cluster.example.kube_config.0.client_certificate)}"
-  client_key             = "${base64decode(data.azurerm_kubernetes_cluster.example.kube_config.0.client_key)}"
-  cluster_ca_certificate = "${base64decode(data.azurerm_kubernetes_cluster.example.kube_config.0.cluster_ca_certificate)}"
-}
-
-module "deploy-cosmo-platform" {
-  source = "./deploy-cosmo-platform"
-
-  cluster_name = local.cluster.name
-  resource_group = var.resource_group
-
-  depends_on = [
-    module.create-cluster
-  ]
-}
