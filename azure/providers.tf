@@ -8,6 +8,10 @@ terraform {
       source = "hashicorp/azuread"
       version = "2.30.0"
     }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.18.1"
+    }
   }
 }
 
@@ -24,4 +28,7 @@ provider "azuread" {
   tenant_id     = var.tenant_id
   client_id     = var.client_id
   client_secret = var.client_secret
+}
+
+provider "kubernetes" {
 }

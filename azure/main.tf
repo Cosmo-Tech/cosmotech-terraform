@@ -1,6 +1,11 @@
 module "create-platform-prerequisite" {
   source = "./create-platform-prerequisites"
 
+  providers = {
+    azuread = "azuread"
+    azurerm = "azurerm"
+   }
+
   tenant_id = var.tenant_id
   subscription_id = var.subscription_id
   client_id = var.client_id
@@ -31,6 +36,11 @@ module "create-platform-prerequisite" {
 module "create-cluster" {
   source = "./create-cluster"
 
+  providers = {
+    azuread = "azuread"
+    azurerm = "azurerm"
+   }
+
   location = var.location
   resource_group = var.resource_group
   tenant_id = var.tenant_id
@@ -40,5 +50,22 @@ module "create-cluster" {
 
   depends_on = [
     module.create-platform-prerequisite
+  ]
+}
+
+module "deploy-cosmo-platform" {
+  source = "./deploy-cosmo-platform"
+
+  providers = {
+    azuread = "azuread"
+    azurerm = "azurerm"
+    kubernetes = "kubernetes"
+   }
+
+  cluster_name = module.create-cluster.cluster_name
+  resource_group = var.resource_group
+
+  depends_on = [
+    module.create-cluster
   ]
 }
