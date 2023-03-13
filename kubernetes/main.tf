@@ -10,55 +10,36 @@ provider "kubernetes" {
   cluster_ca_certificate = "${base64decode(data.azurerm_kubernetes_cluster.example.kube_config.0.cluster_ca_certificate)}"
 }
 
-resource "kubernetes_namespace" "test" {
-  metadata {
-    name = "nginx"
+provider "helm" {
+  kubernetes {
   }
 }
-resource "kubernetes_deployment" "test" {
+
+resource "kubernetes_namespace" "kube_namespace" {
   metadata {
-    name      = "nginx"
-    namespace = kubernetes_namespace.test.metadata.0.name
-  }
-  spec {
-    replicas = 2
-    selector {
-      match_labels = {
-        app = "MyTestApp"
-      }
-    }
-    template {
-      metadata {
-        labels = {
-          app = "MyTestApp"
-        }
-      }
-      spec {
-        container {
-          image = "nginx"
-          name  = "nginx-container"
-          port {
-            container_port = 80
-          }
-        }
-      }
-    }
+    name = var.namespace
   }
 }
-resource "kubernetes_service" "test" {
-  metadata {
-    name      = "nginx"
-    namespace = kubernetes_namespace.test.metadata.0.name
-  }
-  spec {
-    selector = {
-      app = kubernetes_deployment.test.spec.0.template.0.metadata.0.labels.app
-    }
-    type = "NodePort"
-    port {
-      node_port   = 30201
-      port        = 80
-      target_port = 80
-    }
-  }
+
+module "ingress-nginx" {
+  source = "./ingress-nginx"
+
+  # vars
+  namespace = var.namespace
+  monitoring_namespace = var.monitoring_namespace
+  ingress_nginx_version = var.ingress_nginx_version
+  loadbalancer_ip = var.loadbalancer_ip
+  tls_secret_name = var.tls_secret_name
 }
+
+# module "cert-manager" {
+#   source = "./cert-manager"
+
+#   # vars
+# }
+
+# module "prometheus-stack" {
+#   source = "./prometheus-stack"
+
+#   # vars
+# }

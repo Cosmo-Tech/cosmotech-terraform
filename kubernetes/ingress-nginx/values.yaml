@@ -1,0 +1,64 @@
+controller:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      namespace: ${MONITORING_NAMESPACE}
+  labels:
+    networking/traffic-allowed: "yes"
+  podLabels:
+    networking/traffic-allowed: "yes"
+  replicaCount: ${NGINX_INGRESS_CONTROLLER_REPLICA_COUNT}
+  nodeSelector:
+    "cosmotech.com/tier": "services"
+  tolerations:
+  - key: "vendor"
+    operator: "Equal"
+    value: "cosmotech"
+    effect: "NoSchedule"
+  service:
+    annotations:
+      service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: "/healthz"
+    labels:
+      networking/traffic-allowed: "yes"
+    loadBalancerIP: ${NGINX_INGRESS_CONTROLLER_LOADBALANCER_IP}
+  extraArgs:
+    default-ssl-certificate: ${NAMESPACE}/${TLS_SECRET_NAME}
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 512Mi
+  admissionWebhooks:
+    labels:
+      networking/traffic-allowed: "yes"
+    patch:
+      labels:
+        networking/traffic-allowed: "yes"
+      nodeSelector:
+        "cosmotech.com/tier": "services"
+      tolerations:
+      - key: "vendor"
+        operator: "Equal"
+        value: "cosmotech"
+        effect: "NoSchedule"
+
+defaultBackend:
+  podLabels:
+    networking/traffic-allowed: "yes"
+  nodeSelector:
+    "cosmotech.com/tier": "services"
+  tolerations:
+  - key: "vendor"
+    operator: "Equal"
+    value: "cosmotech"
+    effect: "NoSchedule"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 512Mi
