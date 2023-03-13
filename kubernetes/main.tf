@@ -32,12 +32,6 @@ module "ingress-nginx" {
   tls_secret_name = var.tls_secret_name
 }
 
-# module "cert-manager" {
-#   source = "./cert-manager"
-
-#   # vars
-# }
-
 # module "prometheus-stack" {
 #   source = "./prometheus-stack"
 
