@@ -20,9 +20,5 @@ resource "helm_release" "ingress-nginx" {
   values = [ 
     templatefile("${path.module}/values.yaml", local.values_ingress_nginx)
   ]
-
-  set {
-    
-  }
 }
 
