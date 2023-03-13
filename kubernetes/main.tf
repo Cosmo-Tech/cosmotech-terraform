@@ -21,8 +21,8 @@ resource "kubernetes_namespace" "kube_namespace" {
   }
 }
 
-module "ingress-nginx" {
-  source = "./ingress-nginx"
+module "create-ingress-nginx" {
+  source = "./create-ingress-nginx"
 
   # vars
   namespace = var.namespace
