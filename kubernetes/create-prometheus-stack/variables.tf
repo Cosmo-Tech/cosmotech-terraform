@@ -35,7 +35,7 @@ variable "helm_repo_url" {
 
 variable "helm_release_name" {
   type    = string
-  default = "prometheus-community"
+  default = "kube-prometheus-stack"
 }
 
 variable "prometheus_stack_version" {
