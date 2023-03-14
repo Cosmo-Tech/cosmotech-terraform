@@ -50,6 +50,7 @@ module "create-ingress-nginx" {
 module "create-prometheus-stack" {
   source = "./create-prometheus-stack"
 
+  namespace            = var.namespace
   monitoring_namespace = var.monitoring_namespace
   api_dns_name         = var.api_dns_name
   tls_secret_name      = var.tls_secret_name

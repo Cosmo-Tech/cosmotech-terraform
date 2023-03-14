@@ -62,3 +62,7 @@ variable "api_dns_name" {
 variable "tls_secret_name" {
   type = string
 }
+
+variable "namespace" {
+  type = string
+}
