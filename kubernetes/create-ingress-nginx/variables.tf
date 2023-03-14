@@ -10,7 +10,7 @@ variable "helm_release_name" {
 
 variable "ingress_nginx_version" {
   type = string
-  default = ""
+  default = "4.2.5"
 }
 
 variable "namespace" {

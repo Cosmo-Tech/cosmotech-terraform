@@ -93,6 +93,18 @@ variable "tls_secret_name" {
   type = string
 }
 
+variable "api_dns_name" {
+  type = string
+}
+
+variable "redis_admin_password" {
+  type = string
+}
+
+variable "prom_admin_password" {
+  type = string
+}
+
 # export HELM_EXPERIMENTAL_OCI=1
 
 # export CHART_PACKAGE_VERSION="$1"
