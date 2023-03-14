@@ -25,7 +25,7 @@ provider "helm" {
   }
 }
 
-resource "kubernetes_namespace" "namespace" {
+resource "kubernetes_namespace" "main_namespace" {
   metadata {
     name = var.namespace
   }
@@ -45,6 +45,10 @@ module "create-ingress-nginx" {
   ingress_nginx_version = var.ingress_nginx_version
   loadbalancer_ip       = var.loadbalancer_ip
   tls_secret_name       = var.tls_secret_name
+
+  depends_on = [
+    module.create-prometheus-stack
+  ]
 }
 
 module "create-prometheus-stack" {

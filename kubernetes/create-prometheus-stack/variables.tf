@@ -40,7 +40,7 @@ variable "helm_release_name" {
 
 variable "prometheus_stack_version" {
   type    = string
-  default = "45.0.0"
+  default = "41.7.4"
 }
 
 variable "redis_admin_password" {
