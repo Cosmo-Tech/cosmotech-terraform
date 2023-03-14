@@ -1,9 +1,9 @@
 controller:
-  metrics:
-    enabled: true
-    serviceMonitor:
-      enabled: true
-      namespace: ${MONITORING_NAMESPACE}
+  # metrics:
+  #   enabled: true
+  #   serviceMonitor:
+  #     enabled: true
+  #     namespace: ${MONITORING_NAMESPACE}
   labels:
     networking/traffic-allowed: "yes"
   podLabels:
