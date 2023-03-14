@@ -23,57 +23,57 @@ variable "client_secret" {
 }
 
 variable "resource_group_name" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "location" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "cosmotech_api" {
   type = map(string)
   default = {
-    "API_VERSION"="",
-    "COSMOTECH_API_RELEASE_NAME"="",
-    "COSMOTECH_API_DNS_NAME" = ""
-    }
+    "API_VERSION"                = "",
+    "COSMOTECH_API_RELEASE_NAME" = "",
+    "COSMOTECH_API_DNS_NAME"     = ""
+  }
 }
 
 variable "nginx_resource" {
   type = map(string)
   default = {
-    "NGINX_INGRESS_CONTROLLER_LOADBALANCER_IP" = "",
+    "NGINX_INGRESS_CONTROLLER_LOADBALANCER_IP"         = "",
     "NGINX_INGRESS_CONTROLLER_HELM_ADDITIONAL_OPTIONS" = ""
-    }
+  }
 }
 
 variable "argo_resources" {
   type = map(string)
   default = {
-  # Both values below can be automatically generated
-  "ARGO_MINIO_ACCESS_KEY" = "",
-  "ARGO_MINIO_SECRET_KEY" = "",
-    }
+    # Both values below can be automatically generated
+    "ARGO_MINIO_ACCESS_KEY" = "",
+    "ARGO_MINIO_SECRET_KEY" = "",
+  }
 }
 
 variable "prometheus_stack_vars" {
   type = map(string)
   default = {
-  "PROM_ADMIN_PASSWORD_VAR" = ""
+    "PROM_ADMIN_PASSWORD_VAR" = ""
   }
 }
 
 variable "redis_resource_vars" {
   type = map(string)
   default = {
-  "REDIS_ADMIN_PASSWORD" = ""
+    "REDIS_ADMIN_PASSWORD" = ""
   }
 }
 
 variable "ingress_nginx_version" {
-  type = string
+  type    = string
   default = "4.2.1"
 }
 

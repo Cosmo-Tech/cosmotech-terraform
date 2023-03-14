@@ -1,15 +1,15 @@
 variable "helm_repo_url" {
-  type = string
+  type    = string
   default = "https://kubernetes.github.io/ingress-nginx"
 }
 
 variable "helm_release_name" {
-  type = string
+  type    = string
   default = "ingress-nginx"
 }
 
 variable "ingress_nginx_version" {
-  type = string
+  type    = string
   default = "4.2.5"
 }
 

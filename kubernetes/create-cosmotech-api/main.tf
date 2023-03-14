@@ -15,11 +15,11 @@ locals {
   }
 }
 
-resource "helm_release" "prometheus-stack" {
+resource "helm_release" "cosmotech-api" {
   name       = var.helm_release_name
   repository = var.helm_repo_url
   chart      = var.helm_release_name
-  version    = var.prometheus_stack_version
+  version    = var.cosmotech_api_version
   namespace  = var.namespace
 
   reuse_values = true
