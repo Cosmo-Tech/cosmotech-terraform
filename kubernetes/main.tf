@@ -60,4 +60,15 @@ module "create-prometheus-stack" {
   tls_secret_name      = var.tls_secret_name
   redis_admin_password = var.redis_admin_password
   prom_admin_password  = var.prom_admin_password
+  
+  depends_on = [
+    module.create-cert-manager
+  ]
+}
+
+module "create-cert-manager" {
+  source = "./create-cert-manager"
+
+  namespace            = var.namespace
+  monitoring_namespace = var.monitoring_namespace
 }
