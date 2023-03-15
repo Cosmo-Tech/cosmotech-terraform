@@ -30,6 +30,8 @@ provider "kubectl" {
   client_certificate     = local.client_certificate
   client_key             = local.client_key
   cluster_ca_certificate = local.cluster_ca_certificate
+
+  load_config_file = false
 }
 
 resource "kubernetes_namespace" "main_namespace" {
