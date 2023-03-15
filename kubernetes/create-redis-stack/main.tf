@@ -8,8 +8,8 @@ locals {
 }
 
 data "azurerm_managed_disk" "managed_disk" {
-  name = "cosmotech-database-disk"
-  resource_group_name = var.resource_group 
+  name                = "cosmotech-database-disk"
+  resource_group_name = var.resource_group
 }
 
 output "disk_id" {
@@ -45,7 +45,6 @@ resource "kubernetes_persistent_volume" "redis-pv" {
       }
     }
     persistent_volume_reclaim_policy = "Retain"
-    storage_class_name               = ""
   }
 }
 
@@ -61,8 +60,7 @@ resource "kubernetes_persistent_volume_claim" "redis-pvc" {
         storage = var.redis_pv_capacity
       }
     }
-    storage_class_name = ""
-    volume_name        = var.redis_pv_name
+    volume_name = var.redis_pv_name
   }
 }
 
