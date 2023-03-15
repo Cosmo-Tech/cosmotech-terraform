@@ -7,6 +7,15 @@ locals {
   }
 }
 
+data "azurerm_managed_disk" "managed_disk" {
+  name = "cosmotech-database-disk"
+  resource_group_name = var.resource_group 
+}
+
+output "disk_id" {
+  value = data.azurerm_managed_disk.managed_disk
+}
+
 resource "kubernetes_persistent_volume" "redis-pv" {
   metadata {
     name = var.redis_pv_name
@@ -26,7 +35,7 @@ resource "kubernetes_persistent_volume" "redis-pv" {
     persistent_volume_source {
       csi {
         driver        = var.redis_pv_driver
-        volume_handle = var.redis_disk_resource
+        volume_handle = data.azurerm_managed_disk.managed_disk.id
         volume_attributes = {
           "fsType" = "ext4"
         }
