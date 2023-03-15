@@ -137,3 +137,12 @@ resource "azurerm_kubernetes_cluster_node_pool" "monitoring" {
   node_taints           = ["vendor=cosmotech:NoSchedule"]
   node_labels           = { "cosmotech.com/tier" = "monitoring" }
 }
+
+resource "azurerm_managed_disk" "cosmotech-database-disk" {
+  name = "cosmotech-database-disk"
+  resource_group_name = var.resource_group
+  disk_size_gb = var.disk_size_gb
+  location = var.location
+  storage_account_type = var.disk_sku
+  tier = var.disk_tier
+}
