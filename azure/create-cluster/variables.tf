@@ -22,6 +22,10 @@ variable "tenant_id" {
   type = string
 }
 
+variable "managed_disk_name" {
+  type = string
+}
+
 variable "disk_size_gb" {
   type = string
   default = "64"

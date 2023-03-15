@@ -140,3 +140,8 @@ variable "api_version_path" {
   type        = string
   default     = "/"
 }
+
+variable "managed_disk_name" {
+  type = string
+  default = "cosmotech-database-disk"
+}

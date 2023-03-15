@@ -31,12 +31,13 @@ module "create-platform-prerequisite" {
 module "create-cluster" {
   source = "./create-cluster"
 
-  location        = var.location
-  resource_group  = var.resource_group
-  tenant_id       = var.tenant_id
-  subscription_id = var.subscription_id
-  client_id       = var.client_id
-  client_secret   = var.client_secret
+  location          = var.location
+  resource_group    = var.resource_group
+  tenant_id         = var.tenant_id
+  subscription_id   = var.subscription_id
+  client_id         = var.client_id
+  client_secret     = var.client_secret
+  managed_disk_name = var.managed_disk_name
 
   depends_on = [
     module.create-platform-prerequisite

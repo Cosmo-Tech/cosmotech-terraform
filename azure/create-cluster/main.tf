@@ -139,7 +139,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "monitoring" {
 }
 
 resource "azurerm_managed_disk" "cosmotech-database-disk" {
-  name = "cosmotech-database-disk"
+  name = var.managed_disk_name
   resource_group_name = var.resource_group
   disk_size_gb = var.disk_size_gb
   location = var.location
