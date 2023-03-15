@@ -137,20 +137,3 @@ resource "azurerm_kubernetes_cluster_node_pool" "monitoring" {
   node_taints           = "vendor=cosmotech:NoSchedule"
   node_labels           = { "cosmotech.com/tier" = "monitoring" }
 }
-
-resource "azurerm_kubernetes_cluster_node_pool" "highmemory" {
-  name                  = "highmemory"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixperftestAKS.id
-  vm_size               = "Standard_E16ads_v5"
-  node_count            = 0
-  max_pods              = 110
-  max_count             = 3
-  min_count             = 0
-  enable_auto_scaling   = true
-  mode                  = "User"
-  os_type               = "Linux"
-  os_disk_size_gb       = 128
-  os_disk_type          = "Managed"
-  node_taints           = "vendor=cosmotech:NoSchedule"
-  node_labels           = { "cosmotech.com/tier" = "compute", "cosmotech.com/size" = "highmemory" }
-}
