@@ -70,7 +70,7 @@ module "create-ingress-nginx" {
 #   tls_secret_name      = var.tls_secret_name
 #   redis_admin_password = var.redis_admin_password
 #   prom_admin_password  = var.prom_admin_password
-  
+
 #   depends_on = [
 #     module.cert-manager
 #   ]
@@ -86,15 +86,15 @@ module "create-ingress-nginx" {
 module "cert-manager" {
   source  = "terraform-iaac/cert-manager/kubernetes"
   version = "2.5.0"
-  
+
   cluster_issuer_email = var.cluster_issuer_email
-  cluster_issuer_name = var.cluster_issuer_name
+  cluster_issuer_name  = var.cluster_issuer_name
 }
 
 module "create-redis-stack" {
   source = "./create-redis-stack"
 
   redis_admin_password = var.redis_admin_password
-  namespace = var.namespace
-  redis_disk_resource = var.redis_disk_resource
+  namespace            = var.namespace
+  redis_disk_resource  = var.redis_disk_resource
 }
