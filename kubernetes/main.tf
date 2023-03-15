@@ -60,6 +60,7 @@ module "create-ingress-nginx" {
   # ]
 }
 
+# TODO: Use dedicated terraform module ?
 # module "create-prometheus-stack" {
 #   source = "./create-prometheus-stack"
 
@@ -88,4 +89,12 @@ module "cert-manager" {
   
   cluster_issuer_email = var.cluster_issuer_email
   cluster_issuer_name = var.cluster_issuer_name
+}
+
+module "create-redis-stack" {
+  source = "./create-redis-stack"
+
+  redis_admin_password = var.redis_admin_password
+  namespace = var.namespace
+  redis_disk_resource = var.redis_disk_resource
 }
