@@ -6,6 +6,10 @@ variable "namespace" {
   type = string
 }
 
+variable "resource_group" {
+  type = string
+}
+
 # variable "redis_disk_resource" {
 #   type = string
 # }

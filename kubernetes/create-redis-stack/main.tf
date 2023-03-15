@@ -57,7 +57,7 @@ resource "kubernetes_persistent_volume_claim" "redis-pvc" {
   spec {
     access_modes = ["ReadWriteOnce"]
     resources {
-      requests {
+      requests = {
         storage = var.redis_pv_capacity
       }
     }
