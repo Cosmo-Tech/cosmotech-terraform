@@ -96,5 +96,5 @@ module "create-redis-stack" {
 
   redis_admin_password = var.redis_admin_password
   namespace            = var.namespace
-  redis_disk_resource  = var.redis_disk_resource
+  # redis_disk_resource  = var.redis_disk_resource
 }
