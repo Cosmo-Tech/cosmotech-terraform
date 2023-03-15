@@ -85,4 +85,5 @@ module "cert-manager" {
   version = "2.5.0"
   
   cluster_issuer_email = var.cluster_issuer_email
+  cluster_issuer_name = var.cluster_issuer_name
 }
