@@ -76,5 +76,6 @@ module "create-prometheus-stack" {
 module "cert-manager" {
   source  = "terraform-iaac/cert-manager/kubernetes"
   version = "2.5.0"
-  # insert the 1 required variable here
+  
+  cluster_issuer_email = var.cluster_issuer_email
 }

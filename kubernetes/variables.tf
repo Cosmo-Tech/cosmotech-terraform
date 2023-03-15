@@ -105,6 +105,9 @@ variable "prom_admin_password" {
   type = string
 }
 
+variable "cluster_issuer_email" {
+  type = string
+}
 # export HELM_EXPERIMENTAL_OCI=1
 
 # export CHART_PACKAGE_VERSION="$1"
