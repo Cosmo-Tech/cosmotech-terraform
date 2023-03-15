@@ -62,13 +62,19 @@ module "create-prometheus-stack" {
   prom_admin_password  = var.prom_admin_password
   
   depends_on = [
-    module.create-cert-manager
+    module.cert-manager
   ]
 }
 
-module "create-cert-manager" {
-  source = "./create-cert-manager"
+# module "create-cert-manager" {
+#   source = "./create-cert-manager"
 
-  namespace            = var.namespace
-  monitoring_namespace = var.monitoring_namespace
+#   namespace            = var.namespace
+#   monitoring_namespace = var.monitoring_namespace
+# }
+
+module "cert-manager" {
+  source  = "terraform-iaac/cert-manager/kubernetes"
+  version = "2.5.0"
+  # insert the 1 required variable here
 }
