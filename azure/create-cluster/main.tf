@@ -145,4 +145,5 @@ resource "azurerm_managed_disk" "cosmotech-database-disk" {
   location = var.location
   storage_account_type = var.disk_sku
   tier = var.disk_tier
+  create_option = "Empty"
 }
