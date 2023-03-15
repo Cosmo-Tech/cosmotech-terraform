@@ -73,6 +73,6 @@ variable "redis_admin_password" {
   type = string
 }
 
-variable "redis_disk_resource" {
-  type = string
-}
+# variable "redis_disk_resource" {
+#   type = string
+# }

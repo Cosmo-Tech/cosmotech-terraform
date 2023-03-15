@@ -6,9 +6,9 @@ variable "namespace" {
   type = string
 }
 
-variable "redis_disk_resource" {
-  type = string
-}
+# variable "redis_disk_resource" {
+#   type = string
+# }
 
 variable "helm_repo_url" {
   type    = string
