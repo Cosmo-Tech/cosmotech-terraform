@@ -49,7 +49,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "basic" {
   os_type               = "Linux"
   os_disk_size_gb       = 128
   os_disk_type          = "Managed"
-  node_taints           = "vendor=cosmotech:NoSchedule"
+  node_taints           = ["vendor=cosmotech:NoSchedule"]
   node_labels           = { "cosmotech.com/tier" = "compute", "cosmotech.com/size" = "basic" }
 }
 
@@ -66,7 +66,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "highcpu" {
   os_type               = "Linux"
   os_disk_size_gb       = 128
   os_disk_type          = "Managed"
-  node_taints           = "vendor=cosmotech:NoSchedule"
+  node_taints           = ["vendor=cosmotech:NoSchedule"]
   node_labels           = { "cosmotech.com/tier" = "compute", "cosmotech.com/size" = "highcpu" }
 }
 
@@ -83,7 +83,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "highmemory" {
   os_type               = "Linux"
   os_disk_size_gb       = 128
   os_disk_type          = "Managed"
-  node_taints           = "vendor=cosmotech:NoSchedule"
+  node_taints           = ["vendor=cosmotech:NoSchedule"]
   node_labels           = { "cosmotech.com/tier" = "compute", "cosmotech.com/size" = "highmemory" }
 }
 
@@ -100,7 +100,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "services" {
   os_type               = "Linux"
   os_disk_size_gb       = 128
   os_disk_type          = "Managed"
-  node_taints           = "vendor=cosmotech:NoSchedule"
+  node_taints           = ["vendor=cosmotech:NoSchedule"]
   node_labels           = { "cosmotech.com/tier" = "services" }
 }
 
@@ -117,7 +117,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "db" {
   os_type               = "Linux"
   os_disk_size_gb       = 128
   os_disk_type          = "Managed"
-  node_taints           = "vendor=cosmotech:NoSchedule"
+  node_taints           = ["vendor=cosmotech:NoSchedule"]
   node_labels           = { "cosmotech.com/tier" = "db" }
 }
 
@@ -134,6 +134,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "monitoring" {
   os_type               = "Linux"
   os_disk_size_gb       = 128
   os_disk_type          = "Managed"
-  node_taints           = "vendor=cosmotech:NoSchedule"
+  node_taints           = ["vendor=cosmotech:NoSchedule"]
   node_labels           = { "cosmotech.com/tier" = "monitoring" }
 }
