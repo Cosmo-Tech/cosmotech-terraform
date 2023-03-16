@@ -1,6 +1,6 @@
 auth:
-  username: "${ARGO_POSTGRESQL_USER}"
-  password: "${ARGO_POSTGRESQL_PASSWORD}"
+  username: ${ARGO_POSTGRESQL_USER}
+  password: ${ARGO_POSTGRESQL_PASSWORD}
   database: ${ARGO_DATABASE}
 primary:
   podLabels:

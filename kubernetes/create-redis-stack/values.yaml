@@ -31,7 +31,7 @@ replica:
     networking/traffic-allowed: "yes"
   persistence:
     storageClass: "managed-csi"
-    size: "${REDIS_DISK_SIZE}"
+    size: ${REDIS_DISK_SIZE}
   tolerations:
   - key: "vendor"
     operator: "Equal"

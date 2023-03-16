@@ -29,7 +29,7 @@ grafana:
   enabled: true
   grafana.ini:
     server:
-      domain: "${COSMOTECH_API_DNS_NAME}"
+      domain: ${COSMOTECH_API_DNS_NAME}
       root_url: "%(protocol)s://%(domain)s/monitoring"
       serve_from_sub_path: true
   ingress:
@@ -38,7 +38,7 @@ grafana:
     annotations:
       kubernetes.io/ingress.class: nginx
     hosts:
-      - "${COSMOTECH_API_DNS_NAME}"
+      - ${COSMOTECH_API_DNS_NAME}
     tls:
       - secretName: ${TLS_SECRET_NAME}
         hosts: "[${COSMOTECH_API_DNS_NAME}]"

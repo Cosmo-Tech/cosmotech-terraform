@@ -2,13 +2,13 @@ fullnameOverride: ${MINIO_RELEASE_NAME}
 defaultBuckets: "${ARGO_BUCKET_NAME}"
 persistence:
   enabled: true
-  size: "${ARGO_MINIO_PERSISTENCE_SIZE:-16Gi}"
+  size: ${ARGO_MINIO_PERSISTENCE_SIZE}
 resources:
   requests:
-    memory: "${ARGO_MINIO_REQUESTS_MEMORY:-2Gi}"
+    memory: ${ARGO_MINIO_REQUESTS_MEMORY}
     cpu: "100m"
   limits:
-    memory: "${ARGO_MINIO_REQUESTS_MEMORY:-2Gi}"
+    memory: ${ARGO_MINIO_REQUESTS_MEMORY}
     cpu: "1"
 service:
   type: ClusterIP
@@ -22,8 +22,8 @@ tolerations:
 nodeSelector:
   "cosmotech.com/tier": "services"
 auth:
-  rootUser: "${ARGO_MINIO_ACCESS_KEY:-}"
-  rootPassword: "${ARGO_MINIO_SECRET_KEY:-}"
+  rootUser: ${ARGO_MINIO_ACCESS_KEY}
+  rootPassword: ${ARGO_MINIO_SECRET_KEY}
 metrics:
   # Metrics can not be disabled yet: https://github.com/minio/minio/issues/7493
   serviceMonitor:
