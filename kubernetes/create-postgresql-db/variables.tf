@@ -2,16 +2,18 @@ variable "monitoring_namespace" {
   type = string
 }
 
-variable "argo_database" {
-  type = string
-}
-
 variable "argo_postgresql_password" {
   type = string
 }
 
 variable "argo_postgresql_user" {
   type = string
+  default = "argo"
+}
+
+variable "argo_database" {
+  type = string
+  default = "argo_workflows"
 }
 
 variable "helm_repo_url" {
