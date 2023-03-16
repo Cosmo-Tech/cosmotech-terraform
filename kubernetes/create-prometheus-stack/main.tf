@@ -16,7 +16,7 @@ locals {
 }
 
 resource "helm_release" "prometheus-stack" {
-  name       = var.helm_release_name
+  name       = var.helm_chart
   repository = var.helm_repo_url
   chart      = var.helm_chart
   version    = var.prometheus_stack_version

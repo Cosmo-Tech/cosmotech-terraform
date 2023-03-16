@@ -54,7 +54,7 @@ variable "redis_port" {
 
 variable "helm_chart" {
   type    = string
-  default = "prometheus-operator"
+  default = "kube-prometheus-stack"
 }
 
 variable "helm_repo_url" {
@@ -69,5 +69,5 @@ variable "helm_release_name" {
 
 variable "prometheus_stack_version" {
   type    = string
-  default = "45.0.0"
+  default = "45.3.0"
 }
