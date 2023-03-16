@@ -32,7 +32,7 @@ variable "helm_repo_url" {
 
 variable "helm_chart" {
   type    = string
-  default = "bitnami/postgresql"
+  default = "postgresql"
 }
 
 variable "postgresql_version" {

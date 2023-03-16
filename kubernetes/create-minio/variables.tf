@@ -26,7 +26,7 @@ variable "minio_release_name" {
 
 variable "helm_chart" {
   type = string
-  default = "bitnami/minio"
+  default = "minio"
 }
 
 variable "minio_version" {
