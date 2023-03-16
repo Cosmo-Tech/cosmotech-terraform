@@ -31,6 +31,6 @@ metrics:
   enabled: true
   serviceMonitor:
     enabled: true
-    namespace: $MONITORING_NAMESPACE
+    namespace: ${MONITORING_NAMESPACE}
     interval: 30s
     scrapeTimeout: 10s

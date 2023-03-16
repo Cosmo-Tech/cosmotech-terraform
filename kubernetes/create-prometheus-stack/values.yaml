@@ -1,4 +1,4 @@
-namespace: $MONITORING_NAMESPACE
+namespace: ${MONITORING_NAMESPACE}
 name: cosmotech-api-latest
 labels:
   networking/traffic-allowed: "yes"
@@ -44,21 +44,21 @@ grafana:
         hosts: "[${COSMOTECH_API_DNS_NAME}]"
   plugins:
     - redis-datasource
-  adminPassword: $PROM_ADMIN_PASSWORD
+  adminPassword: ${PROM_ADMIN_PASSWORD}
   defaultDashboardsEnabled: true
   additionalDataSources:
     - name: cosmotech-redis
       orgId: 1
       type: redis-datasource
       access: proxy
-      url: redis://$REDIS_HOST:$REDIS_PORT
+      url: redis://${REDIS_HOST}:${REDIS_PORT}
       basicAuth: false
       withCredentials: false
       isDefault: false
       version: 1
       editable: false
       secureJsonData:
-        password: $REDIS_ADMIN_PASSWORD
+        password: ${REDIS_ADMIN_PASSWORD}
   dashboardProviders:
     dashboardproviders.yaml:
       apiVersion: 1
@@ -172,7 +172,7 @@ prometheus:
   prometheusSpec:
     serviceMonitorSelectorNilUsesHelmValues: false
     logLevel: info
-    replicas: $PROM_REPLICAS_NUMBER
+    replicas: ${PROM_REPLICAS_NUMBER}
     tolerations:
       - key: "vendor"
         operator: "Equal"
@@ -188,20 +188,20 @@ prometheus:
     resources:
       limits:
         cpu: 1
-        memory: $PROM_CPU_MEM_LIMITS
+        memory: ${PROM_CPU_MEM_LIMITS}
       requests:
         cpu: 1
-        memory: $PROM_CPU_MEM_REQUESTS
+        memory: ${PROM_CPU_MEM_REQUESTS}
     retention: 60d
     storageSpec:
       volumeClaimTemplate:
         spec:
-          storageClassName: $PROM_STORAGE_CLASS_NAME
+          storageClassName: ${PROM_STORAGE_CLASS_NAME}
           accessModes:
           - ReadWriteOnce
           resources:
             requests:
-              storage: $PROM_STORAGE_RESOURCE_REQUEST
+              storage: ${PROM_STORAGE_RESOURCE_REQUEST}
   additionalServiceMonitors:
     - name: cosmotech-v1
       additionalLabels:
