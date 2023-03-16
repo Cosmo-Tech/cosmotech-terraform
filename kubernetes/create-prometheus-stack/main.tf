@@ -18,9 +18,9 @@ locals {
 resource "helm_release" "prometheus-stack" {
   name       = var.helm_release_name
   repository = var.helm_repo_url
-  chart      = var.helm_release_name
-  # version    = var.prometheus_stack_version
-  namespace  = var.namespace
+  chart      = var.helm_chart
+  version    = var.prometheus_stack_version
+  namespace  = var.monitoring_namespace
 
   reuse_values = true
 
