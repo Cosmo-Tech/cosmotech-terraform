@@ -55,6 +55,8 @@ module "create-redis-stack" {
 module "create-minio" {
   source = "./create-minio"
 
+  namespace = var.namespace
+  monitoring_namespace = var.monitoring_namespace
   argo_minio_access_key = var.argo_minio_access_key
   argo_minio_secret_key = var.argo_minio_secret_key
 }
