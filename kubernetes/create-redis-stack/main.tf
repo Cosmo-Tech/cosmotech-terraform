@@ -12,10 +12,6 @@ data "azurerm_managed_disk" "managed_disk" {
   resource_group_name = var.resource_group
 }
 
-output "disk_id" {
-  value = data.azurerm_managed_disk.managed_disk
-}
-
 locals {
   redis_disk_resource = data.azurerm_managed_disk.managed_disk.id
 }

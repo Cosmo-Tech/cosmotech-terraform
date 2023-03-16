@@ -61,20 +61,20 @@ module "create-ingress-nginx" {
 }
 
 # TODO: Use dedicated terraform module ?
-# module "create-prometheus-stack" {
-#   source = "./create-prometheus-stack"
+module "create-prometheus-stack" {
+  source = "./create-prometheus-stack"
 
-#   namespace            = var.namespace
-#   monitoring_namespace = var.monitoring_namespace
-#   api_dns_name         = var.api_dns_name
-#   tls_secret_name      = var.tls_secret_name
-#   redis_admin_password = var.redis_admin_password
-#   prom_admin_password  = var.prom_admin_password
+  namespace            = var.namespace
+  monitoring_namespace = var.monitoring_namespace
+  api_dns_name         = var.api_dns_name
+  tls_secret_name      = var.tls_secret_name
+  redis_admin_password = var.redis_admin_password
+  prom_admin_password  = var.prom_admin_password
 
-#   depends_on = [
-#     module.cert-manager
-#   ]
-# }
+  depends_on = [
+    module.cert-manager
+  ]
+}
 
 # module "create-cert-manager" {
 #   source = "./create-cert-manager"
@@ -96,6 +96,21 @@ module "create-redis-stack" {
 
   redis_admin_password = var.redis_admin_password
   namespace            = var.namespace
-  resource_group = var.resource_group
+  resource_group       = var.resource_group
   # redis_disk_resource  = var.redis_disk_resource
 }
+
+module "create-postgresql-db" {
+  source = "./create-postgresql-db"
+
+  monitoring_namespace     = var.monitoring_namespace
+  argo_database            = var.argo_database
+  argo_postgresql_password = var.argo_postgresql_password
+  argo_postgresql_user     = var.argo_postgresql_user
+}
+
+# module "create-cosmotech-api" {
+#   source = "./create-cosmotech-api"
+
+#   api_dns_name = var.api_dns_name
+# }

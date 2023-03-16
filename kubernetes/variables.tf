@@ -76,3 +76,15 @@ variable "redis_admin_password" {
 # variable "redis_disk_resource" {
 #   type = string
 # }
+
+variable "argo_postgresql_password" {
+  type = string
+}
+
+variable "argo_database" {
+  type = string
+}
+
+variable "argo_postgresql_user" {
+  type = string
+}
