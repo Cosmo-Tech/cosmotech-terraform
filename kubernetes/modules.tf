@@ -52,6 +52,13 @@ module "create-redis-stack" {
   # redis_disk_resource  = var.redis_disk_resource
 }
 
+module "create-minio" {
+  source = "./create-minio"
+
+  argo_minio_access_key = var.argo_minio_access_key
+  argo_minio_secret_key = var.argo_minio_secret_key
+}
+
 module "create-postgresql-db" {
   source = "./create-postgresql-db"
 

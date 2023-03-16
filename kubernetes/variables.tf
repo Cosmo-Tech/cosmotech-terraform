@@ -80,3 +80,11 @@ variable "redis_admin_password" {
 variable "argo_postgresql_password" {
   type = string
 }
+
+variable "argo_minio_access_key" {
+  type = string
+}
+
+variable "argo_minio_secret_key" {
+  type = string
+}
