@@ -55,6 +55,7 @@ module "create-redis-stack" {
 module "create-postgresql-db" {
   source = "./create-postgresql-db"
 
+  namespace = var.namespace
   monitoring_namespace     = var.monitoring_namespace
   argo_postgresql_password = var.argo_postgresql_password
 }

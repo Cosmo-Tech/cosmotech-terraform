@@ -1,3 +1,7 @@
+variable "namespace" {
+  type = string
+}
+
 variable "monitoring_namespace" {
   type = string
 }
@@ -9,6 +13,11 @@ variable "argo_postgresql_password" {
 variable "argo_postgresql_user" {
   type = string
   default = "argo"
+}
+
+variable "argo_postgresql_secret_name" {
+  type = string
+  default = "argo-postgres-config"
 }
 
 variable "argo_database" {
