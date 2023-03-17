@@ -15,6 +15,8 @@ module "create-ingress-nginx" {
 module "kube-prometheus-stack" {
   source  = "SPHTech-Platform/kube-prometheus-stack/helm"
   version = "0.1.2"
+
+  chart_namespace = var.monitoring_namespace
 }
 
 # module "create-prometheus-stack" {
