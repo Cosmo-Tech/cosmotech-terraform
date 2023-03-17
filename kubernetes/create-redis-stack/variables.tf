@@ -31,7 +31,7 @@ variable "helm_chart_name" {
 
 variable "redis_version" {
   type    = string
-  default = "17.3.14"
+  default = "17.8.0"
 }
 
 variable "redis_pvc_name" {
