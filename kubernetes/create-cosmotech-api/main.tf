@@ -8,7 +8,7 @@ locals {
     "REDIS_PASSWORD"                = var.redis_admin_password
     "ARGO_SERVICE_ACCOUNT"          = var.argo_service_account
     "ARGO_RELEASE_NAME"             = var.argo_release_name
-    "COSMOTECH_API_INGRESS_ENABLED" = var.api_dns_name ? false : true
+    "COSMOTECH_API_INGRESS_ENABLED" = true
     "COSMOTECH_API_DNS_NAME"        = var.api_dns_name
     "API_VERSION"                   = var.cosmotech_api_version
   }
@@ -22,8 +22,8 @@ provider "helm" {
 
 resource "helm_release" "cosmotech-api" {
   name       = var.helm_release_name
-  repository = "oci://ghcr.io/cosmo-tech/cosmotech-api-chart"
-  chart      = var.helm_release_name
+  repository = var.helm_repository
+  chart      = var.helm_chart
   version    = var.cosmotech_api_version
   namespace  = var.namespace
 

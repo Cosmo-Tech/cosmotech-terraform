@@ -76,8 +76,12 @@ module "create-argo" {
   monitoring_namespace = var.monitoring_namespace
 }
 
-# module "create-cosmotech-api" {
-#   source = "./create-cosmotech-api"
+module "create-cosmotech-api" {
+  source = "./create-cosmotech-api"
 
-#   api_dns_name = var.api_dns_name
-# }
+  namespace            = var.namespace
+  monitoring_namespace = var.monitoring_namespace
+  api_dns_name         = var.api_dns_name
+  tls_secret_name      = var.tls_secret_name
+  redis_admin_password = var.redis_admin_password
+}

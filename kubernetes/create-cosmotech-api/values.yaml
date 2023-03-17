@@ -1,16 +1,16 @@
 replicaCount: 2
 api:
-  version: "$API_VERSION"
+  version: ${API_VERSION}
 
 image:
   repository: ghcr.io/cosmo-tech/cosmotech-api
-  tag: "$CHART_PACKAGE_VERSION"
+  tag: ${CHART_PACKAGE_VERSION}
 
 config:
   api:
     serviceMonitor:
       enabled: true
-      namespace: $MONITORING_NAMESPACE
+      namespace: ${MONITORING_NAMESPACE}
   csm:
     platform:
       namespace: ${NAMESPACE}
@@ -23,7 +23,7 @@ config:
         host: "cosmotechredis-master.${NAMESPACE}.svc.cluster.local"
         port: ${REDIS_PORT}
         username: "default"
-        password: "${REDIS_PASSWORD}"
+        password: ${REDIS_PASSWORD}
 
 ingress:
   enabled: ${COSMOTECH_API_INGRESS_ENABLED}
@@ -35,7 +35,7 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "30"
     nginx.org/client-max-body-size: "0"
   hosts:
-    - host: "${COSMOTECH_API_DNS_NAME}"
+    - host: ${COSMOTECH_API_DNS_NAME}
   tls:
     - secretName: ${TLS_SECRET_NAME}
       hosts: ["${COSMOTECH_API_DNS_NAME}"]

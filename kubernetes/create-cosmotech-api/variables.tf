@@ -1,32 +1,59 @@
-variable "helm_repo_url" {
-  type    = string
-  default = "https://prometheus-community.github.io/helm-charts"
-}
-
-variable "helm_release_name" {
-  type    = string
-  default = ""
-}
-
-variable "cosmotech_api_version" {
-  type    = string
-  default = ""
-}
-
-variable "chart_package_version" {
+variable "namespace" {
   type = string
 }
 
-variable "argo_service_account" {
+variable "monitoring_namespace" {
   type = string
-  default = "workflowcsmv2"
-}
-
-variable "argo_release_name" {
-  type = string
-  default = "argocsmv2"
 }
 
 variable "api_dns_name" {
   type = string
+}
+
+variable "tls_secret_name" {
+  type = string
+}
+
+variable "redis_admin_password" {
+  type = string
+}
+
+variable "redis_port" {
+  type    = number
+  default = 6379
+}
+
+variable "helm_chart" {
+  type    = string
+  default = "cosmotech-api-v2"
+}
+
+variable "helm_repository" {
+  type    = string
+  default = "oci://ghcr.io/cosmo-tech/cosmotech-api-chart"
+}
+
+variable "cosmotech_api_version" {
+  type    = string
+  default = "v2"
+}
+
+variable "helm_release_name" {
+  type    = string
+  default = "cosmotech-api-v2"
+}
+
+variable "chart_package_version" {
+  type    = string
+  default = "2.3.5"
+}
+
+variable "argo_service_account" {
+  type    = string
+  default = "workflowcsmv2"
+}
+
+variable "argo_release_name" {
+  type    = string
+  default = "argocsmv2"
 }
