@@ -16,7 +16,7 @@ locals {
   redis_disk_resource = data.azurerm_managed_disk.managed_disk.id
 }
 
-resource "kubernetes_persistent_volume_v1" "redis-pv" {
+resource "kubernetes_persistent_volume" "redis-pv" {
   metadata {
     name = var.redis_pv_name
     labels = {
@@ -54,7 +54,7 @@ resource "kubernetes_persistent_volume_v1" "redis-pv" {
   }
 }
 
-resource "kubernetes_persistent_volume_claim_v1" "redis-pvc" {
+resource "kubernetes_persistent_volume_claim" "redis-pvc" {
   metadata {
     name      = var.redis_pvc_name
     namespace = var.namespace
@@ -115,7 +115,7 @@ resource "helm_release" "cosmotechredis" {
   ]
 
   depends_on = [
-    kubernetes_persistent_volume_v1.redis-pv, kubernetes_persistent_volume_claim_v1.redis-pvc
+    kubernetes_persistent_volume.redis-pv, kubernetes_persistent_volume_claim.redis-pvc
   ]
 }
 
