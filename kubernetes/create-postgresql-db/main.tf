@@ -24,6 +24,7 @@ resource "helm_release" "postgresql" {
 resource "kubernetes_secret" "argo-postgres-config" {
   metadata {
     name = var.argo_postgresql_secret_name
+    namespace = var.namespace
     labels = {
       "app" = "postgres"
     }

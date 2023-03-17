@@ -18,11 +18,13 @@ locals {
 resource "kubernetes_persistent_volume" "redis-pv" {
   metadata {
     name = var.redis_pv_name
+    namespace = var.namespace
     labels = {
       "cosmotech.com/service" = "redis"
     }
   }
   spec {
+    storage_class_name = ""
     access_modes = ["ReadWriteOnce"]
     claim_ref {
       name      = var.redis_pvc_name
@@ -50,6 +52,7 @@ resource "kubernetes_persistent_volume_claim" "redis-pvc" {
     namespace = var.namespace
   }
   spec {
+    storage_class_name = ""
     access_modes = ["ReadWriteOnce"]
     resources {
       requests = {
@@ -107,3 +110,13 @@ resource "helm_release" "cosmotechredis" {
     kubernetes_persistent_volume.redis-pv, kubernetes_persistent_volume_claim.redis-pvc
   ]
 }
+
+# resource "helm_release" "redisinsight" {
+#   name = "redisinsight"
+#   namespace = var.namespace
+#   repository = ""
+#   chart = ""
+#   version = ""
+
+#   values = "${path.module}/values-insight.yaml"
+# }

@@ -1,0 +1,17 @@
+service:
+  type: NodePort
+  port: 80
+tolerations:
+- key: "vendor"
+  operator: "Equal"
+  value: "cosmotech"
+  effect: "NoSchedule"
+nodeSelector:
+  "cosmotech.com/tier": "services"
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 1000m
+    memory: 128Mi
