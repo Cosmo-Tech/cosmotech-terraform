@@ -18,7 +18,6 @@ locals {
 resource "kubernetes_persistent_volume" "redis-pv" {
   metadata {
     name = var.redis_pv_name
-    namespace = var.namespace
     labels = {
       "cosmotech.com/service" = "redis"
     }
