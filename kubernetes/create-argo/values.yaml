@@ -1,0 +1,110 @@
+images:
+  pullPolicy: IfNotPresent
+workflow:
+  serviceAccount:
+    create: true
+    name: ${ARGO_SERVICE_ACCOUNT}
+  rbac:
+    create: true
+executor:
+  env:
+  - name: RESOURCE_STATE_CHECK_INTERVAL
+    value: 1s
+  - name: WAIT_CONTAINER_STATUS_CHECK_INTERVAL
+    value: 1s
+useDefaultArtifactRepo: true
+artifactRepository:
+  archiveLogs: true
+  s3:
+    bucket: ${ARGO_BUCKET_NAME}
+    endpoint: ${MINIO_RELEASE_NAME}.${NAMESPACE}.svc.cluster.local:9000
+    insecure: true
+    accessKeySecret:
+      name: ${MINIO_RELEASE_NAME}
+      key: root-user
+    secretKeySecret:
+      name: ${MINIO_RELEASE_NAME}
+      key: root-password
+server:
+  extraArgs:
+  - --auth-mode=server
+  secure: false
+  podLabels:
+    networking/traffic-allowed: "yes"
+  tolerations:
+  - key: "vendor"
+    operator: "Equal"
+    value: "cosmotech"
+    effect: "NoSchedule"
+  nodeSelector:
+    "cosmotech.com/tier": "services"
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "1"
+controller:
+  extraEnv:
+  - name: DEFAULT_REQUEUE_TIME
+    value: ${REQUEUE_TIME}
+  podLabels:
+    networking/traffic-allowed: "yes"
+  serviceMonitor:
+    enabled: true
+    namespace: ${MONITORING_NAMESPACE}
+  tolerations:
+  - key: "vendor"
+    operator: "Equal"
+    value: "cosmotech"
+    effect: "NoSchedule"
+  nodeSelector:
+    "cosmotech.com/tier": "services"
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "1"
+  containerRuntimeExecutor: k8sapi
+  metricsConfig:
+    enabled: true
+  workflowDefaults:
+    spec:
+      # make sure workflows do not run forever. Default limit set is 7 days (604800 seconds)
+      activeDeadlineSeconds: 604800
+      ttlStrategy:
+        # keep workflows that succeeded for 1d (86400 seconds).
+        # We can still view them since they are archived.
+        secondsAfterSuccess: 86400
+        # keep workflows that have completed (either successfully or not) for 3d (259200 seconds).
+        # We can still view them since they are archived.
+        secondsAfterCompletion: 259200
+      podGC:
+        # Delete pods when workflows are successful.
+        # We can still access their logs and artifacts since they are archived.
+        # One of "OnPodCompletion", "OnPodSuccess", "OnWorkflowCompletion", "OnWorkflowSuccess"
+        strategy: OnWorkflowSuccess
+      volumeClaimGC:
+        # Delete PVCs when workflows are done. However, due to Kubernetes PVC Protection,
+        # such PVCs will just be marked as Terminating, until no pod is using them.
+        # Pod deletion (either via the Pod GC strategy or the TTL strategy) will allow to free up
+        # attached PVCs.
+        # One of "OnWorkflowCompletion", "OnWorkflowSuccess"
+        strategy: OnWorkflowCompletion
+  persistence:
+    archive: true
+    postgresql:
+      host: "${POSTGRES_RELEASE_NAME}-postgresql"
+      database: ${ARGO_DATABASE}
+      tableName: workflows
+      userNameSecret:
+        name: ${ARGO_POSTGRESQL_SECRET_NAME}
+        key: username
+      passwordSecret:
+        name: ${ARGO_POSTGRESQL_SECRET_NAME}
+        key: password
+mainContainer:
+  imagePullPolicy: IfNotPresent

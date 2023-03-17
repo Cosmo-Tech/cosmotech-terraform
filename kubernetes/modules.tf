@@ -69,6 +69,13 @@ module "create-postgresql-db" {
   argo_postgresql_password = var.argo_postgresql_password
 }
 
+module "create-argo" {
+  source = "./create-argo"
+
+  namespace            = var.namespace
+  monitoring_namespace = var.monitoring_namespace
+}
+
 # module "create-cosmotech-api" {
 #   source = "./create-cosmotech-api"
 
