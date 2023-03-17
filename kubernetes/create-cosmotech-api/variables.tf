@@ -1,3 +1,11 @@
+# variable "username" {
+#   type = string
+# }
+
+# variable "password" {
+#   type = string
+# }
+
 variable "namespace" {
   type = string
 }
@@ -30,7 +38,7 @@ variable "helm_chart" {
 
 variable "helm_repository" {
   type    = string
-  default = "oci://ghcr.io/cosmo-tech/cosmotech-api-chart"
+  default = "https://ghcr.io/cosmo-tech/cosmotech-api-chart"
 }
 
 variable "cosmotech_api_version" {

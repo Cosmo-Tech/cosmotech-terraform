@@ -14,11 +14,13 @@ locals {
   }
 }
 
-provider "helm" {
-  registry {
-    url = "oci://ghcr.io/cosmo-tech"
-  }
-}
+# provider "helm" {
+#   registry {
+#     url = "oci://ghcr.io/cosmo-tech/cosmotech-api-chart"
+#     username = var.username
+#     password = var.password
+#   }
+# }
 
 resource "helm_release" "cosmotech-api" {
   name       = var.helm_release_name

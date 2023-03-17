@@ -15,6 +15,7 @@ data "azurerm_managed_disk" "managed_disk" {
 locals {
   redis_disk_resource = data.azurerm_managed_disk.managed_disk.id
 }
+
 resource "kubernetes_persistent_volume" "redis-pv" {
   metadata {
     name = var.redis_pv_name

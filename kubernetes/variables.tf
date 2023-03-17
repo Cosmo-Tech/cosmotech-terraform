@@ -1,3 +1,11 @@
+variable "username" {
+  type = string
+}
+
+variable "password" {
+  type = string
+}
+
 variable "resource_group" {
   type = string
 }
@@ -7,18 +15,22 @@ variable "cluster_name" {
 }
 
 variable "tenant_id" {
+  type        = string
   description = "The tenant id"
 }
 
 variable "subscription_id" {
+  type        = string
   description = "The subscription id"
 }
 
 variable "client_id" {
+  type        = string
   description = "The client id"
 }
 
 variable "client_secret" {
+  type        = string
   description = "The client secret"
 }
 
