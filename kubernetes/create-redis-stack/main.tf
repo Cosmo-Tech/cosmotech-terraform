@@ -34,13 +34,21 @@ resource "kubernetes_persistent_volume" "redis-pv" {
       storage = var.redis_pv_capacity
     }
     persistent_volume_source {
-      csi {
-        driver        = var.redis_pv_driver
-        volume_handle = local.redis_disk_resource
-        volume_attributes = {
-          "fsType" = "ext4"
-        }
+      azure_disk {
+        caching_mode  = "Read Write"
+        data_disk_uri = azurerm_managed_disk.managed_disk.id
+        disk_name     = "cosmotech-database-disk"
+        kind          = "Managed"
+        fs_type = "ext4"
       }
+      
+      # csi {
+      #   driver        = var.redis_pv_driver
+      #   volume_handle = local.redis_disk_resource
+      #   volume_attributes = {
+      #     "fsType" = "ext4"
+      #   }
+      # }
     }
     persistent_volume_reclaim_policy = "Retain"
   }
