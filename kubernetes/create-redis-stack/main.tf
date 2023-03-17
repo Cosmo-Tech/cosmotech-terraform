@@ -36,7 +36,7 @@ resource "kubernetes_persistent_volume" "redis-pv" {
     persistent_volume_source {
       azure_disk {
         caching_mode  = "Read Write"
-        data_disk_uri = azurerm_managed_disk.managed_disk.id
+        data_disk_uri = data.azurerm_managed_disk.managed_disk.id
         disk_name     = "cosmotech-database-disk"
         kind          = "Managed"
         fs_type = "ext4"
