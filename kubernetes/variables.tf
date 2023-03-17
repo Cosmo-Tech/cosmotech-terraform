@@ -1,10 +1,10 @@
-variable "username" {
-  type = string
-}
+# variable "username" {
+#   type = string
+# }
 
-variable "password" {
-  type = string
-}
+# variable "password" {
+#   type = string
+# }
 
 variable "resource_group" {
   type = string
