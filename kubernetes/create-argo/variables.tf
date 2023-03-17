@@ -18,12 +18,12 @@ variable "helm_repo_url" {
 
 variable "helm_chart" {
   type    = string
-  default = "argo/argo-workflows"
+  default = "argo-workflows"
 }
 
 variable "argo_version" {
   type    = string
-  default = "3.4.5"
+  default = "0.22.12"
 }
 
 variable "argo_service_account" {
