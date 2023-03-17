@@ -115,7 +115,7 @@ resource "helm_release" "cosmotechredis" {
   ]
 
   depends_on = [
-    kubernetes_persistent_volume.redis-pv, kubernetes_persistent_volume_claim.redis-pvc
+    kubernetes_persistent_volume_v1.redis-pv, kubernetes_persistent_volume_claim_v1.redis-pvc
   ]
 }
 
