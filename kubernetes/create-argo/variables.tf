@@ -23,7 +23,7 @@ variable "helm_chart" {
 
 variable "argo_version" {
   type    = string
-  default = "0.22.12"
+  default = "3.4.5"
 }
 
 variable "argo_service_account" {
