@@ -16,14 +16,14 @@ locals {
 }
 
 
-data "azurerm_managed_disk" "managed_disk" {
-  name                = "cosmotech-database-disk"
-  resource_group_name = var.resource_group
-}
+# data "azurerm_managed_disk" "managed_disk" {
+#   name                = "cosmotech-database-disk"
+#   resource_group_name = var.resource_group
+# }
 
-locals {
-  redis_disk_resource = data.azurerm_managed_disk.managed_disk.id
-}
+# locals {
+#   redis_disk_resource = data.azurerm_managed_disk.managed_disk.id
+# }
 
 # resource "kubernetes_persistent_volume" "prometheus-pv" {
 #   metadata {
@@ -74,7 +74,7 @@ locals {
 
 
 resource "helm_release" "prometheus-stack" {
-  name = local.app_name
+  name = local.helm_release_name
   repository = "https://prometheus-community.github.io/helm-charts"
   chart = "kube-prometheus-stack"
   version = var.prometheus_stack_version
