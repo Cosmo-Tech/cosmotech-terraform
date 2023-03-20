@@ -108,7 +108,7 @@ resource "helm_release" "cosmotechredis" {
   namespace  = var.namespace
 
   reuse_values = true
-  wait         = true
+  # wait         = true
 
   values = [
     templatefile("${path.module}/values.yaml", local.values_redis)

@@ -12,27 +12,26 @@ module "create-ingress-nginx" {
   # ]
 }
 
-module "kube-prometheus-stack" {
-  source  = "SPHTech-Platform/kube-prometheus-stack/helm"
-  version = "0.1.2"
+# module "kube-prometheus-stack" {
+#   source  = "SPHTech-Platform/kube-prometheus-stack/helm"
+#   version = "0.1.2"
 
-  chart_namespace = var.monitoring_namespace
-}
-
-# module "create-prometheus-stack" {
-#   source = "./create-prometheus-stack"
-
-#   namespace            = var.namespace
-#   monitoring_namespace = var.monitoring_namespace
-#   api_dns_name         = var.api_dns_name
-#   tls_secret_name      = var.tls_secret_name
-#   redis_admin_password = var.redis_admin_password
-#   prom_admin_password  = var.prom_admin_password
-
-#   depends_on = [
-#     module.cert-manager
-#   ]
+#   chart_namespace = var.monitoring_namespace
 # }
+
+module "create-prometheus-stack" {
+  source = "./create-prometheus-stack"
+  namespace            = var.namespace
+  monitoring_namespace = var.monitoring_namespace
+  api_dns_name         = var.api_dns_name
+  tls_secret_name      = var.tls_secret_name
+  redis_admin_password = var.redis_admin_password
+  prom_admin_password  = var.prom_admin_password
+
+  depends_on = [
+    module.cert-manager
+  ]
+}
 
 module "cert-manager" {
   source  = "terraform-iaac/cert-manager/kubernetes"
@@ -75,14 +74,14 @@ module "create-argo" {
   monitoring_namespace = var.monitoring_namespace
 }
 
-module "create-cosmotech-api" {
-  source = "./create-cosmotech-api"
+# module "create-cosmotech-api" {
+#   source = "./create-cosmotech-api"
 
-  # username             = var.username
-  # password             = var.password
-  namespace            = var.namespace
-  monitoring_namespace = var.monitoring_namespace
-  api_dns_name         = var.api_dns_name
-  tls_secret_name      = var.tls_secret_name
-  redis_admin_password = var.redis_admin_password
-}
+#   # username             = var.username
+#   # password             = var.password
+#   namespace            = var.namespace
+#   monitoring_namespace = var.monitoring_namespace
+#   api_dns_name         = var.api_dns_name
+#   tls_secret_name      = var.tls_secret_name
+#   redis_admin_password = var.redis_admin_password
+# }

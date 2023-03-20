@@ -15,11 +15,69 @@ locals {
   }
 }
 
+
+data "azurerm_managed_disk" "managed_disk" {
+  name                = "cosmotech-database-disk"
+  resource_group_name = var.resource_group
+}
+
+locals {
+  redis_disk_resource = data.azurerm_managed_disk.managed_disk.id
+}
+
+# resource "kubernetes_persistent_volume" "prometheus-pv" {
+#   metadata {
+#     name = "prometheus_pv_name"
+#     labels = {
+#       "cosmotech.com/service" = "monitoring"
+#     }
+#   }
+#   spec {
+#     storage_class_name = ""
+#     access_modes = ["ReadWriteOnce"]
+#     claim_ref {
+#       name      = "prometheus_pvc"
+#       namespace = var.namespace
+#     }
+#     capacity = {
+#       storage = "10Gi"
+#     }
+#     persistent_volume_source {
+#       csi {
+#         driver        = var.redis_pv_driver
+#         volume_handle = local.redis_disk_resource
+#         volume_attributes = {
+#           "fsType" = "ext4"
+#         }
+#       }
+#     }
+#     persistent_volume_reclaim_policy = "Retain"
+#   }
+# }
+
+# resource "kubernetes_persistent_volume_claim" "prometheus-pvc" {
+#   metadata {
+#     name      = "prometheus_pvc"
+#     namespace = var.namespace
+#   }
+#   spec {
+#     storage_class_name = ""
+#     access_modes = ["ReadWriteOnce"]
+#     resources {
+#       requests = {
+#         storage = "10Gi"
+#       }
+#     }
+#     volume_name = "prometheus_pv_name"
+#   }
+# }
+
+
 resource "helm_release" "prometheus-stack" {
-  name       = var.helm_chart
-  repository = var.helm_repo_url
-  chart      = var.helm_chart
-  version    = var.prometheus_stack_version
+  name = local.app_name
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart = "kube-prometheus-stack"
+  version = var.prometheus_stack_version
   namespace  = var.monitoring_namespace
 
   reuse_values = true
