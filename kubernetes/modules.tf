@@ -79,8 +79,8 @@ module "create-argo" {
 module "create-cosmotech-api" {
   source = "./create-cosmotech-api"
   
-  username             = var.username
-  password             = var.password
+  # username             = var.username
+  # password             = var.password
   namespace            = var.namespace
   monitoring_namespace = var.monitoring_namespace
   api_dns_name         = var.api_dns_name
