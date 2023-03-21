@@ -14,19 +14,19 @@ locals {
   }
 }
 
-provider "helm" {
-  registry {
-    url = "oci://ghcr.io/cosmo-tech"
-    username = var.username
-    password = var.password
-  }
-}
+# provider "helm" {
+#   registry {
+#     url = "oci://ghcr.io/cosmo-tech"
+#     username = var.username
+#     password = var.password
+#   }
+# }
 
 resource "helm_release" "cosmotech-api" {
   name       = var.helm_release_name
-  repository = "oci://ghcr.io/cosmo-tech/cosmotech-api-chart"
-  # chart      = var.helm_chart
-  version    = "2.3.5"
+  # repository = "oci://ghcr.io/cosmo-tech/cosmotech-api-chart"
+  chart      = "https://ghcr.io/cosmo-tech/cosmotech-api:2.3.5"
+  # version    = "2.3.5"
   namespace  = var.namespace
 
   reuse_values = true

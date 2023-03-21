@@ -38,7 +38,7 @@ module "cert-manager" {
   version = "2.5.0"
 
   namespace_name       = var.namespace
-  create_namespace = false
+  create_namespace     = false
   cluster_issuer_email = var.cluster_issuer_email
   cluster_issuer_name  = var.cluster_issuer_name
 }
@@ -76,14 +76,14 @@ module "create-argo" {
   monitoring_namespace = var.monitoring_namespace
 }
 
-# module "create-cosmotech-api" {
-#   source = "./create-cosmotech-api"
-
-#   # username             = var.username
-#   # password             = var.password
-#   namespace            = var.namespace
-#   monitoring_namespace = var.monitoring_namespace
-#   api_dns_name         = var.api_dns_name
-#   tls_secret_name      = var.tls_secret_name
-#   redis_admin_password = var.redis_admin_password
-# }
+module "create-cosmotech-api" {
+  source = "./create-cosmotech-api"
+  
+  username             = var.username
+  password             = var.password
+  namespace            = var.namespace
+  monitoring_namespace = var.monitoring_namespace
+  api_dns_name         = var.api_dns_name
+  tls_secret_name      = var.tls_secret_name
+  redis_admin_password = var.redis_admin_password
+}

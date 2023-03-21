@@ -16,7 +16,7 @@ locals {
   redis_disk_resource = data.azurerm_managed_disk.managed_disk.id
 }
 
-resource "kubernetes_persistent_volume" "redis-pv" {
+resource "kubernetes_persistent_volume_v1" "redis-pv" {
   metadata {
     name = var.redis_pv_name
     labels = {
@@ -34,19 +34,26 @@ resource "kubernetes_persistent_volume" "redis-pv" {
       storage = var.redis_pv_capacity
     }
     persistent_volume_source {
-      csi {
-        driver        = var.redis_pv_driver
-        volume_handle = local.redis_disk_resource
-        volume_attributes = {
-          "fsType" = "ext4"
-        }
+
+      azure_disk {
+        caching_mode  = "ReadWrite"
+        data_disk_uri = local.redis_disk_resource
+        disk_name     = "cosmotech-database-disk"
+        kind          = "Managed"
       }
+      # csi {
+      #   driver        = var.redis_pv_driver
+      #   volume_handle = local.redis_disk_resource
+      #   volume_attributes = {
+      #     "fsType" = "ext4"
+      #   }
+      # }
     }
     persistent_volume_reclaim_policy = "Retain"
   }
 }
 
-resource "kubernetes_persistent_volume_claim" "redis-pvc" {
+resource "kubernetes_persistent_volume_claim_v1" "redis-pvc" {
   metadata {
     name      = var.redis_pvc_name
     namespace = var.namespace
@@ -63,35 +70,6 @@ resource "kubernetes_persistent_volume_claim" "redis-pvc" {
   }
 }
 
-# From Terraform helm provider example
-# resource "helm_release" "redis" {
-#   name       = "cosmotechredis"
-#   repository = "https://charts.bitnami.com/bitnami"
-#   chart      = "redis"
-#   version    = var.redis_version
-
-#   values = [
-#     templatefile("${path.module}/values.yaml", local.value)
-#   ]
-
-#   set {
-#     name  = "cluster.enabled"
-#     value = "true"
-#   }
-
-#   set {
-#     name  = "metrics.enabled"
-#     value = "true"
-#   }
-
-#   set {
-#     name  = "service.annotations.prometheus\\.io/port"
-#     value = "9127"
-#     type  = "string"
-#   }
-# }
-
-
 resource "helm_release" "cosmotechredis" {
   name       = var.helm_release_name
   repository = var.helm_repo_url
@@ -106,9 +84,9 @@ resource "helm_release" "cosmotechredis" {
     templatefile("${path.module}/values.yaml", local.values_redis)
   ]
 
-  # depends_on = [
-  #   kubernetes_persistent_volume.redis-pv, kubernetes_persistent_volume_claim.redis-pvc
-  # ]
+  depends_on = [
+    kubernetes_persistent_volume_v1.redis-pv, kubernetes_persistent_volume_claim_v1.redis-pvc
+  ]
 }
 
 resource "helm_release" "redisinsight" {

@@ -46,7 +46,7 @@ variable "redis_pv_name" {
 
 variable "redis_pv_capacity" {
   type    = string
-  default = "32Gi"
+  default = "64Gi"
 }
 
 variable "redis_pv_driver" {
