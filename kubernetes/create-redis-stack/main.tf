@@ -116,5 +116,5 @@ resource "helm_release" "redisinsight" {
   namespace = var.namespace
   chart = "https://docs.redis.com/latest/pkgs/redisinsight-chart-0.1.0.tgz"
 
-  values = file("${path.module}/values-insight.yaml")
+  values = [file("${path.module}/values-insight.yaml")]
 }

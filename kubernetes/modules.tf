@@ -20,7 +20,7 @@ module "create-ingress-nginx" {
 # }
 
 module "create-prometheus-stack" {
-  source = "./create-prometheus-stack"
+  source               = "./create-prometheus-stack"
   namespace            = var.namespace
   monitoring_namespace = var.monitoring_namespace
   api_dns_name         = var.api_dns_name
@@ -37,7 +37,7 @@ module "cert-manager" {
   source  = "terraform-iaac/cert-manager/kubernetes"
   version = "2.5.0"
 
-  namespace_name = var.namespace
+  namespace_name       = var.namespace
   cluster_issuer_email = var.cluster_issuer_email
   cluster_issuer_name  = var.cluster_issuer_name
 }
