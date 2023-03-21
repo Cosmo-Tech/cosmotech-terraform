@@ -114,9 +114,7 @@ resource "helm_release" "cosmotechredis" {
 resource "helm_release" "redisinsight" {
   name = "redisinsight"
   namespace = var.namespace
-  repository = ""
-  chart = ""
-  version = ""
+  chart = "https://docs.redis.com/latest/pkgs/redisinsight-chart-0.1.0.tgz"
 
   values = "${path.module}/values-insight.yaml"
-# }
+}
