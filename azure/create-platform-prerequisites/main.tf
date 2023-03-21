@@ -32,8 +32,8 @@ resource "azuread_application" "platform" {
     redirect_uris = ["${var.platform_url}/swagger-ui/oauth2-redirect.html"]
 
     implicit_grant {
-      access_token_issuance_enabled = true
-      id_token_issuance_enabled     = true
+      access_token_issuance_enabled = false
+      id_token_issuance_enabled     = false
     }
   }
 
@@ -136,8 +136,8 @@ resource "azuread_application" "swagger" {
     redirect_uris = ["${var.platform_url}${var.api_version_path}swagger-ui/oauth2-redirect.html"]
 
     implicit_grant {
-      access_token_issuance_enabled = true
-      id_token_issuance_enabled     = true
+      access_token_issuance_enabled = false
+      id_token_issuance_enabled     = false
     }
   }
 }
@@ -183,8 +183,8 @@ resource "azuread_application" "restish" {
     redirect_uris = ["http://localhost:8484/"]
 
     implicit_grant {
-      access_token_issuance_enabled = true
-      id_token_issuance_enabled     = true
+      access_token_issuance_enabled = false
+      id_token_issuance_enabled     = false
     }
   }
 }
