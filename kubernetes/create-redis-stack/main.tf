@@ -20,7 +20,7 @@ resource "kubernetes_persistent_volume" "redis-pv" {
   metadata {
     name = var.redis_pv_name
     labels = {
-      cosmotech.com/service = "redis"
+      "cosmotech.com/service" = "redis"
     }
   }
   spec {
@@ -116,5 +116,5 @@ resource "helm_release" "redisinsight" {
   namespace = var.namespace
   chart = "https://docs.redis.com/latest/pkgs/redisinsight-chart-0.1.0.tgz"
 
-  values = "${path.module}/values-insight.yaml"
+  values = file("${path.module}/values-insight.yaml")
 }
