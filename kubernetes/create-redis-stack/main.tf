@@ -20,7 +20,7 @@ resource "kubernetes_persistent_volume" "redis-pv" {
   metadata {
     name = var.redis_pv_name
     labels = {
-      "cosmotech.com/service" = "redis"
+      cosmotech.com/service = "redis"
     }
   }
   spec {
@@ -34,21 +34,13 @@ resource "kubernetes_persistent_volume" "redis-pv" {
       storage = var.redis_pv_capacity
     }
     persistent_volume_source {
-      azure_disk {
-        caching_mode  = "ReadWrite"
-        data_disk_uri = data.azurerm_managed_disk.managed_disk.id
-        disk_name     = "cosmotech-database-disk"
-        kind          = "Managed"
-        fs_type = "ext4"
+      csi {
+        driver        = var.redis_pv_driver
+        volume_handle = local.redis_disk_resource
+        volume_attributes = {
+          "fsType" = "ext4"
+        }
       }
-      
-      # csi {
-      #   driver        = var.redis_pv_driver
-      #   volume_handle = local.redis_disk_resource
-      #   volume_attributes = {
-      #     "fsType" = "ext4"
-      #   }
-      # }
     }
     persistent_volume_reclaim_policy = "Retain"
   }
@@ -108,7 +100,7 @@ resource "helm_release" "cosmotechredis" {
   namespace  = var.namespace
 
   reuse_values = true
-  # wait         = true
+  wait         = true
 
   values = [
     templatefile("${path.module}/values.yaml", local.values_redis)
@@ -119,12 +111,12 @@ resource "helm_release" "cosmotechredis" {
   ]
 }
 
-# resource "helm_release" "redisinsight" {
-#   name = "redisinsight"
-#   namespace = var.namespace
-#   repository = ""
-#   chart = ""
-#   version = ""
+resource "helm_release" "redisinsight" {
+  name = "redisinsight"
+  namespace = var.namespace
+  repository = ""
+  chart = ""
+  version = ""
 
-#   values = "${path.module}/values-insight.yaml"
+  values = "${path.module}/values-insight.yaml"
 # }
