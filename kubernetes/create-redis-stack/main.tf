@@ -106,9 +106,9 @@ resource "helm_release" "cosmotechredis" {
     templatefile("${path.module}/values.yaml", local.values_redis)
   ]
 
-  depends_on = [
-    kubernetes_persistent_volume.redis-pv, kubernetes_persistent_volume_claim.redis-pvc
-  ]
+  # depends_on = [
+  #   kubernetes_persistent_volume.redis-pv, kubernetes_persistent_volume_claim.redis-pvc
+  # ]
 }
 
 resource "helm_release" "redisinsight" {
