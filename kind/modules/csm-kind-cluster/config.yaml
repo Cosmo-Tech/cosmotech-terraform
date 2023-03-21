@@ -1,0 +1,89 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    extraMounts:
+      - hostPath: ${host_path_to_mount}
+        containerPath: ${container_path}
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "ingress-ready=true"
+    extraPortMappings:
+      - containerPort: 80
+        hostPort: 80
+        protocol: TCP
+      - containerPort: 443
+        hostPort: 443
+        protocol: TCP
+      - containerPort: 5005
+        hostPort: 5005
+        protocol: TCP
+  - role: worker
+    extraMounts:
+      - hostPath: ${host_path_to_mount}
+        containerPath: ${container_path}
+    kubeadmConfigPatches:
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          taints:
+          - key: "vendor"
+            value: "cosmotech"
+            effect: "NoSchedule"
+          kubeletExtraArgs:
+            node-labels: "kubernetes.io/os=linux,cosmotech.com/tier=compute,cosmotech.com/size=basic"
+  - role: worker
+    extraMounts:
+      - hostPath: ${host_path_to_mount}
+        containerPath: ${container_path}
+    kubeadmConfigPatches:
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          taints:
+          - key: "vendor"
+            value: "cosmotech"
+            effect: "NoSchedule"
+          kubeletExtraArgs:
+            node-labels: "kubernetes.io/os=linux,cosmotech.com/tier=services"
+  - role: worker
+    extraMounts:
+      - hostPath: ${host_path_to_mount}
+        containerPath: ${container_path}
+    kubeadmConfigPatches:
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          taints:
+          - key: "vendor"
+            value: "cosmotech"
+            effect: "NoSchedule"
+          kubeletExtraArgs:
+            node-labels: "kubernetes.io/os=linux,cosmotech.com/tier=db"
+  - role: worker
+    extraMounts:
+      - hostPath: ${host_path_to_mount}
+        containerPath: ${container_path}
+    kubeadmConfigPatches:
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          taints:
+          - key: "vendor"
+            value: "cosmotech"
+            effect: "NoSchedule"
+          kubeletExtraArgs:
+            node-labels: "kubernetes.io/os=linux,cosmotech.com/tier=monitoring"
+
+networking:
+  # disable kindnet, which does not support Network Policies
+  disableDefaultCNI: true
+  # set to Calico's default subnet
+  podSubnet: 192.168.0.0/16
+featureGates:
+  # TTL Controller for finished resources is currently an opt-in alpha feature
+  # https://kubernetes.io/docs/concepts/workloads/controllers/ttlafterfinished/
+  TTLAfterFinished: true
