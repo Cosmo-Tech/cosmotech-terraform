@@ -1,0 +1,75 @@
+installCRDs: true
+prometheus:
+  enabled: true
+  servicemonitor:
+    enabled: true
+    namespace: $MONITORING_NAMESPACE
+    interval: 300s
+    scrapeTimeout: 30s
+tolerations:
+- key: "vendor"
+  operator: "Equal"
+  value: "cosmotech"
+  effect: "NoSchedule"
+nodeSelector:
+  "cosmotech.com/tier": "services"
+podLabels:
+  "networking/traffic-allowed": "yes"
+resources:
+  requests:
+    cpu: 10m
+    memory: 128Mi
+  limits:
+    cpu: 1000m
+    memory: 256Mi
+webhook:
+  tolerations:
+  - key: "vendor"
+    operator: "Equal"
+    value: "cosmotech"
+    effect: "NoSchedule"
+  nodeSelector:
+    "cosmotech.com/tier": "services"
+  podLabels:
+    "networking/traffic-allowed": "yes"
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 1000m
+      memory: 64Mi
+cainjector:
+  tolerations:
+  - key: "vendor"
+    operator: "Equal"
+    value: "cosmotech"
+    effect: "NoSchedule"
+  nodeSelector:
+    "cosmotech.com/tier": "services"
+  podLabels:
+    "networking/traffic-allowed": "yes"
+  resources:
+    requests:
+      cpu: 10m
+      memory: 128Mi
+    limits:
+      cpu: 1000m
+      memory: 256Mi
+startupapicheck:
+  tolerations:
+  - key: "vendor"
+    operator: "Equal"
+    value: "cosmotech"
+    effect: "NoSchedule"
+  nodeSelector:
+    "cosmotech.com/tier": "services"
+  podLabels:
+    "networking/traffic-allowed": "yes"
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 1000m
+      memory: 64Mi

@@ -1,0 +1,53 @@
+auth:
+  password: ${REDIS_PASSWORD}
+image:
+  registry: ghcr.io
+  repository: cosmo-tech/cosmotech-redis
+  tag: ${VERSION_REDIS_COSMOTECH}
+volumePermissions:
+  enabled: true
+master:
+  persistence:
+    existingClaim: ${REDIS_MASTER_NAME_PVC}
+  podLabels:
+    networking/traffic-allowed: "yes"
+  tolerations:
+  - key: "vendor"
+    operator: "Equal"
+    value: "cosmotech"
+    effect: "NoSchedule"
+  nodeSelector:
+    cosmotech.com/tier: "db"
+  resources:
+    requests:
+      cpu: 500m
+      memory: 4Gi
+    limits:
+      cpu: 1000m
+      memory: 4Gi
+replica:
+  replicaCount: 1
+  podLabels:
+    networking/traffic-allowed: "yes"
+  persistence:
+    storageClass: "managed-csi"
+    size: ${REDIS_DISK_SIZE}
+  tolerations:
+  - key: "vendor"
+    operator: "Equal"
+    value: "cosmotech"
+    effect: "NoSchedule"
+  nodeSelector:
+    "cosmotech.com/tier": "db"
+  resources:
+    requests:
+      cpu: 500m
+      memory: 4Gi
+    limits:
+      cpu: 1000m
+      memory: 4Gi
+commonConfiguration: |-
+  loadmodule /opt/bitnami/redis/modules/redisgraph.so
+  loadmodule /opt/bitnami/redis/modules/redistimeseries.so DUPLICATE_POLICY LAST
+  loadmodule /opt/bitnami/redis/modules/rejson.so
+  loadmodule /opt/bitnami/redis/modules/redisearch.so

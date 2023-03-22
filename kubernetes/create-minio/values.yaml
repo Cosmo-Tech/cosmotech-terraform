@@ -1,0 +1,33 @@
+fullnameOverride: ${MINIO_RELEASE_NAME}
+defaultBuckets: "${ARGO_BUCKET_NAME}"
+persistence:
+  enabled: true
+  size: ${ARGO_MINIO_PERSISTENCE_SIZE}
+resources:
+  requests:
+    memory: ${ARGO_MINIO_REQUESTS_MEMORY}
+    cpu: "100m"
+  limits:
+    memory: ${ARGO_MINIO_REQUESTS_MEMORY}
+    cpu: "1"
+service:
+  type: ClusterIP
+podLabels:
+  networking/traffic-allowed: "yes"
+tolerations:
+- key: "vendor"
+  operator: "Equal"
+  value: "cosmotech"
+  effect: "NoSchedule"
+nodeSelector:
+  "cosmotech.com/tier": "services"
+auth:
+  rootUser: ${ARGO_MINIO_ACCESS_KEY}
+  rootPassword: ${ARGO_MINIO_SECRET_KEY}
+metrics:
+  # Metrics can not be disabled yet: https://github.com/minio/minio/issues/7493
+  serviceMonitor:
+    enabled: true
+    namespace: ${MONITORING_NAMESPACE}
+    interval: 30s
+    scrapeTimeout: 10s

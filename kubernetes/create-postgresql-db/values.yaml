@@ -1,0 +1,36 @@
+auth:
+  username: ${ARGO_POSTGRESQL_USER}
+  password: ${ARGO_POSTGRESQL_PASSWORD}
+  database: ${ARGO_DATABASE}
+primary:
+  podLabels:
+    "networking/traffic-allowed": "yes"
+  tolerations:
+  - key: "vendor"
+    operator: "Equal"
+    value: "cosmotech"
+    effect: "NoSchedule"
+  nodeSelector:
+    "cosmotech.com/tier": "db"
+readReplicas:
+  nodeSelector:
+    "cosmotech.com/tier": "db"
+  tolerations:
+  - key: "vendor"
+    operator: "Equal"
+    value: "cosmotech"
+    effect: "NoSchedule"
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "250m"
+  limits:
+    memory: "256Mi"
+    cpu: "1"
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    namespace: ${MONITORING_NAMESPACE}
+    interval: 30s
+    scrapeTimeout: 10s

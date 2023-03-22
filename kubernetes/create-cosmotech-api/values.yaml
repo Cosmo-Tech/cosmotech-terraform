@@ -1,0 +1,59 @@
+replicaCount: 2
+api:
+  version: ${API_VERSION}
+
+image:
+  repository: ghcr.io/cosmo-tech/cosmotech-api
+  tag: ${CHART_PACKAGE_VERSION}
+
+config:
+  api:
+    serviceMonitor:
+      enabled: true
+      namespace: ${MONITORING_NAMESPACE}
+  csm:
+    platform:
+      namespace: ${NAMESPACE}
+      argo:
+        base-uri: "http://${ARGO_RELEASE_NAME}-argo-workflows-server.${NAMESPACE}.svc.cluster.local:2746"
+        workflows:
+          namespace: ${NAMESPACE}
+          service-account-name: ${ARGO_SERVICE_ACCOUNT}
+      twincache:
+        host: "cosmotechredis-master.${NAMESPACE}.svc.cluster.local"
+        port: ${REDIS_PORT}
+        username: "default"
+        password: ${REDIS_PASSWORD}
+
+ingress:
+  enabled: ${COSMOTECH_API_INGRESS_ENABLED}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "30"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "30"
+    nginx.org/client-max-body-size: "0"
+  hosts:
+    - host: ${COSMOTECH_API_DNS_NAME}
+  tls:
+    - secretName: ${TLS_SECRET_NAME}
+      hosts: ["${COSMOTECH_API_DNS_NAME}"]
+
+resources:
+  # Recommended in production environments
+  limits:
+    #   cpu: 100m
+    memory: 2048Mi
+  requests:
+    #   cpu: 100m
+    memory: 1024Mi
+
+tolerations:
+- key: "vendor"
+  operator: "Equal"
+  value: "cosmotech"
+  effect: "NoSchedule"
+
+nodeSelector:
+  "cosmotech.com/tier": "services"
