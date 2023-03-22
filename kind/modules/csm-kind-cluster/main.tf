@@ -1,7 +1,9 @@
 locals {
   kind_config = {
     "host_path_to_mount": "~/kind_mount",
-    "container_path": "/data"
+    "container_path": "/data",
+    "registry_port": "5000",
+    "registry_name": "kind-registry"
   }
 }
 
