@@ -69,7 +69,6 @@ resource "azuread_application" "platform" {
   }
 }
 
-
 resource "azuread_service_principal" "platform" {
   application_id               = azuread_application.platform.application_id
   # assignment required to secure Function Apps using thi App Registration as identity provider
