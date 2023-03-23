@@ -21,6 +21,7 @@ resource "helm_release" "prometheus-stack" {
   chart = var.helm_chart
   version = var.prometheus_stack_version
   namespace  = var.monitoring_namespace
+  create_namespace = false
 
   reuse_values = true
 
