@@ -7,9 +7,9 @@ module "create-ingress-nginx" {
   loadbalancer_ip       = var.loadbalancer_ip
   tls_secret_name       = var.tls_secret_name
 
-  # depends_on = [
-  #   module.create-prometheus-stack
-  # ]
+  depends_on = [
+    module.create-prometheus-stack
+  ]
 }
 
 module "create-prometheus-stack" {
@@ -66,6 +66,10 @@ module "create-argo" {
 
   namespace            = var.namespace
   monitoring_namespace = var.monitoring_namespace
+
+  depends_on = [
+    module.c
+  ]
 }
 
 module "create-cosmotech-api" {
@@ -76,4 +80,8 @@ module "create-cosmotech-api" {
   api_dns_name         = var.api_dns_name
   tls_secret_name      = var.tls_secret_name
   redis_admin_password = random_password.redis_admin_password.result
+
+  depends_on = [
+    module.create-argo
+  ]
 }
