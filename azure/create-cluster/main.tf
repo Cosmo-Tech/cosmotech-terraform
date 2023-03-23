@@ -1,10 +1,27 @@
-
-resource "azurerm_kubernetes_cluster" "phoenixperftestAKS" {
-  name                = "phoenixperftestAKS-aks1"
+locals {
+  dns_prefix = "${var.cluster_name}-aks"
+}
+resource "azurerm_kubernetes_cluster" "phoenixcluster" {
+  name                = var.cluster_name
   location            = var.location
   resource_group_name = var.resource_group
-  dns_prefix          = "phoenixperftestAKSaks1"
-  kubernetes_version  = "1.25.5"
+  dns_prefix          = local.dns_prefix
+  kubernetes_version  = var.kubernetes_version
+  role_based_access_control_enabled = true
+  private_cluster_enabled = false
+  
+  network_profile {
+    load_balancer_sku = "standard"
+    outbound_type = "loadBalancer"
+    network_plugin = "azure"
+    network_policy = "calico"
+  }
+
+  http_application_routing_enabled = false
+  service_principal {
+    client_id = var.client_id
+    client_secret = var.client_secret
+  }
 
   default_node_pool {
     name       = "default"
@@ -15,15 +32,11 @@ resource "azurerm_kubernetes_cluster" "phoenixperftestAKS" {
   identity {
     type = "SystemAssigned"
   }
-
-  tags = {
-    Environment = "Dev"
-  }
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "system" {
   name                  = "system"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixperftestAKS.id
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixcluster.id
   vm_size               = "Standard_A2_v2"
   node_count            = 4
   max_pods              = 110
@@ -38,7 +51,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "system" {
 
 resource "azurerm_kubernetes_cluster_node_pool" "basic" {
   name                  = "basic"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixperftestAKS.id
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixcluster.id
   vm_size               = "Standard_F4s_v2"
   node_count            = 2
   max_pods              = 110
@@ -55,7 +68,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "basic" {
 
 resource "azurerm_kubernetes_cluster_node_pool" "highcpu" {
   name                  = "highcpu"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixperftestAKS.id
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixcluster.id
   vm_size               = "Standard_F72s_v2"
   node_count            = 0
   max_pods              = 110
@@ -72,7 +85,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "highcpu" {
 
 resource "azurerm_kubernetes_cluster_node_pool" "highmemory" {
   name                  = "highmemory"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixperftestAKS.id
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixcluster.id
   vm_size               = "Standard_E16ads_v5"
   node_count            = 0
   max_pods              = 110
@@ -89,7 +102,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "highmemory" {
 
 resource "azurerm_kubernetes_cluster_node_pool" "services" {
   name                  = "services"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixperftestAKS.id
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixcluster.id
   vm_size               = "Standard_A2m_v2"
   node_count            = 2
   max_pods              = 110
@@ -106,7 +119,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "services" {
 
 resource "azurerm_kubernetes_cluster_node_pool" "db" {
   name                  = "db"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixperftestAKS.id
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixcluster.id
   vm_size               = "Standard_D2ads_v5"
   node_count            = 2
   max_pods              = 110
@@ -123,7 +136,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "db" {
 
 resource "azurerm_kubernetes_cluster_node_pool" "monitoring" {
   name                  = "monitoring"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixperftestAKS.id
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.phoenixcluster.id
   vm_size               = "Standard_D2ads_v5"
   node_count            = 0
   max_pods              = 110

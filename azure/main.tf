@@ -38,6 +38,7 @@ module "create-cluster" {
   client_id         = var.client_id
   client_secret     = var.client_secret
   managed_disk_name = var.managed_disk_name
+  cluster_name      = var.cluster_name
 
   depends_on = [
     module.create-platform-prerequisite

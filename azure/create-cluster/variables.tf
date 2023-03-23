@@ -40,3 +40,12 @@ variable "disk_tier" {
   type = string
   default = "P6"
 }
+
+variable "cluster_name" {
+  type = string
+}
+
+variable "kubernetes_version" {
+  type = string
+  default = "1.25.5"
+}

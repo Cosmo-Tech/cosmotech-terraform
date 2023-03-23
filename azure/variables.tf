@@ -42,6 +42,10 @@ variable "stage" {
   }
 }
 
+variable "cluster_name" {
+  type = string
+}
+
 variable "customer" {
   description = "The customer name"
 }
@@ -142,6 +146,6 @@ variable "api_version_path" {
 }
 
 variable "managed_disk_name" {
-  type = string
+  type    = string
   default = "cosmotech-database-disk"
 }
