@@ -66,10 +66,6 @@ module "create-argo" {
 
   namespace            = var.namespace
   monitoring_namespace = var.monitoring_namespace
-
-  depends_on = [
-    module.c
-  ]
 }
 
 module "create-cosmotech-api" {
