@@ -1,11 +1,3 @@
-# variable "username" {
-#   type = string
-# }
-
-# variable "password" {
-#   type = string
-# }
-
 variable "resource_group" {
   type = string
 }
@@ -34,19 +26,9 @@ variable "client_secret" {
   description = "The client secret"
 }
 
-variable "resource_group_name" {
-  type    = string
-  default = ""
-}
-
 variable "location" {
   type    = string
   default = ""
-}
-
-variable "ingress_nginx_version" {
-  type    = string
-  default = "4.2.1"
 }
 
 variable "namespace" {
@@ -69,10 +51,6 @@ variable "api_dns_name" {
   type = string
 }
 
-variable "prom_admin_password" {
-  type = string
-}
-
 variable "cluster_issuer_email" {
   type = string
 }
@@ -81,22 +59,27 @@ variable "cluster_issuer_name" {
   type = string
 }
 
-variable "redis_admin_password" {
-  type = string
+variable "ingress_nginx_version" {
+  type    = string
+  default = "4.2.1"
 }
 
-# variable "redis_disk_resource" {
+# variable "redis_admin_password" {
 #   type = string
 # }
 
-variable "argo_postgresql_password" {
-  type = string
-}
+# variable "argo_postgresql_password" {
+#   type = string
+# }
 
-variable "argo_minio_access_key" {
-  type = string
-}
+# variable "argo_minio_access_key" {
+#   type = string
+# }
 
-variable "argo_minio_secret_key" {
-  type = string
-}
+# variable "argo_minio_secret_key" {
+#   type = string
+# }
+
+# variable "prom_admin_password" {
+#   type = string
+# }

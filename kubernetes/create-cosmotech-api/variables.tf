@@ -1,11 +1,3 @@
-# variable "username" {
-#   type = string
-# }
-
-# variable "password" {
-#   type = string
-# }
-
 variable "namespace" {
   type = string
 }
@@ -26,6 +18,11 @@ variable "redis_admin_password" {
   type = string
 }
 
+variable "cosmotech_api_ingress_enabled" {
+  type = bool
+  default = true
+}
+
 variable "redis_port" {
   type    = number
   default = 6379
@@ -33,12 +30,12 @@ variable "redis_port" {
 
 variable "helm_chart" {
   type    = string
-  default = "cosmotech-api-v2"
+  default = "cosmotech-api-chart"
 }
 
 variable "helm_repository" {
   type    = string
-  default = "https://ghcr.io/cosmo-tech/cosmotech-api-chart"
+  default = "oci://ghcr.io/cosmo-tech"
 }
 
 variable "cosmotech_api_version" {

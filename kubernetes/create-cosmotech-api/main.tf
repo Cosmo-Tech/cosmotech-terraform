@@ -8,25 +8,17 @@ locals {
     "REDIS_PASSWORD"                = var.redis_admin_password
     "ARGO_SERVICE_ACCOUNT"          = var.argo_service_account
     "ARGO_RELEASE_NAME"             = var.argo_release_name
-    "COSMOTECH_API_INGRESS_ENABLED" = true
+    "COSMOTECH_API_INGRESS_ENABLED" = var.cosmotech_api_ingress_enabled
     "COSMOTECH_API_DNS_NAME"        = var.api_dns_name
     "API_VERSION"                   = var.cosmotech_api_version
   }
 }
 
-# provider "helm" {
-#   registry {
-#     url = "oci://ghcr.io/cosmo-tech"
-#     username = var.username
-#     password = var.password
-#   }
-# }
-
 resource "helm_release" "cosmotech-api" {
   name       = var.helm_release_name
-  repository = "oci://ghcr.io/cosmo-tech"
-  chart      = "cosmotech-api-chart"
-  version    = "2.3.5"
+  repository = var.helm_repository
+  chart      = var.helm_chart
+  version    = var.chart_package_version
   namespace  = var.namespace
 
   reuse_values = true
