@@ -7,9 +7,9 @@ module "create-ingress-nginx" {
   loadbalancer_ip       = var.loadbalancer_ip
   tls_secret_name       = var.tls_secret_name
 
-  depends_on = [
-    module.create-prometheus-stack
-  ]
+  # depends_on = [
+  #   module.create-prometheus-stack
+  # ]
 }
 
 module "create-prometheus-stack" {
@@ -59,6 +59,10 @@ module "create-postgresql-db" {
   namespace                = var.namespace
   monitoring_namespace     = var.monitoring_namespace
   argo_postgresql_password = random_password.argo_postgresql_password.result
+
+  depends_on = [
+    module.create-ingress-nginx
+  ]
 }
 
 module "create-argo" {
@@ -66,6 +70,10 @@ module "create-argo" {
 
   namespace            = var.namespace
   monitoring_namespace = var.monitoring_namespace
+
+  depends_on = [
+    module.create-postgresql-db
+  ]
 }
 
 module "create-cosmotech-api" {
