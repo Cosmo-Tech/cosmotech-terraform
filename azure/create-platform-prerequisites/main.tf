@@ -27,14 +27,8 @@ resource "azuread_application" "platform" {
     }
   }
 
-  web {
-    homepage_url  = var.platform_url
-    redirect_uris = ["${var.platform_url}/swagger-ui/oauth2-redirect.html"]
-
-    implicit_grant {
-      access_token_issuance_enabled = false
-      id_token_issuance_enabled     = false
-    }
+  single_page_application {
+    redirect_uris = ["${var.platform_url}${var.api_version_path}swagger-ui/oauth2-redirect.html"]
   }
 
   api {
@@ -131,14 +125,8 @@ resource "azuread_application" "swagger" {
     }
   }
 
-  web {
-    homepage_url  = var.platform_url
+  single_page_application {
     redirect_uris = ["${var.platform_url}${var.api_version_path}swagger-ui/oauth2-redirect.html"]
-
-    implicit_grant {
-      access_token_issuance_enabled = false
-      id_token_issuance_enabled     = false
-    }
   }
 }
 
@@ -178,14 +166,8 @@ resource "azuread_application" "restish" {
     }
   }
 
-  web {
-    homepage_url  = var.platform_url
+  single_page_application {
     redirect_uris = ["http://localhost:8484/"]
-
-    implicit_grant {
-      access_token_issuance_enabled = false
-      id_token_issuance_enabled     = false
-    }
   }
 }
 
