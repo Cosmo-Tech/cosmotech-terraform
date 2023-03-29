@@ -453,7 +453,7 @@ resource "azurerm_kusto_script" "kusto_script" {
 resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_probesmeasures_connection" {
   depends_on          = [azurerm_kusto_script.kusto_script]
   count                              = var.kusto_script ? 1 : 0
-  name                = substr("${local.resource_name}-${local.eventhub_probesmeasures}", 0, 40)
+  name                = "${substr(local.resource_name, 0, 20)}-${local.eventhub_probesmeasures}"
   resource_group_name = var.resource_group
   location            = var.location
   cluster_name        = var.adx_name
@@ -472,7 +472,7 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_probesmeasures_c
 resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorun_connection" {
   depends_on          = [azurerm_kusto_script.kusto_script]
   count                              = var.kusto_script ? 1 : 0
-  name                = substr("${local.resource_name}-${local.eventhub_scenariorun}", 0, 40)
+  name                = "${substr(local.resource_name, 0, 20)}-${local.eventhub_scenariorun}"
   resource_group_name = var.resource_group
   location            = var.location
   cluster_name        = var.adx_name
@@ -491,7 +491,7 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorun_conn
 resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariometadata_connection" {
   depends_on          = [azurerm_kusto_script.kusto_script]
   count                              = var.kusto_script ? 1 : 0
-  name                = substr("${local.resource_name}-${local.eventhub_scenariometadata_connection}", 0, 40)
+  name                = "${substr(local.resource_name, 0, 20)}-${local.eventhub_scenariometadata_connection}"
   resource_group_name = var.resource_group
   location            = var.location
   cluster_name        = var.adx_name
@@ -510,7 +510,7 @@ resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariometadata
 resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_scenariorunmetadata_connection" {
   depends_on          = [azurerm_kusto_script.kusto_script]
   count                              = var.kusto_script ? 1 : 0
-  name                = substr("${local.resource_name}-${local.eventhub_scenariorunmetadata_connection}", 0, 40)
+  name                = "${substr(local.resource_name, 0, 20)}-${local.eventhub_scenariorunmetadata_connection}"
   resource_group_name = var.resource_group
   location            = var.location
   cluster_name        = var.adx_name
