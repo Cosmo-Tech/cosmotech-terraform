@@ -7,49 +7,84 @@ locals {
   }
 }
 
+
+variable "provider_name" {
+  type    = string
+  default = "azure"
+}
+
 data "azurerm_managed_disk" "managed_disk" {
   name                = "cosmotech-database-disk"
   resource_group_name = var.resource_group
+  count               = var.provider_name == "azure" ? 1 : 0
 }
 
-locals {
-  redis_disk_resource = data.azurerm_managed_disk.managed_disk.id
+data "aws_ebs_volume" "managed_disk" {
+  most_recent = true
+
+  filter {
+    name   = "volume_name"
+    values = ["cosmotech-database-disk"]
+  }
+  count = var.provider_name == "aws" ? 1 : 0
 }
 
 resource "kubernetes_persistent_volume_v1" "redis-pv" {
-  metadata {
-    name = var.redis_pv_name
-    labels = {
-      "cosmotech.com/service" = "redis"
-    }
-  }
-  spec {
-    storage_class_name = ""
-    access_modes = ["ReadWriteOnce"]
-    claim_ref {
-      name      = var.redis_pvc_name
-      namespace = var.namespace
-    }
-    capacity = {
-      storage = var.redis_pv_capacity
-    }
-    persistent_volume_source {
-
-      azure_disk {
-        caching_mode  = "ReadWrite"
-        data_disk_uri = local.redis_disk_resource
-        disk_name     = "cosmotech-database-disk"
-        kind          = "Managed"
+  for_each = {
+    "aws" = {
+      metadata = {
+        name = var.redis_pv_name
+        labels = {
+          "cosmotech.com/service" = "redis"
+        }
       }
-      # csi {
-      #   driver        = var.redis_pv_driver
-      #   volume_handle = local.redis_disk_resource
-      #   volume_attributes = {
-      #     "fsType" = "ext4"
-      #   }
-      # }
+      spec = {
+        storage_class_name = ""
+        access_modes       = ["ReadWriteOnce"]
+        claim_ref = {
+          name      = var.redis_pvc_name
+          namespace = var.namespace
+        }
+        capacity = {
+          storage = var.redis_pv_capacity
+        }
+        persistent_volume_source = {
+          aws_elastic_block_store = {
+            volume_id = data.aws_ebs_volume.managed_disk[0].id
+          }
+        }
+        persistent_volume_reclaim_policy = "Retain"
+      }
+    },
+    "azure" = {
+      metadata = {
+        name = var.redis_pv_name
+        labels = {
+          "cosmotech.com/service" = "redis"
+        }
+      }
+      spec = {
+        storage_class_name = ""
+        access_modes       = ["ReadWriteOnce"]
+        claim_ref = {
+          name      = var.redis_pvc_name
+          namespace = var.namespace
+        }
+        capacity = {
+          storage = var.redis_pv_capacity
+        }
+        persistent_volume_source = {
+
+          azure_disk = {
+            caching_mode  = "ReadWrite"
+            data_disk_uri = data.azurerm_managed_disk.managed_disk[0].id
+            disk_name     = "cosmotech-database-disk"
+            kind          = "Managed"
+          }
+        }
+        persistent_volume_reclaim_policy = "Retain"
+      }
     }
-    persistent_volume_reclaim_policy = "Retain"
   }
 }
 
@@ -60,7 +95,7 @@ resource "kubernetes_persistent_volume_claim_v1" "redis-pvc" {
   }
   spec {
     storage_class_name = ""
-    access_modes = ["ReadWriteOnce"]
+    access_modes       = ["ReadWriteOnce"]
     resources {
       requests = {
         storage = var.redis_pv_capacity
@@ -90,9 +125,9 @@ resource "helm_release" "cosmotechredis" {
 }
 
 resource "helm_release" "redisinsight" {
-  name = "redisinsight"
+  name      = "redisinsight"
   namespace = var.namespace
-  chart = "https://docs.redis.com/latest/pkgs/redisinsight-chart-0.1.0.tgz"
+  chart     = "https://docs.redis.com/latest/pkgs/redisinsight-chart-0.1.0.tgz"
 
   values = [file("${path.module}/values-insight.yaml")]
 }

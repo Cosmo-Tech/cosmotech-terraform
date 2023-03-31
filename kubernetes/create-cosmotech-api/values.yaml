@@ -19,25 +19,6 @@ config:
         workflows:
           namespace: ${NAMESPACE}
           service-account-name: ${ARGO_SERVICE_ACCOUNT}
-      azure:
-        containerRegistries:
-          solutions: ${SOLUTIONS}
-        cosmos:
-          key: ${COSMOS_KEY}
-          uri: ${COSMOS_URI}
-        credentials:
-          clientId: ${CLIENT_ID}
-          clientSecret: ${CLIENT_SECRET}
-          tenantId: ${TENANT_ID}
-        dataWarehouseCluster:
-          baseUri: ${ADX_URI}
-          options:
-            ingestionUri: ${ADX_INGESTION_URI}
-        eventBus:
-          baseUri: ${EVENTBUS_URI}
-        storage:
-          account-key: ${STORAGE_ACCOUNT_KEY}
-          account-name: ${STORAGE_ACCOUNT_NAME}
       twincache:
         host: "cosmotechredis-master.${NAMESPACE}.svc.cluster.local"
         port: ${REDIS_PORT}

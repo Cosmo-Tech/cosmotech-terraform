@@ -1,11 +1,4 @@
-variable "resource_group" {
-  type = string
-}
-
-variable "cluster_name" {
-  type = string
-}
-
+# Azure specifics
 variable "tenant_id" {
   type        = string
   description = "The tenant id"
@@ -29,6 +22,30 @@ variable "client_secret" {
 variable "location" {
   type    = string
   default = ""
+}
+
+# AWS specifics
+
+variable "access_key" {
+  type = string
+}
+
+variable "secret_key" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
+
+# General variables
+
+variable "resource_group" {
+  type = string
+}
+
+variable "cluster_name" {
+  type = string
 }
 
 variable "namespace" {
