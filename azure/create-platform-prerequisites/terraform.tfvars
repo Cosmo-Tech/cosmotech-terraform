@@ -4,9 +4,9 @@
   client_secret = ""
   platform_url = ""
   identifier_uri = ""
-  stage = "Dev"
-  customer = ""
-  project = ""
+  project_stage = "Dev"
+  customer_name = ""
+  project_name = ""
   owner_list = [ "" ]
   webapp_url = ""
   dns_zone_name = ""
@@ -14,7 +14,7 @@
   dns_record = ""
   vnet_iprange = ""
   resource_group = ""
-  
+
   user_app_role = [ {
     description = "Workspace Writer",
     display_name = "Workspace Writer",

@@ -30,8 +30,8 @@ variable "identifier_uri" {
   default = ""
 }
 
-variable "stage" {
-  description = "The platform stage"
+variable "project_stage" {
+  description = "The Project stage"
   type        = string
   validation {
     condition = contains([
@@ -41,18 +41,19 @@ variable "stage" {
       "IA",
       "EA",
       "Demo",
-      "Prod"
+      "Prod",
+      "Uat"
     ], var.stage)
-    error_message = "Stage must be either: OnBoarding, Dev, QA, IA, EA, Demo, Prod."
+    error_message = "Stage must be either: OnBoarding, Dev, QA, IA, EA, Demo, Prod, Uat."
   }
 }
 
-variable "customer" {
+variable "customer_name" {
   description = "The customer name"
   type        = string
 }
 
-variable "project" {
+variable "project_name" {
   description = "The project name"
   type        = string
   default = ""
