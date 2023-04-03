@@ -237,6 +237,22 @@ resource "azuread_application" "webapp" {
 
   tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
 
+resource "azuread_application" "babylon" {
+  display_name     = "${local.pre_name}Babylon${local.post_name}"
+  logo_image       = filebase64("cosmotech.png")
+  owners           = data.azuread_users.owners.object_ids
+  sign_in_audience = var.audience
+
+  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+
+resource "azuread_service_principal" "babylon" {
+  depends_on                   = [azuread_service_principal.swagger]
+  application_id               = azuread_application.babylon[0].application_id
+  app_role_assignment_required = false
+
+  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
+}
+
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
 
