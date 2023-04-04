@@ -11,7 +11,7 @@ output "out_platform_clientid" {
 }
 
 output "out_platform_password" {
-  value = azuread_application_password.platform_password.value
+  value = azuread_application_password.platform_password[0].value
   sensitive = true
 }
 
@@ -28,7 +28,7 @@ output "out_networkadt_clientid" {
 }
 
 output "out_network_adt_password" {
-  value = azuread_application_password.network_adt_password.value
+  value = azuread_application_password.network_adt_password[0].value
   sensitive = true
 }
 
