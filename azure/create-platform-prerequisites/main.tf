@@ -11,7 +11,7 @@ data "azuread_users" "owners" {
 # Azure AD
 resource "azuread_application" "platform" {
   display_name     = "${local.pre_name}Platform${local.post_name}"
-  identifier_uris  = [var.identifier_uri]
+  identifier_uris  =  var.identifier_uri ? [var.identifier_uri] : null
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
