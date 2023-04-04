@@ -12,6 +12,7 @@ output "out_platform_clientid" {
 
 output "out_platform_password" {
   value = azuread_application_password.platform_password.value
+  sensitive = true
 }
 
 output "out_nerworkadt_name" {
@@ -28,6 +29,7 @@ output "out_networkadt_clientid" {
 
 output "out_network_adt_password" {
   value = azuread_application_password.network_adt_password.value
+  sensitive = true
 }
 
 output "out_platform_url" {
@@ -48,6 +50,7 @@ output "out_swagger_clientid" {
 
 output "out_restish_password" {
   value = azuread_application_password.restish_password[0].value
+  sensitive = true
 }
 
 output "out_restish_name" {
@@ -68,6 +71,7 @@ output "out_powerbi_clientid" {
 
 output "out_powerbi_password" {
   value = azuread_application_password.powerbi_password[0].value
+  sensitive = true
 }
 
 output "out_webapp_name" {
