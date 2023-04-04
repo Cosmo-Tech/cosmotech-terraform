@@ -20,7 +20,6 @@ provider "azurerm" {
   client_id       = var.client_id
   client_secret   = var.client_secret
   tenant_id       = var.tenant_id
-  use_cli = "false"
   skip_provider_registration = true
 }
 
@@ -28,5 +27,4 @@ provider "azuread" {
   tenant_id     = var.tenant_id
   client_id     = var.client_id
   client_secret = var.client_secret
-  use_cli = "false"
 }
