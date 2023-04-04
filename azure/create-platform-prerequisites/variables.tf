@@ -21,13 +21,13 @@ variable "client_secret" {
 variable "platform_url" {
   description = "The platform url"
   type        = string
-  default = ""
+  default     = ""
 }
 
 variable "identifier_uri" {
   description = "The platform identifier uri"
   type        = string
-  default = ""
+  default     = ""
 }
 
 variable "stage" {
@@ -55,7 +55,7 @@ variable "customer" {
 variable "project" {
   description = "The project name"
   type        = string
-  default = ""
+  default     = ""
 }
 
 variable "owner_list" {
@@ -158,19 +158,19 @@ variable "user_app_role" {
 }
 
 variable "azuread_service_principal_tags" {
-  type = list(string)
+  type        = list(string)
   description = "Common tags for AZ AD service principal"
-  default = [ "" ]
+  default     = [""]
 }
 
 variable "azuread_application_tags" {
-  type = list(string)
+  type        = list(string)
   description = "Common tags for AZ AD application"
-  default = [ "" ]
+  default     = [""]
 }
 
 variable "common_tags" {
-  type = list(string)
+  type        = list(string)
   description = "Common tags"
-  default = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
+  default     = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
