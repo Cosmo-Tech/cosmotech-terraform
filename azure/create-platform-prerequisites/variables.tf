@@ -137,6 +137,12 @@ variable "create_vnet" {
   default     = true
 }
 
+variable "create_secrets" {
+  description = "Create secret for application registrtations"
+  type        = bool
+  default     = true
+}
+
 variable "vnet_iprange" {
   description = "The Virtual Network IP range. Minimum /26 NetMaskLength"
   type        = string

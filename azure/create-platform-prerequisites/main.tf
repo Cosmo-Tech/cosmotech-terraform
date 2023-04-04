@@ -78,6 +78,7 @@ resource "azuread_service_principal" "platform" {
 
 resource "azuread_application_password" "platform_password" {
   display_name = "platform_secret"
+  count = var.create_secrets ? 1 : 0
   application_object_id = azuread_application.platform.object_id
   end_date_relative = "4464h"
 }
@@ -102,6 +103,7 @@ resource "azuread_service_principal" "network_adt" {
 
 resource "azuread_application_password" "network_adt_password" {
   display_name = "network_adt_secret"
+  count = var.create_secrets ? 1 : 0
   application_object_id = azuread_application.network_adt.object_id
   end_date_relative = "4464h"
 }
@@ -201,7 +203,7 @@ resource "azuread_service_principal" "restish" {
 
 resource "azuread_application_password" "restish_password" {
   display_name = "restish_secret"
-  count            = var.create_restish ? 1 : 0
+  count            = var.create_restish && var.create_secrets ? 1 : 0
   application_object_id = azuread_application.restish[0].object_id
   end_date_relative = "4464h"
 }
@@ -227,7 +229,7 @@ resource "azuread_service_principal" "powerbi" {
 
 resource "azuread_application_password" "powerbi_password" {
   display_name = "powerbi_secret"
-  count            = var.create_powerbi ? 1 : 0
+  count            = var.create_powerbi && var.create_secrets ? 1 : 0
   application_object_id = azuread_application.powerbi[0].object_id
   end_date_relative = "4464h"
 }
