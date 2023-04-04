@@ -27,15 +27,15 @@ resource "azuread_application" "platform" {
     }
   }
 
-  # web {
-  #   homepage_url  = var.platform_url
-  #   redirect_uris = ["${var.platform_url}/swagger-ui/oauth2-redirect.html"]
+  web {
+    homepage_url  = var.platform_url
+    redirect_uris = ["${var.platform_url}/swagger-ui/oauth2-redirect.html"]
 
-  #   implicit_grant {
-  #     access_token_issuance_enabled = true
-  #     id_token_issuance_enabled     = true
-  #   }
-  # }
+    implicit_grant {
+      access_token_issuance_enabled = true
+      id_token_issuance_enabled     = true
+    }
+  }
 
   api {
     requested_access_token_version = 2

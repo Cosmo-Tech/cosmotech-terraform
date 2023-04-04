@@ -95,11 +95,11 @@ output "out_ip_resource_group" {
 }
 
 output "out_fqdn" {
-  value = "${azurerm_dns_a_record.platform_fqdn[0].name}.${var.dns_zone_name}"
+ value = var.create_dnsrecord ? "${azurerm_dns_a_record.platform_fqdn[0].name}.${var.dns_zone_name}" : null
 }
 
 output "out_vnet" {
-  value = azurerm_virtual_network.platform_vnet[0].name
+  value = var.create_vnet ? azurerm_virtual_network.platform_vnet[0].name : null
 }
 
 output "out_vnet_resource_group" {
