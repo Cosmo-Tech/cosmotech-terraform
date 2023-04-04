@@ -95,19 +95,15 @@ output "out_ip_resource_group" {
 }
 
 output "out_fqdn" {
-<<<<<<< HEAD
  value = var.create_dnsrecord ? "${azurerm_dns_a_record.platform_fqdn[0].name}.${var.dns_zone_name}" : null
 }
 
 output "out_vnet" {
   value = var.create_vnet ? azurerm_virtual_network.platform_vnet[0].name : null
-=======
-  value = "${azurerm_dns_a_record.platform_fqdn[0].name}.${var.dns_zone_name}"
 }
 
 output "out_vnet" {
   value = azurerm_virtual_network.platform_vnet[0].name
->>>>>>> 9c62113 (Refacto create-platform-prerequisites (#5))
 }
 
 output "out_vnet_resource_group" {
