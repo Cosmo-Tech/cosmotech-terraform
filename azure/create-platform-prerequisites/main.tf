@@ -11,7 +11,7 @@ data "azuread_users" "owners" {
 # Azure AD
 resource "azuread_application" "platform" {
   display_name     = "${local.pre_name}Platform${local.post_name}"
-  identifier_uris   = [format("api://%s",application_id)]
+  identifier_uris   = [format("api://%s",platform.application_id)]
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
@@ -69,10 +69,6 @@ resource "azuread_application" "platform" {
   }
 }
 
-resource "azuread_application" "platform_identifier_uris" {
-  application_object_id = azuread_application.platform.application_id
- 
-}
 
 resource "azuread_service_principal" "platform" {
   application_id               = azuread_application.platform.application_id
