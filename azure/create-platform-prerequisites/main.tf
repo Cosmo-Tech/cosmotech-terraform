@@ -68,7 +68,7 @@ resource "azuread_application" "platform" {
   }
 }
 
-resource "azuread_application" "platform" {
+resource "azuread_application" "platform_identifier_uris" {
   application_object_id = azuread_application.platform.application_id
   identifier_uris   = [format("api://%s",azuread_application.platform.application_id)]
 }
