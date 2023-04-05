@@ -14,6 +14,7 @@ It will create theses azures resources and Application registration and specific
 - Azure public IP for the Cosmotech Platform
 - Role assignments for the Cosmotech Platform
 
+
 > **_NOTE:_**  These resources and role assignments can be created either fully manually, partially manually and partially with Terraform.
 
 By running this Terraform script, you can easily and efficiently create the required infrastructure for the Cosmotech AI simulation platform on Azure. The resources created by the script are essential components for running the platform and will ensure that the installation process is smooth and successful.
@@ -30,6 +31,7 @@ Before running the Terraform script, please ensure that you have an Azure accoun
 Once you have met these requirements, you can clone the Cosmotech AI simulation platform repository and navigate to the azure/create-platform-prerequisites. From there, you can run the Terraform script and wait for the resources to be created.
 
 If you prefer, you can also create the resources manually, either in part or in full. However, using Terraform ensures that the process is streamlined and reproducible, which can save time and reduce the risk of errors.
+
 
 You can use the connected Azure identity connected to your Azure CLI to run the script or an Azure Application registration.
 
@@ -89,6 +91,7 @@ Legend:
 
 `___**` : mandatory value any how you are running the terraform script
 
+
 ### Prerequisite to run in local
 
 - [ ] Clone `Cosmotech-terraform` Github repository `git clone https://github.com/Cosmo-Tech/cosmotech-terraform.git`
@@ -109,4 +112,8 @@ Legend:
 ## Run with terraform cloud
 
 
+Terraform cloud run require using of a service principals (Azure Application registration ) configured as seen for the local run. You have to set up the same variables.
+The new requirement is an terraform cloud Account.
+
+See more about Terraform Cloud : [What is Terraform Cloud](https://developer.hashicorp.com/terraform/cloud-docs)
 
