@@ -69,6 +69,7 @@ resource "azuread_application" "platform" {
       id   = "bb49d61f-8b6a-4a19-b5bd-06a29d6b8e60" # Platform Admin
       type = "Role"
     }
+  }
 }
 
 resource "azuread_service_principal" "platform" {
