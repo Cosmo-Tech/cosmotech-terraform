@@ -61,6 +61,14 @@ resource "azuread_application" "platform" {
       value = app_role.value.role_value
     }
   }
+
+  required_resource_access {
+    resource_app_id = azuread_application.platform.application_id # Cosmo Tech Platform
+
+    resource_access {
+      id   = "bb49d61f-8b6a-4a19-b5bd-06a29d6b8e60" # Platform Admin
+      type = "Role"
+    }
 }
 
 resource "azuread_service_principal" "platform" {
