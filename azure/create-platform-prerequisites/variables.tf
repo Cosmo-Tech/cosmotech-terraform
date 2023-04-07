@@ -28,13 +28,8 @@ variable "identifier_uri" {
   type        = string
 }
 
-<<<<<<< HEAD
 variable "project_stage" {
   description = "The Project stage"
-=======
-variable "stage" {
-  description = "The platform stage"
->>>>>>> 1fcc195 (input vars)
   type        = string
   validation {
     condition = contains([
