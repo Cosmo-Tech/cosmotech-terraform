@@ -11,7 +11,7 @@ data "azuread_users" "owners" {
 # Azure AD
 resource "azuread_application" "platform" {
   display_name     = "${local.pre_name}Platform${local.post_name}"
-  identifier_uris   = [var.identifier_uri]
+  identifier_uris  = var.identifier_uri != "" ? [var.identifier_uri] : null
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
@@ -68,7 +68,10 @@ resource "azuread_application" "platform" {
     }
   }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9c62113 (Refacto create-platform-prerequisites (#5))
 
 resource "azuread_service_principal" "platform" {
   application_id               = azuread_application.platform.application_id
@@ -92,7 +95,11 @@ resource "azuread_application" "network_adt" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
+<<<<<<< HEAD
   tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
+=======
+  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+>>>>>>> 9c62113 (Refacto create-platform-prerequisites (#5))
 }
 
 resource "azuread_service_principal" "network_adt" {
@@ -116,7 +123,11 @@ resource "azuread_application" "swagger" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
+<<<<<<< HEAD
   tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
+=======
+  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+>>>>>>> 9c62113 (Refacto create-platform-prerequisites (#5))
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -163,7 +174,11 @@ resource "azuread_application" "restish" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
+<<<<<<< HEAD
   tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
+=======
+  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+>>>>>>> 9c62113 (Refacto create-platform-prerequisites (#5))
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -217,7 +232,11 @@ resource "azuread_application" "powerbi" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
 
+<<<<<<< HEAD
   tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
+=======
+  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+>>>>>>> 9c62113 (Refacto create-platform-prerequisites (#5))
 }
 
 resource "azuread_service_principal" "powerbi" {
@@ -242,7 +261,11 @@ resource "azuread_application" "webapp" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
+<<<<<<< HEAD
   tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
+=======
+  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+>>>>>>> 9c62113 (Refacto create-platform-prerequisites (#5))
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph

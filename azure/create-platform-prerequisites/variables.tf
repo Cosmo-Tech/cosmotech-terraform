@@ -40,6 +40,8 @@ variable "project_stage" {
       "QA",
       "IA",
       "EA",
+      "Doc",
+      "Support",
       "Demo",
       "Prod",
       "Uat"

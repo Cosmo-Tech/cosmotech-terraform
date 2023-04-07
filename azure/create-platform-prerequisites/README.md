@@ -89,4 +89,24 @@ Legend:
 
 `___**` : mandatory value any how you are running the terraform script
 
+### Prerequisite to run in local
+
+- [ ] Clone `Cosmotech-terraform` Github repository `git clone https://github.com/Cosmo-Tech/cosmotech-terraform.git`
+- [ ] Create your own brach of the Github repository `git checkout -b my-own-branch`
+- [ ] Go to `azure/create-platform-prerequisites` repertory `cd azure/create-platform-prerequisites`
+- [ ] Ensure you have the right Azure AAD roles; we advise to have `Application Administrator`
+- [ ] Login throw Azure Cli `az login`
+- [ ] Edit file `terraform.tfvars` with required `___**` values
+
+> **_NOTE:_**  If your run the script with your connected Azure identity connected to your Azure CLI, don't add your id (email) in owner_list values
+
+- [ ] Init the terraform by running `terraform init`
+- [ ] Validate the terraform by running `terraform validate`
+- [ ] Plan the terraform by running `terraform plan`
+- [ ] End with applying the terraform by running `terraform apply`, reply `yes` for the terraform prompt to confirm Resources creation.
+
+
+## Run with terraform cloud
+
+
 
