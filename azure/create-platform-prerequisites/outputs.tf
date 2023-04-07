@@ -102,10 +102,6 @@ output "out_vnet" {
   value = var.create_vnet ? azurerm_virtual_network.platform_vnet[0].name : null
 }
 
-output "out_vnet" {
-  value = azurerm_virtual_network.platform_vnet[0].name
-}
-
 output "out_vnet_resource_group" {
   value = azurerm_resource_group.platform_rg.name
 }
