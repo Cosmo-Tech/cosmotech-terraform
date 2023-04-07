@@ -11,11 +11,7 @@ output "out_platform_clientid" {
 }
 
 output "out_platform_password" {
-<<<<<<< HEAD
   value = azuread_application_password.platform_password[0].value
-=======
-  value = azuread_application_password.platform_password.value
->>>>>>> 9c62113 (Refacto create-platform-prerequisites (#5))
   sensitive = true
 }
 
@@ -32,11 +28,7 @@ output "out_networkadt_clientid" {
 }
 
 output "out_network_adt_password" {
-<<<<<<< HEAD
   value = azuread_application_password.network_adt_password[0].value
-=======
-  value = azuread_application_password.network_adt_password.value
->>>>>>> 9c62113 (Refacto create-platform-prerequisites (#5))
   sensitive = true
 }
 
