@@ -1,42 +1,40 @@
-# Cosmotech Platform Azure Prerequisite Terraform
+# Cosmo Tech Platform Azure Prerequisite Terraform
 
-This documentation describes the Azure prerequisite infrastructure needed to install the Cosmotech AI simulation platform using Terraform. The Terraform script creates several Azure resources, as well as application registrations and specific Cosmotech AI simulation platform roles. The following is a list of the resources that will be created:
+This documentation describes the Azure prerequisite infrastructure needed to install the Cosmo Tech AI Simulation Platform using Terraform. The Terraform script creates several Azure resources, as well as app registrations and specific Cosmo Tech AI Simulation Platform roles. The following is a list of the resources that will be created:
 
-It will create theses azures resources, Azure Active Directory Application and specific Cosmotech AI simulation platform Azure Active Directory roles. See full list aof theses elements bellow.
-
-- Azure Active Directory Application for the Cosmotech Platform
-- Azure Active Directory Application for Azure digital twin Network
-- Azure Active Directory Application for Cosmotech API Swagger Web interface
+- Azure Active Directory Application for the Cosmo Tech Platform
+- Azure Active Directory Application for Network and Azure Digital Twins
+- Azure Active Directory Application for Cosmo Tech API Swagger UI
 - Azure Active Directory Application for Restish
-- Azure Active Directory Application for Webapp Application
+- Azure Active Directory Application for WebApp
 - Azure Virtual Network for AKS
 - Azure DNS record
-- Azure public IP for the Cosmotech Platform
-- Role assignments for the Cosmotech Platform
+- Azure public IP for the Cosmo Tech Platform
+- Role assignments for the Cosmo Tech Platform
 
 
-> **_NOTE:_**  These resources and role assignments can be created either fully manually, partially manually and partially with Terraform.
-
-By running this Terraform script, you can easily and efficiently create the required infrastructure for the Cosmotech AI simulation platform on Azure. The resources created by the script are essential components for running the platform and will ensure that the installation process is smooth and successful.
-
-There is two option to run this Terraform script :
+There are two options to run this Terraform script :
 
 - Using terraform cli in your local machine
 - Using terraform cloud
 
 ## Run in local
 
-Before running the Terraform script, please ensure that you have an Azure account and have configured the necessary credentials. You will also need to install Terraform on your machine.
+There are two authentication modes for runnning the Terraform script in local:
 
-Once you have met these requirements, you can clone the Cosmotech AI simulation platform repository and navigate to the azure/create-platform-prerequisites. From there, you can run the Terraform script and wait for the resources to be created.
+### Option 1: Azure user identity
 
-If you prefer, you can also create the resources manually, either in part or in full. However, using Terraform ensures that the process is streamlined and reproducible, which can save time and reduce the risk of errors.
+- Connect to Azure CLI with az login OR ...
+- Install Terraform on your machine
+- Have the following Assigned roles on Active Directory:
+  - Application Administrator
+  - Groups Administrator
+- Subscription Owner
 
+Once you have met these requirements, you can clone the github.com/Cosmo-Tech/cosmotech-terraform repository and navigate to the azure/create-platform-prerequisites. From there, you can run the Terraform script and wait for the resources to be created.
 
-You can use the connected Azure identity connected to your Azure CLI to run the script or an Azure Application registration.
-
-
-It's important to note that you will need to have the necessary permissions to create Azure resources, application registrations, roles, and role assignments :
+### Option 2: Azure App registration
+Create an app registration for Terrafom with the following API permissions:
 
 * [Azure Active Directory for the Terraform azuread provider.](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/guides/service_principal_client_secret) to create Azure application registration, roles and role assignments in Azure Active Directory
 
