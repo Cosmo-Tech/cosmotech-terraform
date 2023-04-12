@@ -2,7 +2,7 @@
 
 This documentation describes the Azure prerequisite infrastructure needed to install the Cosmotech AI simulation platform using Terraform. The Terraform script creates several Azure resources, as well as application registrations and specific Cosmotech AI simulation platform roles. The following is a list of the resources that will be created:
 
-It will create theses azures resources and Application registration and specific Cosmotech AI simulation platform roles. See full list aof theses elements bellow.
+It will create theses azures resources, Azure Active Directory Application and specific Cosmotech AI simulation platform Azure Active Directory roles. See full list aof theses elements bellow.
 
 - Azure Active Directory Application for the Cosmotech Platform
 - Azure Active Directory Application for Azure digital twin Network
