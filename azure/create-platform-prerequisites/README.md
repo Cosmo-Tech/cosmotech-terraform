@@ -84,20 +84,20 @@ To grant this iam permission to the app registration, go `subscription` >> `acce
 | **dns_record**                     | **The DNS zone name to create platform subdomain. Example: myplatform****            | String       | false |                     | projectname                                   |
 | **create_vnet**                    | Create the Virtual Network for AKS ?                                                 | bool         | false | true                |                                               |
 | **create_secrets**                 | Create secrets for Azure Active Directory Applications ?                             | bool         | false | true                |                                               |
-| **vnet_iprange**                   | **The Virtual Network IP range. Minimum /26 NetMaskLength****                        | String       | false |                     |                                               |
+| **vnet_iprange**                   | **The Virtual Network IP range****                                                   | String       | false |                     | 10.48.0.0/26                                  |
 | **api_version_path**               | The API version path (Ex: /v2/)                                                      | String       | false | "/"                 | /v2/                                          |
 | **azuread_service_principal_tags** | Tags for AZ AD service principal                                                     | list[String] | true  |                     | ["AI","Simulation"]                           |
 | **azuread_application_tags**       | Common tags for AZ AD application                                                    | list[String] | true  |                     | ["AI","Simulation"]                           |
 | **common_tags**                    | Common tags for AZ AD service principal                                              | list[String] | true  | Yes                 | ["AI","Simulation"]                           |
 
 
-Legend:
+Legend:s
 
 `*____` : required values to run the scrip with a service principals (Azure Application registration )
 
 `___**` : mandatory value any how you are running the terraform script
 
-The variables witch are listed in thic doc and have default values are optionals and their values can be override in the `terraform.tfvars` file. Example to set create_powerbi to false, add the following line in the `terraform.tfvars` file:
+The variables witch are listed above and have default values are optionals and their values can be override in the `terraform.tfvars` file. Example to set create_powerbi to false, add the following line in the `terraform.tfvars` file:
 
 ```hcl
 create_powerbi = false
@@ -139,6 +139,7 @@ The new requirement is an terraform cloud Account.
 - [ ] Fill the `Terraform Variables` with required `___**` values
 - [ ] Start a new run on the workspace
 
+The output of the terraform cloud workspace will be the Azure Active Directory Application ID and the Azure Active Directory Application Secret, inspet the output file ```terraform.tfstate``` to get theses values.
 
 See more about Terraform Cloud : [What is Terraform Cloud](https://developer.hashicorp.com/terraform/cloud-docs)
 
