@@ -2,3 +2,4 @@
 *.auto.tfvars
 azure/create-platform-prerequisites/terraform.tfstate
 azure/create-platform-prerequisites/terraform.tfstate.backup
+azure/create-platform-prerequisites/.terraform.lock.hcl
