@@ -239,6 +239,7 @@ resource "azuread_application" "webapp" {
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
+  count            = var.create_webapp ? 1 : 0
 
   tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
 
@@ -266,7 +267,7 @@ resource "azuread_application" "webapp" {
 }
 
 resource "azuread_service_principal" "webapp" {
-  depends_on                   = [azuread_service_principal.powerbi]
+  depends_on                   = [azuread_service_principal.webapp]
   application_id               = azuread_application.webapp.application_id
   app_role_assignment_required = false
 

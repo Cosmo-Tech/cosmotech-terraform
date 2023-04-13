@@ -93,6 +93,12 @@ variable "create_powerbi" {
   default     = true
 }
 
+variable "create_webapp" {
+  description = "Create the Azure Active Directory Application for WebApp"
+  type        = bool
+  default     = true
+}
+
 variable "location" {
   description = "The Azure location"
   default     = "West Europe"

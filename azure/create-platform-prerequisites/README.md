@@ -65,15 +65,16 @@ To grant this iam permission to the app registration, go `subscription` >> `acce
 | **tenant_id**                      | ***The customer tenant id**                                                          | String       | false |                     |                                               |
 | **subscription_id**                | ***The customer tenant id**                                                          | String       | false |                     |                                               |
 | **client_id**                      | ***The application registration created to run terraform object id**                 | String       | false |                     |                                               |
-| **client_secret**                  | **The application registration secret value**                                        | String       | false |                     | https://lab.api.cosmo-platform.com            |
-| **platform_url**                   | **The Cosmotech Platform API Url****                                                 | String       | false |                     |                                               |
+| **client_secret**                  | **The application registration secret value**                                        | String       | false |                     |                                               |
+| **platform_url**                   | **The Cosmotech Platform API Url****                                                 | String       | false |                     | https://lab.api.cosmo-platform.com            |
 | **project_stage**                  | **The project stage (Dev, Prod, QA,...)****                                          | String       | false |                     |                                               |
 | **customer_name**                  | **The Customer name****                                                              | String       | false |                     |                                               |
 | **project_name**                   | **The Project name****                                                               | String       | false |                     |                                               |
 | **owner_list**                     | **The list of AAD user list witch will be owner of the deployment resource group**** | list[String] | true  |                     | ["user.foo@mail.com"]                         |
 | **audience**                       | The App Registration audience type                                                   | String       | false | AzureADMultipleOrgs |                                               |
-| **webapp_url**                     | The Web Application URL                                                              | String       | false |                     | https://webapp-lab.project.cosmo-platform.com |
+| **webapp_url**                     | **The Web Application URL****                                                        | String       | false |                     | https://project.cosmo-platform.com            |
 | **create_restish**                 | Create the Azure Active Directory Application for Restish ?                          | bool         | false | true                |                                               |
+| **create_webapp**                  | Create the Azure Active Directory Application for Webapp ?                           | bool         | false | true                |                                               |
 | **create_powerbi**                 | Create the Azure Active Directory Application for Power BI ?                         | bool         | false | true                |                                               |
 | **resource_group**                 | **The resource group to use for the platform deployment****                          | String       | false |                     | rg-myrg (Should be a new resource group name) |
 | **create_publicip**                | Create the public IP for the platform ?                                              | bool         | false | true                |                                               |
@@ -96,6 +97,11 @@ Legend:
 
 `___**` : mandatory value any how you are running the terraform script
 
+The variables witch are listed in thic doc and have default values are optionals and their values can be override in the `terraform.tfvars` file. Example to set create_powerbi to false, add the following line in the `terraform.tfvars` file:
+
+```hcl
+create_powerbi = false
+```
 
 ### Prerequisite to run in local
 
