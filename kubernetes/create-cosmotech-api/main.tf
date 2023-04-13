@@ -11,17 +11,19 @@ locals {
     "COSMOTECH_API_INGRESS_ENABLED" = var.cosmotech_api_ingress_enabled
     "COSMOTECH_API_DNS_NAME"        = var.api_dns_name
     "API_VERSION"                   = var.cosmotech_api_version
-    "SOLUTIONS" = var.solutions
-    "COSMOS_KEY" = var.cosmos_key
-    "COSMOS_URI" = var.cosmos_uri
-    "CLIENT_ID" = var.client_id
-    "CLIENT_SECRET" = var.client_secret
-    "TENANT_ID" = var.tenant_id
-    "ADX_URI" = var.adx_uri
-    "ADX_INGESTION_URI" = var.adx_ingestion_uri
-    "EVENTBUS_URI" = var.eventbus_uri
-    "STORAGE_ACCOUNT_KEY" = var.storage_account_key
-    "STORAGE_ACCOUNT_NAME" = var.storage_account_name
+    "ACR_LOGIN_PASSWORD"            = var.acr_login_password
+    "ACR_LOGIN_SERVER"              = var.acr_login_server
+    "ACR_LOGIN_USERNAME"            = var.acr_login_username
+    "COSMOS_KEY"                    = var.cosmos_key
+    "COSMOS_URI"                    = var.cosmos_uri
+    "CLIENT_ID"                     = var.client_id
+    "CLIENT_SECRET"                 = var.client_secret
+    "TENANT_ID"                     = var.tenant_id
+    "ADX_URI"                       = var.adx_uri
+    "ADX_INGESTION_URI"             = var.adx_ingestion_uri
+    "EVENTBUS_URI"                  = var.eventbus_uri
+    "STORAGE_ACCOUNT_KEY"           = var.storage_account_key
+    "STORAGE_ACCOUNT_NAME"          = var.storage_account_name
   }
 }
 

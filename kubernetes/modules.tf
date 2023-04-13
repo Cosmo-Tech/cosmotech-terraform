@@ -84,6 +84,19 @@ module "create-cosmotech-api" {
   api_dns_name         = var.api_dns_name
   tls_secret_name      = var.tls_secret_name
   redis_admin_password = random_password.redis_admin_password.result
+  acr_login_password   = var.acr_login_password
+  acr_login_server     = var.acr_login_server
+  acr_login_username   = var.acr_login_username
+  cosmos_key           = var.cosmos_key
+  cosmos_uri           = var.cosmos_uri
+  adx_uri              = var.adx_uri
+  adx_ingestion_uri    = var.adx_ingestion_uri
+  eventbus_uri         = var.eventbus_uri
+  storage_account_key  = var.storage_account_key
+  storage_account_name = var.storage_account_name
+  client_id            = var.client_id
+  client_secret        = var.client_secret
+  tenant_id            = var.tenant_id
 
   depends_on = [
     module.create-argo

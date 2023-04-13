@@ -5,7 +5,11 @@ api:
 image:
   repository: ghcr.io/cosmo-tech/cosmotech-api
   tag: ${CHART_PACKAGE_VERSION}
-
+argo:
+  imageCredentials:
+    password: ${ACR_LOGIN_PASSWORD}
+    registry: ${ACR_LOGIN_SERVER}
+    username: ${ACR_LOGIN_USERNAME}
 config:
   api:
     serviceMonitor:
@@ -21,7 +25,7 @@ config:
           service-account-name: ${ARGO_SERVICE_ACCOUNT}
       azure:
         containerRegistries:
-          solutions: ${SOLUTIONS}
+          solutions: ${ACR_LOGIN_SERVER}
         cosmos:
           key: ${COSMOS_KEY}
           uri: ${COSMOS_URI}

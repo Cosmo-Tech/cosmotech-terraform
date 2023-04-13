@@ -6,6 +6,18 @@ variable "monitoring_namespace" {
   type = string
 }
 
+variable "client_id" {
+  type = string
+}
+
+variable "client_secret" {
+  type = string
+}
+  
+variable "tenant_id" {
+  type = string
+}
+
 variable "api_dns_name" {
   type = string
 }
@@ -15,6 +27,46 @@ variable "tls_secret_name" {
 }
 
 variable "redis_admin_password" {
+  type = string
+}
+
+variable "acr_login_password" {
+  type = string
+}
+
+variable "acr_login_server" {
+  type = string
+}
+
+variable "acr_login_username" {
+  type = string
+}
+
+variable "cosmos_key" {
+  type = string
+}
+  
+variable "cosmos_uri" {
+  type = string
+}
+
+variable "adx_uri" {
+  type = string
+}
+
+variable "adx_ingestion_uri" {
+  type = string  
+}
+
+variable "eventbus_uri" {
+  type = string
+}
+
+variable "storage_account_key" {
+  type = string
+}
+
+variable "storage_account_name" {
   type = string
 }
 

@@ -64,6 +64,46 @@ variable "ingress_nginx_version" {
   default = "4.2.1"
 }
 
+variable "acr_login_password" {
+  type = string
+}
+
+variable "acr_login_server" {
+  type = string
+}
+
+variable "acr_login_username" {
+  type = string
+}
+
+variable "cosmos_key" {
+  type = string
+}
+
+variable "cosmos_uri" {
+  type = string
+}
+
+variable "adx_uri" {
+  type = string
+}
+
+variable "adx_ingestion_uri" {
+  type = string
+}
+
+variable "eventbus_uri" {
+  type = string
+}
+
+variable "storage_account_key" {
+  type = string
+}
+
+variable "storage_account_name" {
+  type = string
+}
+
 # variable "redis_admin_password" {
 #   type = string
 # }
