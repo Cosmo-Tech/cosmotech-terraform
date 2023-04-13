@@ -11,7 +11,7 @@ output "out_platform_clientid" {
 }
 
 output "out_platform_password" {
-  value = azuread_application_password.platform_password[0].value
+  value     = azuread_application_password.platform_password[0].value
   sensitive = true
 }
 
@@ -19,7 +19,7 @@ output "out_nerworkadt_name" {
   value = azuread_application.network_adt.display_name
 }
 
-output "out_networkadt_sp_objectid"  {
+output "out_networkadt_sp_objectid" {
   value = azuread_service_principal.network_adt.object_id
 }
 
@@ -28,7 +28,7 @@ output "out_networkadt_clientid" {
 }
 
 output "out_network_adt_password" {
-  value = azuread_application_password.network_adt_password[0].value
+  value     = azuread_application_password.network_adt_password[0].value
   sensitive = true
 }
 
@@ -49,7 +49,7 @@ output "out_swagger_clientid" {
 }
 
 output "out_restish_password" {
-  value = azuread_application_password.restish_password[0].value
+  value     = azuread_application_password.restish_password[0].value
   sensitive = true
 }
 
@@ -70,7 +70,7 @@ output "out_powerbi_clientid" {
 }
 
 output "out_powerbi_password" {
-  value = azuread_application_password.powerbi_password[0].value
+  value     = azuread_application_password.powerbi_password[0].value
   sensitive = true
 }
 
@@ -95,7 +95,7 @@ output "out_ip_resource_group" {
 }
 
 output "out_fqdn" {
- value = var.create_dnsrecord ? "${azurerm_dns_a_record.platform_fqdn[0].name}.${var.dns_zone_name}" : null
+  value = var.create_dnsrecord ? "${azurerm_dns_a_record.platform_fqdn[0].name}.${var.dns_zone_name}" : null
 }
 
 output "out_vnet" {

@@ -1,6 +1,6 @@
 locals {
-  pre_name = "Cosmo Tech "
-  post_name = " ${var.project_stage} For ${var.customer_name} ${var.project_name}"
+  pre_name    = "Cosmo Tech "
+  post_name   = " ${var.project_stage} For ${var.customer_name} ${var.project_name}"
   subnet_name = "default"
 }
 
@@ -48,7 +48,7 @@ resource "azuread_application" "platform" {
       user_consent_description   = "Allow the application to use the Cosmo Tech Platform with your account"
       user_consent_display_name  = "Cosmo Tech Platform Usage"
       value                      = "platform"
-		}
+    }
   }
 
   dynamic "app_role" {
@@ -59,18 +59,18 @@ resource "azuread_application" "platform" {
       allowed_member_types = [
         "User",
         "Application"
-        ]
-      description = app_role.value.description
+      ]
+      description  = app_role.value.description
       display_name = app_role.value.display_name
-      id = app_role.value.id
-      enabled = true
-      value = app_role.value.role_value
+      id           = app_role.value.id
+      enabled      = true
+      value        = app_role.value.role_value
     }
   }
 }
 
 resource "azuread_service_principal" "platform" {
-  application_id               = azuread_application.platform.application_id
+  application_id = azuread_application.platform.application_id
   # assignment required to secure Function Apps using thi App Registration as identity provider
   app_role_assignment_required = true
 
@@ -78,10 +78,10 @@ resource "azuread_service_principal" "platform" {
 }
 
 resource "azuread_application_password" "platform_password" {
-  display_name = "platform_secret"
-  count = var.create_secrets ? 1 : 0
+  display_name          = "platform_secret"
+  count                 = var.create_secrets ? 1 : 0
   application_object_id = azuread_application.platform.object_id
-  end_date_relative = "4464h"
+  end_date_relative     = "4464h"
 }
 
 
@@ -90,7 +90,7 @@ resource "azuread_application" "network_adt" {
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
-  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
+  tags             = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
 }
 
 resource "azuread_service_principal" "network_adt" {
@@ -102,10 +102,10 @@ resource "azuread_service_principal" "network_adt" {
 }
 
 resource "azuread_application_password" "network_adt_password" {
-  display_name = "network_adt_secret"
-  count = var.create_secrets ? 1 : 0
+  display_name          = "network_adt_secret"
+  count                 = var.create_secrets ? 1 : 0
   application_object_id = azuread_application.network_adt.object_id
-  end_date_relative = "4464h"
+  end_date_relative     = "4464h"
 }
 
 resource "azuread_application" "swagger" {
@@ -160,7 +160,7 @@ resource "azuread_application" "restish" {
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
-  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
+  tags             = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
 
 
   required_resource_access {
@@ -194,7 +194,7 @@ resource "azuread_application" "restish" {
 
 resource "azuread_service_principal" "restish" {
   depends_on                   = [azuread_service_principal.swagger]
-  count            = var.create_restish ? 1 : 0
+  count                        = var.create_restish ? 1 : 0
   application_id               = azuread_application.restish[0].application_id
   app_role_assignment_required = false
 
@@ -202,10 +202,10 @@ resource "azuread_service_principal" "restish" {
 }
 
 resource "azuread_application_password" "restish_password" {
-  display_name = "restish_secret"
-  count            = var.create_restish && var.create_secrets ? 1 : 0
+  display_name          = "restish_secret"
+  count                 = var.create_restish && var.create_secrets ? 1 : 0
   application_object_id = azuread_application.restish[0].object_id
-  end_date_relative = "4464h"
+  end_date_relative     = "4464h"
 }
 
 resource "azuread_application" "powerbi" {
@@ -214,13 +214,13 @@ resource "azuread_application" "powerbi" {
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
-  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
+  tags             = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
 
 }
 
 resource "azuread_service_principal" "powerbi" {
   depends_on                   = [azuread_service_principal.restish]
-  count            = var.create_powerbi ? 1 : 0
+  count                        = var.create_powerbi ? 1 : 0
   application_id               = azuread_application.powerbi[0].application_id
   app_role_assignment_required = false
 
@@ -228,10 +228,10 @@ resource "azuread_service_principal" "powerbi" {
 }
 
 resource "azuread_application_password" "powerbi_password" {
-  display_name = "powerbi_secret"
-  count            = var.create_powerbi && var.create_secrets ? 1 : 0
+  display_name          = "powerbi_secret"
+  count                 = var.create_powerbi && var.create_secrets ? 1 : 0
   application_object_id = azuread_application.powerbi[0].object_id
-  end_date_relative = "4464h"
+  end_date_relative     = "4464h"
 }
 
 resource "azuread_application" "webapp" {

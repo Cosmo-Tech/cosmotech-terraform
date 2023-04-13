@@ -24,7 +24,7 @@ There are two authentication modes for runnning the Terraform script in local:
 
 ### Option 1: Azure user identity
 
-- Connect to Azure CLI with az login OR ...
+- Connect to Azure CLI with `az login`
 - Install Terraform on your machine
 - Have the following Assigned roles on Active Directory:
   - Application Administrator
