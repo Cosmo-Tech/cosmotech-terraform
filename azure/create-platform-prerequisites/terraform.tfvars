@@ -13,7 +13,7 @@
   dns_zone_rg = ""
   dns_record = ""
   vnet_iprange = ""
-  user_user_app_role = [ {
+  user_app_role = [ {
     description = "Workspace Writer",
     display_name = "Workspace Writer",
     id = "3f7ba86c-9940-43c8-a54d-0bfb706da136",
