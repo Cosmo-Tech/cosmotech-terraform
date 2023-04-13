@@ -34,7 +34,8 @@ There are two authentication modes for runnning the Terraform script in local:
 Once you have met these requirements, you can clone the github.com/Cosmo-Tech/cosmotech-terraform repository and navigate to the azure/create-platform-prerequisites. From there, you can run the Terraform script and wait for the resources to be created.
 
 ### Option 2: Azure App registration
-Create an app registration for Terrafom with the following API permissions:
+
+Create an app registration for Terraform with the following API permissions:
 
 * [Azure Active Directory for the Terraform azuread provider.](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/guides/service_principal_client_secret) to create Azure application registration, roles and role assignments in Azure Active Directory
 
@@ -44,9 +45,15 @@ Create an app registration for Terrafom with the following API permissions:
 
 ** `User.ReadAll`
 
+To give these API permissions to the app registration, go to `API Permission` >> `Add a permission` >> `Azure Active Directory Graph` >> `Application.ReadWrite.All` >> `Delegated Permissions` >> `Add permissions` repeat the same for `Group.ReadWrite.All`
+
+Then you have to grant admin consent for the app registration, go to `API Permission` >> `Grant admin consent for <your tenant name>` >> `Yes`
+
 * [Azure subscription for the Terraform azurerm provider.](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret) :  to create Azure resources :
 
 ** `Subscription Owner`
+
+To grant this iam permission to the app registration, go `subscription` >> `access control (IAM)` >> `Add` >> `Add role assignment` >> `Owner` >> Choose your app registration name >> `Select` >> `Save`
 
 > **_NOTE:_**  Cloud Application Administrator or Application Administrator, for granting consent for apps requesting any permission for any API, except Azure AD Graph or Microsoft Graph app roles (application permissions) such as User.ReadAll. It means that you can't grand admin consent on Active Directory Application witch have Microsoft Graph app roles if your don't have the role Global Admin in the tenant.
 
@@ -113,5 +120,29 @@ Legend:
 Terraform cloud run require using of a service principals (Azure Application registration ) configured as seen for the local run. You have to set up the same variables.
 The new requirement is an terraform cloud Account.
 
+- [ ] Create a terraform cloud account
+- [ ] Clone `Cosmotech-terraform` Github repository `git clone https://github.com/Cosmo-Tech/cosmotech-terraform.git`
+- [ ] Create your own brach of the Github repository `git checkout -b my-own-branch`
+- [ ] Create a new workspace in terraform cloud
+- [ ] Choose `Version control workflow` and select `Github`
+- [ ] Select your Github account and the repository `Cosmotech-terraform`
+- [ ] Select the branch `my-own-branch`
+- [ ] Select the repertory `azure/create-platform-prerequisites`
+- [ ] Select `Terraform v1.3.9` as terraform version
+- [ ] Set the `terraform.tfvars` file as `Terraform Variables`
+- [ ] Fill the `Terraform Variables` with required `___**` values
+- [ ] Start a new run on the workspace
+
+
 See more about Terraform Cloud : [What is Terraform Cloud](https://developer.hashicorp.com/terraform/cloud-docs)
+
+## Post deployment manual actions
+
+### Azure Active Directory Application
+
+After the deployment, you have to grant admin consent for the Azure Active Directory Application created by the terraform script.
+
+Go to Azure Portal and select the Azure Active Directory Application created by the terraform script, then select `API Permissions` and `Grant admin consent for <your tenant name>`.
+
+You also need to add required identifier URI for the Azure Active Directory Application created by the terraform script. Go to Azure Portal and select the Azure Active Directory Application created by the terraform script, then in overview tab, select `Add a Redirect URI` and add the following URI: `api://<the created app id>`.
 
