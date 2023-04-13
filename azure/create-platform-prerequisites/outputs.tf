@@ -62,7 +62,7 @@ output "out_restish_clientid" {
 }
 
 output "out_powerbi_name" {
-  value = azuread_application.powerbi[0].display_name
+  value = var.create_powerbi ? azuread_application.powerbi[0].display_name : null
 }
 
 output "out_powerbi_clientid" {
@@ -75,11 +75,11 @@ output "out_powerbi_password" {
 }
 
 output "out_webapp_name" {
-  value = azuread_application.webapp.display_name
+  value = var.create_webapp ? azuread_application.webapp[0].display_name : null
 }
 
 output "out_webapp_clientid" {
-  value = var.create_webapp ? azuread_application.webapp.application_id : null
+  value = var.create_webapp ? azuread_application.webapp[0].application_id : null
 }
 
 output "out_public_ip" {
