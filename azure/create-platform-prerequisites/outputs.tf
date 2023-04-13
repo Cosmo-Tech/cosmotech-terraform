@@ -49,7 +49,7 @@ output "out_swagger_clientid" {
 }
 
 output "out_restish_password" {
-  value     = azuread_application_password.restish_password[0].value
+  value     = var.create_secrets ? azuread_application_password.restish_password[0].value : null
   sensitive = true
 }
 
