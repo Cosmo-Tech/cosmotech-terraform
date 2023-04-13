@@ -11,7 +11,7 @@ output "out_platform_clientid" {
 }
 
 output "out_platform_password" {
-  value     = azuread_application_password.platform_password[0].value
+  value     = var.create_secrets ? azuread_application_password.platform_password[0].value : null
   sensitive = true
 }
 
@@ -28,7 +28,7 @@ output "out_networkadt_clientid" {
 }
 
 output "out_network_adt_password" {
-  value     = azuread_application_password.network_adt_password[0].value
+  value     = var.create_secrets ? azuread_application_password.network_adt_password[0].value : null
   sensitive = true
 }
 
@@ -66,11 +66,11 @@ output "out_powerbi_name" {
 }
 
 output "out_powerbi_clientid" {
-  value = azuread_application.powerbi[0].application_id
+  value = var.create_powerbi ? azuread_application.powerbi[0].application_id : null
 }
 
 output "out_powerbi_password" {
-  value     = azuread_application_password.powerbi_password[0].value
+  value     = var.create_powerbi && var.create_secrets ? azuread_application_password.powerbi_password[0].value : null
   sensitive = true
 }
 
@@ -79,7 +79,7 @@ output "out_webapp_name" {
 }
 
 output "out_webapp_clientid" {
-  value = azuread_application.webapp.application_id
+  value = var.create_webapp ? azuread_application.webapp.application_id : null
 }
 
 output "out_public_ip" {
