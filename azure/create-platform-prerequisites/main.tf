@@ -268,7 +268,7 @@ resource "azuread_application" "webapp" {
 
 resource "azuread_service_principal" "webapp" {
   depends_on                   = [azuread_service_principal.webapp]
-  application_id               = azuread_application.webapp.application_id
+  application_id               = azuread_application.webapp[0].application_id
   app_role_assignment_required = false
 
   tags = ["cosmotech", var.project_stage, var.customer_name, var.project_name, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
