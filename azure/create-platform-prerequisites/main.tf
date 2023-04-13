@@ -270,6 +270,7 @@ resource "azuread_service_principal" "webapp" {
   depends_on                   = [azuread_service_principal.webapp]
   application_id               = azuread_application.webapp[0].application_id
   app_role_assignment_required = false
+  count                        = var.create_webapp ? 1 : 0
 
   tags = ["cosmotech", var.project_stage, var.customer_name, var.project_name, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
