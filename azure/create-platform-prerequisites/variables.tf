@@ -42,7 +42,7 @@ variable "project_stage" {
       "Support",
       "Demo",
       "Prod",
-      "Uat"
+      "PreProd"
     ], var.project_stage)
     error_message = "Stage must be either: OnBoarding, Dev, QA, IA, EA, Demo, Prod, Uat."
   }
