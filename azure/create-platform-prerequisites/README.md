@@ -86,7 +86,7 @@ Once you have met these requirements, you can clone the github.com/Cosmo-Tech/co
 - [ ] Go to `azure/create-platform-prerequisites` repertory `cd azure/create-platform-prerequisites`
 - [ ] Ensure you have the right Azure AAD roles; we advise to have `Application Administrator`
 - [ ] Login throw Azure Cli `az login`
-- [ ] Edit file `terraform.tfvars` with required `___**` values
+- [ ] Edit file `terraform.tfvars` with mandatory values
 
 > **_NOTE:_**  In some cases when you run the script with your connected Azure identity connected to your Azure CLI, don't add your id (email) in owner_list values
 
@@ -133,7 +133,7 @@ To grant this IAM permission to the app registration, go `subscription` >> `acce
 - [ ] Create your own Azure App registration with the right Azure AAD roles
 - [ ] Add a secret to your Azure App registration
 - [ ] Set the following environment variables with the values of your Azure App registration or set `*__` values in `terraform.tfvars` file
-- [ ] Edit file `terraform.tfvars` with required `___**` values
+- [ ] Edit file `terraform.tfvars` with mandatory values
 
 > **_NOTE:_**  If you run the script with your connected Azure identity connected to your Azure CLI, don't add your id (email) in owner_list values
 
