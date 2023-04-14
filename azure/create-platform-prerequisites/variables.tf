@@ -21,17 +21,15 @@ variable "client_secret" {
 variable "platform_url" {
   description = "The platform url"
   type        = string
-  default = ""
 }
 
 variable "identifier_uri" {
   description = "The platform identifier uri"
   type        = string
-  default = ""
 }
 
-variable "stage" {
-  description = "The platform stage"
+variable "project_stage" {
+  description = "The Project stage"
   type        = string
   validation {
     condition = contains([
@@ -40,22 +38,24 @@ variable "stage" {
       "QA",
       "IA",
       "EA",
+      "Doc",
+      "Support",
       "Demo",
-      "Prod"
-    ], var.stage)
-    error_message = "Stage must be either: OnBoarding, Dev, QA, IA, EA, Demo, Prod."
+      "Prod",
+      "PreProd"
+    ], var.project_stage)
+    error_message = "Stage must be either: OnBoarding, Dev, QA, IA, EA, Demo, Prod, PreProd, Doc, Support."
   }
 }
 
-variable "customer" {
+variable "customer_name" {
   description = "The customer name"
   type        = string
 }
 
-variable "project" {
+variable "project_name" {
   description = "The project name"
   type        = string
-  default = ""
 }
 
 variable "owner_list" {
@@ -76,6 +76,11 @@ variable "audience" {
   default = "AzureADMultipleOrgs"
 }
 
+variable "location" {
+  description = "The Azure location"
+  default     = "West Europe"
+}
+
 variable "webapp_url" {
   description = "The Web Application URL"
   type        = string
@@ -93,14 +98,10 @@ variable "create_powerbi" {
   default     = true
 }
 
-variable "location" {
-  description = "The Azure location"
-  default     = "West Europe"
-}
-
-variable "resource_group" {
-  description = "Resource group to create which will contain created Azure resources"
-  type        = string
+variable "create_webapp" {
+  description = "Create the Azure Active Directory Application for WebApp"
+  type        = bool
+  default     = true
 }
 
 variable "create_publicip" {
@@ -111,6 +112,23 @@ variable "create_publicip" {
 
 variable "create_dnsrecord" {
   description = "Create the DNS record"
+  type        = bool
+  default     = true
+}
+
+variable "resource_group" {
+  description = "Resource group to create which will contain created Azure resources"
+  type        = string
+}
+
+variable "create_vnet" {
+  description = "Create the Virtual Network for AKS"
+  type        = bool
+  default     = true
+}
+
+variable "create_secrets" {
+  description = "Create secret for application registrtations"
   type        = bool
   default     = true
 }
@@ -128,12 +146,6 @@ variable "dns_zone_rg" {
 variable "dns_record" {
   description = "The DNS zone name to create platform subdomain. Example: myplatform"
   type        = string
-}
-
-variable "create_vnet" {
-  description = "Create the Virtual Network for AKS"
-  type        = bool
-  default     = true
 }
 
 variable "vnet_iprange" {
@@ -155,22 +167,4 @@ variable "user_app_role" {
     role_value   = string
   }))
   description = "App role for azuread_application"
-}
-
-variable "azuread_service_principal_tags" {
-  type = list(string)
-  description = "Common tags for AZ AD service principal"
-  default = [ "" ]
-}
-
-variable "azuread_application_tags" {
-  type = list(string)
-  description = "Common tags for AZ AD application"
-  default = [ "" ]
-}
-
-variable "common_tags" {
-  type = list(string)
-  description = "Common tags"
-  default = [ "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
