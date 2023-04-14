@@ -7,13 +7,11 @@ This documentation describes the Azure prerequisite infrastructure needed to ins
 - Azure Active Directory Application for Network and Azure Digital Twins
   - IAM roles : `Azure Digital Twins Data Owner` on Azure Digital Twins and `Network Contributor` on the Virtual Network
 - Azure Active Directory Application for Cosmo Tech API Swagger UI
-  - API permissions : `platform` Delegate on Cosmo Tech Platform API
+  - API permissions : Delegated on Cosmo Tech Platform API
 - Azure Active Directory Application for Restish (Optional)
-  - API permissions : `platform` Delegate on Cosmo Tech Platform API
+  - API permissions : Delegated on Cosmo Tech Platform API
 - Azure Active Directory Application for WebApp (Optional)
-  - API permissions : `platform` Delegate on Cosmo Tech Platform API
-- Azure Active Directory Application for Power Bi (Optional)
-  - API permissions : `Workspace.Read.All` on Power BI and `Reports.Read.All` on Power BI
+  - API permissions : Delegated on Cosmo Tech Platform API, `Workspace.Read.All` on Power BI and `Reports.Read.All` on Power BI
 - Azure Virtual Network for AKS
 - Azure DNS record
 - Azure public IP for the Cosmo Tech Platform
