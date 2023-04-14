@@ -41,7 +41,8 @@ grafana:
       - ${COSMOTECH_API_DNS_NAME}
     tls:
       - secretName: ${TLS_SECRET_NAME}
-        hosts: ${COSMOTECH_API_DNS_NAME}
+        hosts: 
+          - ${COSMOTECH_API_DNS_NAME}
   plugins:
     - redis-datasource
   adminPassword: ${PROM_ADMIN_PASSWORD}
