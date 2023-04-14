@@ -54,11 +54,11 @@ There are two options to run this Terraform script :
 
 Legend:s
 
-`*____` : required values to run the scrip with a service principals (Azure Application registration )
+`*____` : required values to run the script with a service principal (Azure Application registration )
 
-`___**` : mandatory value any how you are running the terraform script
+`___**` : mandatory values any how you are running the terraform script
 
-The variables witch are listed above and have default values are optionals and their values can be override in the `terraform.tfvars` file. Example to set create_powerbi to false, add the following line in the `terraform.tfvars` file:
+The variables witch are listed above and have default values are optionals and their values can be overrided in the `terraform.tfvars` file. Example to set create_powerbi to false, add the following line in the `terraform.tfvars` file:
 
 ```hcl
 create_powerbi = false
@@ -90,7 +90,7 @@ Once you have met these requirements, you can clone the github.com/Cosmo-Tech/co
 - [ ] Login throw Azure Cli `az login`
 - [ ] Edit file `terraform.tfvars` with required `___**` values
 
-> **_NOTE:_**  If your run the script with your connected Azure identity connected to your Azure CLI, don't add your id (email) in owner_list values
+> **_NOTE:_**  If you run the script with your connected Azure identity connected to your Azure CLI, don't add your id (email) in owner_list values
 
 - [ ] Init the terraform by running `terraform init`
 - [ ] Validate the terraform by running `terraform validate`
@@ -121,7 +121,7 @@ Then you have to grant admin consent for the app registration, go to `API Permis
 
 ** `Subscription Owner`
 
-To grant this iam permission to the app registration, go `subscription` >> `access control (IAM)` >> `Add` >> `Add role assignment` >> `Owner` >> Choose your app registration name >> `Select` >> `Save`
+To grant this IAM permission to the app registration, go `subscription` >> `access control (IAM)` >> `Add` >> `Add role assignment` >> `Owner` >> Choose your app registration name >> `Select` >> `Save`
 
 > **_NOTE:_**  Cloud Application Administrator or Application Administrator, for granting consent for apps requesting any permission for any API, except Azure AD Graph or Microsoft Graph app roles (application permissions) such as User.ReadAll. It means that you can't grand admin consent on Active Directory Application witch have Microsoft Graph app roles if your don't have the role Global Admin in the tenant.
 
@@ -138,7 +138,7 @@ To grant this iam permission to the app registration, go `subscription` >> `acce
 - [ ] Set the following environment variables with the values of your Azure App registration or set `*__` values in `terraform.tfvars` file
 - [ ] Edit file `terraform.tfvars` with required `___**` values
 
-> **_NOTE:_**  If your run the script with your connected Azure identity connected to your Azure CLI, don't add your id (email) in owner_list values
+> **_NOTE:_**  If you run the script with your connected Azure identity connected to your Azure CLI, don't add your id (email) in owner_list values
 
 - [ ] Init the terraform by running `terraform init`
 - [ ] Validate the terraform by running `terraform validate`
@@ -149,7 +149,7 @@ To grant this iam permission to the app registration, go `subscription` >> `acce
 ## Run with terraform cloud
 
 Terraform cloud run require using of a service principals (Azure Application registration ) configured as seen for the local run. You have to set up the same variables.
-The new requirement is an terraform cloud Account.
+The new requirement is a terraform cloud Account.
 
 - [ ] Create a terraform cloud account
 - [ ] Clone `Cosmotech-terraform` Github repository `git clone https://github.com/Cosmo-Tech/cosmotech-terraform.git`
