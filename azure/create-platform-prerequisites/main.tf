@@ -27,14 +27,8 @@ resource "azuread_application" "platform" {
     }
   }
 
-  web {
-    homepage_url  = var.platform_url
-    redirect_uris = ["${var.platform_url}/swagger-ui/oauth2-redirect.html"]
-
-    implicit_grant {
-      access_token_issuance_enabled = true
-      id_token_issuance_enabled     = true
-    }
+  single_page_application {
+    redirect_uris = ["${var.platform_url}${var.api_version_path}swagger-ui/oauth2-redirect.html"]
   }
 
   api {
@@ -134,14 +128,8 @@ resource "azuread_application" "swagger" {
     }
   }
 
-  web {
-    homepage_url  = var.platform_url
+  single_page_application {
     redirect_uris = ["${var.platform_url}${var.api_version_path}swagger-ui/oauth2-redirect.html"]
-
-    implicit_grant {
-      access_token_issuance_enabled = true
-      id_token_issuance_enabled     = true
-    }
   }
 }
 
@@ -162,7 +150,6 @@ resource "azuread_application" "restish" {
   sign_in_audience = var.audience
   tags             = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
 
-
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
 
@@ -181,14 +168,8 @@ resource "azuread_application" "restish" {
     }
   }
 
-  web {
-    homepage_url  = var.platform_url
+  single_page_application {
     redirect_uris = ["http://localhost:8484/"]
-
-    implicit_grant {
-      access_token_issuance_enabled = true
-      id_token_issuance_enabled     = true
-    }
   }
 }
 
@@ -215,7 +196,6 @@ resource "azuread_application" "powerbi" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
   tags             = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
-
 }
 
 resource "azuread_service_principal" "powerbi" {
