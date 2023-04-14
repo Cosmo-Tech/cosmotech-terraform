@@ -3,11 +3,17 @@
 This documentation describes the Azure prerequisite infrastructure needed to install the Cosmo Tech AI Simulation Platform using Terraform. The Terraform script creates several Azure resources, as well as app registrations and specific Cosmo Tech AI Simulation Platform roles. The following is a list of the resources that will be created:
 
 - Azure Active Directory Application for the Cosmo Tech Platform
+  - Api permissions : `Platform.Admin` as application on Cosmo Tech Platform API
 - Azure Active Directory Application for Network and Azure Digital Twins
+  - IAM roles : `Azure Digital Twins Data Owner` on Azure Digital Twins and `Network Contributor` on the Virtual Network
 - Azure Active Directory Application for Cosmo Tech API Swagger UI
+  - API permissions : `platform` Delegate on Cosmo Tech Platform API
 - Azure Active Directory Application for Restish (Optional)
-- Azure Active Directory Application for WebApp (Optional) 
-- Azure Active Directory Application for Power Bi (Optional) 
+  - API permissions : `platform` Delegate on Cosmo Tech Platform API
+- Azure Active Directory Application for WebApp (Optional)
+  - API permissions : `platform` Delegate on Cosmo Tech Platform API
+- Azure Active Directory Application for Power Bi (Optional)
+  - API permissions : `Workspace.Read.All` on Power BI and `Reports.Read.All` on Power BI
 - Azure Virtual Network for AKS
 - Azure DNS record
 - Azure public IP for the Cosmo Tech Platform
@@ -21,45 +27,37 @@ There are two options to run this Terraform script :
 
 ## Azure Prerequisite Terraform Variables
 
-| Description                        | Description                                                                          | Type         | HCL   | Default             | Example                                       |
-| ---------------------------------- | ------------------------------------------------------------------------------------ | ------------ | ----- | ------------------- | --------------------------------------------- |
-| **location**                       | The Azure resources location                                                         | String       | false | West Europe         | West Europe                                   |
-| **tenant_id**                      | The customer tenant id                                                          | String       | false |                     |                                               |
-| **subscription_id**                | The customer tenant id                                                         | String       | false |                     |                                               |
-| **client_id**                      | The application registration created to run terraform object id                 | String       | false |                     |                                               |
-| **client_secret**                  | The application registration secret value                                        | String       | false |                     |                                               |
-| **platform_url**                   | The Cosmotech Platform API Url                                                 | String       | false |                     | https://lab.api.cosmo-platform.com            |
-| **project_stage**                  | The project stage (Dev, Prod, QA,...)                                          | String       | false |                     |                                               |
-| **customer_name**                  | The Customer name                                                             | String       | false |                     |                                               |
-| **project_name**                   | The Project name                                                               | String       | false |                     |                                               |
-| **owner_list**                     | The list of AAD user list witch will be owner of the deployment resource group**** | list[String] | true  |                     | ["user.foo@mail.com"]                         |
-| **audience**                       | The App Registration audience type                                                   | String       | false | AzureADMultipleOrgs |                                               |
-| **webapp_url**                     | The Web Application URL                                                       | String       | false |                     | https://project.cosmo-platform.com            |
-| **create_restish**                 | Create the Azure Active Directory Application for Restish ?                          | bool         | false | true                |                                               |
-| **create_webapp**                  | Create the Azure Active Directory Application for Webapp ?                           | bool         | false | true                |                                               |
-| **create_powerbi**                 | Create the Azure Active Directory Application for Power BI ?                         | bool         | false | true                |                                               |
-| **resource_group**                 | **The resource group to use for the platform deployment                          | String       | false |                     | rg-myrg (Should be a new resource group name) |
-| **create_publicip**                | Create the public IP for the platform ?                                              | bool         | false | true                |                                               |
-| **create_dnsrecord**               | Create the Azure DNS record ?                                                        | bool         | false | true                |                                               |
-| **dns_zone_name**                  | The Azure DNS Zone name                                                        | String       | false |                     | dns-corpo                                     |
-| **dns_zone_rg**                    | The resource group witch contain the Azure DNS Zone                                  | String       | false |                     |                                               |
-| **dns_record**                     | **The DNS zone name to create platform subdomain. Example: myplatform****            | String       | false |                     | projectname                                   |
-| **create_vnet**                    | Create the Virtual Network for AKS ?                                                 | bool         | false | true                |                                               |
-| **create_secrets**                 | Create secrets for Azure Active Directory Applications ?                             | bool         | false | true                |                                               |
-| **vnet_iprange**                   | The Virtual Network IP range                                                  | String       | false |                     | 10.48.0.0/26                                  |
-| **api_version_path**               | The API version path (Ex: /v2/)                                                      | String       | false | "/"                 | /v2/                                          |
-| **azuread_service_principal_tags** | Tags for AZ AD service principal                                                     | list[String] | true  |                     | ["AI","Simulation"]                           |
-| **azuread_application_tags**       | Common tags for AZ AD application                                                    | list[String] | true  |                     | ["AI","Simulation"]                           |
-| **common_tags**                    | Common tags for AZ AD service principal                                              | list[String] | true  | Yes                 | ["AI","Simulation"]                           |
+| Description                        | Description                                                                    | Mandatory                      | Type         | HCL   | Default             | Example                                       |
+| ---------------------------------- | ------------------------------------------------------------------------------ | ------------------------------ | ------------ | ----- | ------------------- | --------------------------------------------- |
+| **location**                       | The Azure resources location                                                   | No                             | String       | false | West Europe         | West Europe                                   |
+| **tenant_id**                      | The customer tenant id                                                         | Yes                            | String       | false |                     |                                               |
+| **subscription_id**                | The customer subscription id                                                   | Yes                            | String       | false |                     |                                               |
+| **client_id**                      | The application registration created to run terraform object id                | Yes For Azure App registration | String       | false |                     |                                               |
+| **client_secret**                  | The application registration secret value                                      | Yes For Azure App registration | String       | false |                     |                                               |
+| **platform_url**                   | The Cosmotech Platform API Url                                                 | Yes                            | String       | false |                     | https://lab.api.cosmo-platform.com            |
+| **api_version_path**               | The API version path (Ex: /v2/)                                                | No                             | String       | false | "/"                 | /v2/                                          |
+| **project_stage**                  | The project stage (Dev, Prod, QA,...)                                          | Yes                            | String       | false |                     |                                               |
+| **customer_name**                  | The Customer name                                                              | Yes                            | String       | false |                     |                                               |
+| **project_name**                   | The Project name                                                               | Yes                            | String       | false |                     |                                               |
+| **resource_group**                 | The resource group to use for the platform deployment                          | Yes                            | String       | false |                     | rg-myrg (Should be a new resource group name) |
+| **owner_list**                     | The list of AAD user list witch will be owner of the deployment resource group | Yes                            | list[String] | true  |                     | ["user.foo@mail.com"]                         |
+| **audience**                       | The App Registration audience type                                             | No                             | String       | false | AzureADMultipleOrgs |                                               |
+| **webapp_url**                     | The Web Application URL                                                        | Yes                            | String       | false |                     | https://project.cosmo-platform.com            |
+| **dns_zone_name**                  | The Azure DNS Zone name                                                        | Yes                            | String       | false |                     | dns-corpo                                     |
+| **dns_zone_rg**                    | The resource group witch contain the Azure DNS Zone                            | Yes                            | String       | false |                     |                                               |
+| **dns_record**                     | The DNS zone name to create platform subdomain. Example: myplatform            | Yes                            | String       | false |                     | projectname                                   |
+| **create_restish**                 | Create the Azure Active Directory Application for Restish ?                    | No                             | bool         | false | true                |                                               |
+| **create_webapp**                  | Create the Azure Active Directory Application for Webapp ?                     | No                             | bool         | false | true                |                                               |
+| **create_powerbi**                 | Create the Azure Active Directory Application for Power BI ?                   | No                             | bool         | false | true                |                                               |
+| **create_publicip**                | Create the public IP for the platform ?                                        | No                             | bool         | false | true                |                                               |
+| **create_dnsrecord**               | Create the Azure DNS record ?                                                  | No                             | bool         | false | true                |                                               |
+| **create_vnet**                    | Create the Virtual Network for AKS ?                                           | No                             | bool         | false | true                |                                               |
+| **create_secrets**                 | Create secrets for Azure Active Directory Applications ?                       | No                             | bool         | false | true                |                                               |
+| **vnet_iprange**                   | The Virtual Network IP range                                                   | Yes                            | String       | false |                     | 10.48.0.0/26                                  |
+| **azuread_service_principal_tags** | Tags for AZ AD service principal                                               | Yes                            | list[String] | true  |                     | ["AI","Simulation"]                           |
+| **azuread_application_tags**       | Common tags for AZ AD application                                              | Yes                            | list[String] | true  |                     | ["AI","Simulation"]                           |
+| **common_tags**                    | Common tags for AZ AD service principal                                        | No                             | list[String] | true  | Yes                 | ["AI","Simulation"]                           |
 
-
-Legend:s
-
-`*____` : required values to run the script with a service principal (Azure Application registration )
-
-`___**` : mandatory values any how you are running the terraform script
-
-The variables witch are listed above and have default values are optionals and their values can be overrided in the `terraform.tfvars` file. Example to set create_powerbi to false, add the following line in the `terraform.tfvars` file:
 
 ```hcl
 create_powerbi = false
@@ -91,13 +89,12 @@ Once you have met these requirements, you can clone the github.com/Cosmo-Tech/co
 - [ ] Login throw Azure Cli `az login`
 - [ ] Edit file `terraform.tfvars` with required `___**` values
 
-> **_NOTE:_**  If you run the script with your connected Azure identity connected to your Azure CLI, don't add your id (email) in owner_list values
+> **_NOTE:_**  In some cases when you run the script with your connected Azure identity connected to your Azure CLI, don't add your id (email) in owner_list values
 
 - [ ] Init the terraform by running `terraform init`
 - [ ] Validate the terraform by running `terraform validate`
 - [ ] Plan the terraform by running `terraform plan`
 - [ ] End with applying the terraform by running `terraform apply`, reply `yes` for the terraform prompt to confirm Resources creation.
-
 
 
 ### Option 2: Azure App registration
@@ -106,21 +103,21 @@ The requirements are the same as for the Azure user identity, except that you ne
 
 Create an app registration for Terraform with the following API permissions:
 
-* [Azure Active Directory for the Terraform azuread provider.](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/guides/service_principal_client_secret) to create Azure application registration, roles and role assignments in Azure Active Directory
+[Azure Active Directory for the Terraform azuread provider.](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/guides/service_principal_client_secret) to create Azure application registration, roles and role assignments in Azure Active Directory
 
-** `Application.ReadWriteAll`
+- `Application.ReadWriteAll`
 
-** `Group.ReadWriteAll`
+- `Group.ReadWriteAll`
 
-** `User.ReadAll`
+- `User.ReadAll`
 
 To give these API permissions to the app registration, go to `API Permission` >> `Add a permission` >> `Azure Active Directory Graph` >> `Application.ReadWrite.All` >> `Delegated Permissions` >> `Add permissions` repeat the same for `Group.ReadWrite.All`
 
 Then you have to grant admin consent for the app registration, go to `API Permission` >> `Grant admin consent for <your tenant name>` >> `Yes`
 
-* [Azure subscription for the Terraform azurerm provider.](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret) :  to create Azure resources :
+[Azure subscription for the Terraform azurerm provider.](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret) :  to create Azure resources :
 
-** `Subscription Owner`
+- `Subscription Owner`
 
 To grant this IAM permission to the app registration, go `subscription` >> `access control (IAM)` >> `Add` >> `Add role assignment` >> `Owner` >> Choose your app registration name >> `Select` >> `Save`
 
