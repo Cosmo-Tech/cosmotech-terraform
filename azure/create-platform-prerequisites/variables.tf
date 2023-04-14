@@ -76,6 +76,11 @@ variable "audience" {
   default = "AzureADMultipleOrgs"
 }
 
+variable "location" {
+  description = "The Azure location"
+  default     = "West Europe"
+}
+
 variable "webapp_url" {
   description = "The Web Application URL"
   type        = string
@@ -99,16 +104,6 @@ variable "create_webapp" {
   default     = true
 }
 
-variable "location" {
-  description = "The Azure location"
-  default     = "West Europe"
-}
-
-variable "resource_group" {
-  description = "Resource group to create which will contain created Azure resources"
-  type        = string
-}
-
 variable "create_publicip" {
   description = "Create the public IP for the platform"
   type        = bool
@@ -117,6 +112,23 @@ variable "create_publicip" {
 
 variable "create_dnsrecord" {
   description = "Create the DNS record"
+  type        = bool
+  default     = true
+}
+
+variable "resource_group" {
+  description = "Resource group to create which will contain created Azure resources"
+  type        = string
+}
+
+variable "create_vnet" {
+  description = "Create the Virtual Network for AKS"
+  type        = bool
+  default     = true
+}
+
+variable "create_secrets" {
+  description = "Create secret for application registrtations"
   type        = bool
   default     = true
 }
@@ -134,18 +146,6 @@ variable "dns_zone_rg" {
 variable "dns_record" {
   description = "The DNS zone name to create platform subdomain. Example: myplatform"
   type        = string
-}
-
-variable "create_vnet" {
-  description = "Create the Virtual Network for AKS"
-  type        = bool
-  default     = true
-}
-
-variable "create_secrets" {
-  description = "Create secret for application registrtations"
-  type        = bool
-  default     = true
 }
 
 variable "vnet_iprange" {
