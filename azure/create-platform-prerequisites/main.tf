@@ -1,6 +1,6 @@
 locals {
-  pre_name = "Cosmo Tech "
-  post_name = " ${var.stage} For ${var.customer} ${var.project}"
+  pre_name    = "Cosmo Tech "
+  post_name   = " ${var.project_stage} For ${var.customer_name} ${var.project_name}"
   subnet_name = "default"
 }
 
@@ -11,12 +11,12 @@ data "azuread_users" "owners" {
 # Azure AD
 resource "azuread_application" "platform" {
   display_name     = "${local.pre_name}Platform${local.post_name}"
-  identifier_uris  = [var.identifier_uri]
+  identifier_uris  = var.identifier_uri != "" ? [var.identifier_uri] : null
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -42,7 +42,7 @@ resource "azuread_application" "platform" {
       user_consent_description   = "Allow the application to use the Cosmo Tech Platform with your account"
       user_consent_display_name  = "Cosmo Tech Platform Usage"
       value                      = "platform"
-		}
+    }
   }
 
   dynamic "app_role" {
@@ -53,27 +53,29 @@ resource "azuread_application" "platform" {
       allowed_member_types = [
         "User",
         "Application"
-        ]
-      description = app_role.value.description
+      ]
+      description  = app_role.value.description
       display_name = app_role.value.display_name
-      id = app_role.value.id
-      enabled = true
-      value = app_role.value.role_value
+      id           = app_role.value.id
+      enabled      = true
+      value        = app_role.value.role_value
     }
   }
 }
 
 resource "azuread_service_principal" "platform" {
-  application_id               = azuread_application.platform.application_id
+  application_id = azuread_application.platform.application_id
   # assignment required to secure Function Apps using thi App Registration as identity provider
   app_role_assignment_required = true
 
-  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
+  tags = ["cosmotech", var.project_stage, var.customer_name, var.project_name, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 resource "azuread_application_password" "platform_password" {
+  display_name          = "platform_secret"
+  count                 = var.create_secrets ? 1 : 0
   application_object_id = azuread_application.platform.object_id
-  end_date_relative = "4464h"
+  end_date_relative     = "4464h"
 }
 
 
@@ -82,8 +84,7 @@ resource "azuread_application" "network_adt" {
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
-
-  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+  tags             = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
 }
 
 resource "azuread_service_principal" "network_adt" {
@@ -91,12 +92,14 @@ resource "azuread_service_principal" "network_adt" {
   application_id               = azuread_application.network_adt.application_id
   app_role_assignment_required = false
 
-  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
+  tags = ["cosmotech", var.project_stage, var.customer_name, var.project_name, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 resource "azuread_application_password" "network_adt_password" {
+  display_name          = "network_adt_secret"
+  count                 = var.create_secrets ? 1 : 0
   application_object_id = azuread_application.network_adt.object_id
-  end_date_relative = "4464h"
+  end_date_relative     = "4464h"
 }
 
 resource "azuread_application" "swagger" {
@@ -105,7 +108,7 @@ resource "azuread_application" "swagger" {
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
 
-  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -135,7 +138,7 @@ resource "azuread_service_principal" "swagger" {
   application_id               = azuread_application.swagger.application_id
   app_role_assignment_required = false
 
-  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
+  tags = ["cosmotech", var.project_stage, var.customer_name, var.project_name, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 
@@ -145,8 +148,7 @@ resource "azuread_application" "restish" {
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
-
-  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+  tags             = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -173,17 +175,18 @@ resource "azuread_application" "restish" {
 
 resource "azuread_service_principal" "restish" {
   depends_on                   = [azuread_service_principal.swagger]
-  count            = var.create_restish ? 1 : 0
+  count                        = var.create_restish ? 1 : 0
   application_id               = azuread_application.restish[0].application_id
   app_role_assignment_required = false
 
-  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
+  tags = ["cosmotech", var.project_stage, var.customer_name, var.project_name, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 resource "azuread_application_password" "restish_password" {
-  count            = var.create_restish ? 1 : 0
+  display_name          = "restish_secret"
+  count                 = var.create_restish && var.create_secrets ? 1 : 0
   application_object_id = azuread_application.restish[0].object_id
-  end_date_relative = "4464h"
+  end_date_relative     = "4464h"
 }
 
 resource "azuread_application" "powerbi" {
@@ -192,23 +195,23 @@ resource "azuread_application" "powerbi" {
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = "AzureADMyOrg"
-
-  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+  tags             = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
 }
 
 resource "azuread_service_principal" "powerbi" {
   depends_on                   = [azuread_service_principal.restish]
-  count            = var.create_powerbi ? 1 : 0
+  count                        = var.create_powerbi ? 1 : 0
   application_id               = azuread_application.powerbi[0].application_id
   app_role_assignment_required = false
 
-  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
+  tags = ["cosmotech", var.project_stage, var.customer_name, var.project_name, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 resource "azuread_application_password" "powerbi_password" {
-  count            = var.create_powerbi ? 1 : 0
+  display_name          = "powerbi_secret"
+  count                 = var.create_powerbi && var.create_secrets ? 1 : 0
   application_object_id = azuread_application.powerbi[0].object_id
-  end_date_relative = "4464h"
+  end_date_relative     = "4464h"
 }
 
 resource "azuread_application" "webapp" {
@@ -216,8 +219,9 @@ resource "azuread_application" "webapp" {
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
   sign_in_audience = var.audience
+  count            = var.create_webapp ? 1 : 0
 
-  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.stage, var.customer, var.project, "terraformed"]
+  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
 
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
@@ -243,16 +247,17 @@ resource "azuread_application" "webapp" {
 }
 
 resource "azuread_service_principal" "webapp" {
-  depends_on                   = [azuread_service_principal.powerbi]
-  application_id               = azuread_application.webapp.application_id
+  depends_on                   = [azuread_service_principal.webapp]
+  application_id               = azuread_application.webapp[0].application_id
   app_role_assignment_required = false
+  count                        = var.create_webapp ? 1 : 0
 
-  tags = ["cosmotech", var.stage, var.customer, var.project, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
+  tags = ["cosmotech", var.project_stage, var.customer_name, var.project_name, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
 }
 
 # create the Azure AD resource group
 resource "azuread_group" "platform_group" {
-  display_name     = "Cosmotech-Platform-${var.customer}-${var.project}-${var.stage}"
+  display_name     = "Cosmotech-Platform-${var.customer_name}-${var.project_name}-${var.project_stage}"
   owners           = data.azuread_users.owners.object_ids
   security_enabled = true
   members          = data.azuread_users.owners.object_ids
@@ -264,9 +269,9 @@ resource "azurerm_resource_group" "platform_rg" {
   location = var.location
   tags = {
     vendor   = "cosmotech"
-    stage    = var.stage
-    customer = var.customer
-    project  = var.project
+    stage    = var.project_stage
+    customer = var.customer_name
+    project  = var.project_name
   }
 }
 
@@ -279,7 +284,7 @@ resource "azurerm_role_assignment" "rg_owner" {
 # Public IP
 resource "azurerm_public_ip" "publicip" {
   count               = var.create_publicip ? 1 : 0
-  name                = "CosmoTech${var.customer}${var.project}${var.stage}PublicIP"
+  name                = "CosmoTech${var.customer_name}${var.project_name}${var.project_stage}PublicIP"
   resource_group_name = azurerm_resource_group.platform_rg.name
   location            = var.location
   allocation_method   = "Static"
@@ -287,9 +292,9 @@ resource "azurerm_public_ip" "publicip" {
 
   tags = {
     vendor   = "cosmotech"
-    stage    = var.stage
-    customer = var.customer
-    project  = var.project
+    stage    = var.project_stage
+    customer = var.customer_name
+    project  = var.project_name
   }
 }
 
@@ -313,7 +318,7 @@ resource "azurerm_dns_a_record" "platform_fqdn" {
 # Virtual Network
 resource "azurerm_virtual_network" "platform_vnet" {
   count               = var.create_vnet ? 1 : 0
-  name                = "CosmoTech${var.customer}${var.project}${var.stage}VNet"
+  name                = "CosmoTech${var.customer_name}${var.project_name}${var.project_stage}VNet"
   location            = var.location
   resource_group_name = azurerm_resource_group.platform_rg.name
   address_space       = [var.vnet_iprange]
@@ -325,9 +330,9 @@ resource "azurerm_virtual_network" "platform_vnet" {
 
   tags = {
     vendor   = "cosmotech"
-    stage    = var.stage
-    customer = var.customer
-    project  = var.project
+    stage    = var.project_stage
+    customer = var.customer_name
+    project  = var.project_name
   }
 }
 
