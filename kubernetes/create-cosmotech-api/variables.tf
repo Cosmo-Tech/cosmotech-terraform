@@ -102,7 +102,7 @@ variable "helm_release_name" {
 
 variable "chart_package_version" {
   type    = string
-  default = "0.0.1"
+  default = "2.3.6"
 }
 
 variable "argo_service_account" {
