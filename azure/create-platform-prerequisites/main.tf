@@ -275,6 +275,15 @@ resource "azurerm_resource_group" "platform_rg" {
   }
 }
 
+resource "azuread_application" "babylon" {
+  display_name     = "${local.pre_name}Babylon${local.post_name}"
+  logo_image       = filebase64("cosmotech.png")
+  owners           = data.azuread_users.owners.object_ids
+  sign_in_audience = var.audience
+
+  tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
+}
+
 resource "azurerm_role_assignment" "rg_owner" {
   scope                = azurerm_resource_group.platform_rg.id
   role_definition_name = "Owner"
