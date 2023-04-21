@@ -49,16 +49,16 @@ output "out_swagger_clientid" {
 }
 
 output "out_restish_password" {
-  value     = var.create_secrets ? azuread_application_password.restish_password[0].value : null
+  value     = var.create_secrets && var.create_restish ? azuread_application_password.restish_password[0].value : null
   sensitive = true
 }
 
 output "out_restish_name" {
-  value = azuread_application.restish[0].display_name
+  value = var.create_restish ? azuread_application.restish[0].display_name : null
 }
 
 output "out_restish_clientid" {
-  value = azuread_application.restish[0].application_id
+  value = var.create_restish ? azuread_application.restish[0].application_id : null
 }
 
 output "out_powerbi_name" {
@@ -83,11 +83,11 @@ output "out_webapp_clientid" {
 }
 
 output "out_public_ip" {
-  value = azurerm_public_ip.publicip[0].ip_address
+  value = var.create_publicip ? azurerm_public_ip.publicip[0].ip_address : null
 }
 
 output "out_public_ip_name" {
-  value = azurerm_public_ip.publicip[0].name
+  value = var.create_publicip ? azurerm_public_ip.publicip[0].name : null
 }
 
 output "out_ip_resource_group" {

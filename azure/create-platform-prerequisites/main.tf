@@ -27,7 +27,7 @@ resource "azuread_application" "platform" {
     }
   }
 
-  single_page_application {
+  web {
     redirect_uris = ["${var.platform_url}${var.api_version_path}swagger-ui/oauth2-redirect.html"]
   }
 
@@ -128,7 +128,7 @@ resource "azuread_application" "swagger" {
     }
   }
 
-  single_page_application {
+  web {
     redirect_uris = ["${var.platform_url}${var.api_version_path}swagger-ui/oauth2-redirect.html"]
   }
 }
@@ -168,8 +168,8 @@ resource "azuread_application" "restish" {
     }
   }
 
-  single_page_application {
-    redirect_uris = ["http://localhost:8484/"]
+  web {
+    redirect_uris = ["http://localhost:8484", "http://localhost:4000"]
   }
 }
 
@@ -199,7 +199,7 @@ resource "azuread_application" "powerbi" {
 }
 
 resource "azuread_service_principal" "powerbi" {
-  depends_on                   = [azuread_service_principal.restish]
+  depends_on                   = [azuread_service_principal.swagger]
   count                        = var.create_powerbi ? 1 : 0
   application_id               = azuread_application.powerbi[0].application_id
   app_role_assignment_required = false
@@ -241,8 +241,22 @@ resource "azuread_application" "webapp" {
     }
   }
 
+  required_resource_access {
+    resource_app_id = "00000009-0000-0000-c000-000000000000"
+
+    resource_access {
+      id   = "4ae1bf56-f562-4747-b7bc-2fa0874ed46f"
+      type = "Scope"
+    }
+
+    resource_access {
+      id   = "b2f1b2fa-f35c-407c-979c-a858a808ba85"
+      type = "Scope"
+    }
+  }
+
   single_page_application {
-    redirect_uris = ["http://localhost:3000/scenario", "${var.webapp_url}/platform", "${var.webapp_url}/sign-in"]
+    redirect_uris = var.webapp_url != "" ? ["http://localhost:3000/sign-in", "${var.webapp_url}/sign-in"] : ["http://localhost:3000/sign-in"]
   }
 }
 

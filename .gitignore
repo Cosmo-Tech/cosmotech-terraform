@@ -1,5 +1,11 @@
 .terraform
 *.auto.tfvars
+*.tfstate
+*.tfstate.backup
+*.lock.hcl
 azure/create-platform-prerequisites/terraform.tfstate
 azure/create-platform-prerequisites/terraform.tfstate.backup
 azure/create-platform-prerequisites/.terraform.lock.hcl
+azure/new-workspace/terraform.tfstate
+azure/new-workspace/terraform.tfstate.backup
+azure/new-workspace/.terraform.lock.hcl
