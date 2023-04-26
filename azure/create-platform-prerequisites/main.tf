@@ -242,7 +242,7 @@ resource "azuread_application" "webapp" {
   }
 
   single_page_application {
-    redirect_uris = ["http://localhost:3000/scenario", "${var.webapp_url}/platform", "${var.webapp_url}/sign-in"]
+    redirect_uris = var.webapp_url != "" ? ["http://localhost:3000/sign-in", "${var.webapp_url}/sign-in"] : ["http://localhost:3000/sign-in"]
   }
 }
 
