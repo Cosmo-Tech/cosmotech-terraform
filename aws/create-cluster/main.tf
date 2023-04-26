@@ -53,8 +53,8 @@ module "eks" {
   }
 
   eks_managed_node_groups = {
-    one = {
-      name = "node-group-1"
+    system = {
+      name = "system"
 
       instance_types = ["t3.small"]
 
@@ -63,8 +63,8 @@ module "eks" {
       desired_size = 2
     }
 
-    two = {
-      name = "node-group-2"
+    basic = {
+      name = "basic"
 
       instance_types = ["t3.small"]
 
@@ -72,9 +72,58 @@ module "eks" {
       max_size     = 2
       desired_size = 1
     }
+
+    highcpu = {
+      name = "highcpu"
+
+      instance_types = ["t3.small"]
+
+      min_size     = 1
+      max_size     = 2
+      desired_size = 1
+    }
+
+    highmemory = {
+      name = "highmemory"
+
+      instance_types = ["t3.small"]
+
+      min_size     = 1
+      max_size     = 2
+      desired_size = 1
+    }
+
+    services = {
+      name = "services"
+
+      instance_types = ["t3.small"]
+
+      min_size     = 1
+      max_size     = 2
+      desired_size = 1
+    }
+
+    db = {
+      name = "db"
+
+      instance_types = ["t3.small"]
+
+      min_size     = 1
+      max_size     = 2
+      desired_size = 1
+    }
+
+    monitoring = {
+      name = "monitoring"
+
+      instance_types = ["t3.small"]
+
+      min_size     = 1
+      max_size     = 2
+      desired_size = 1
+    } 
   }
 }
-    
 
 # https://aws.amazon.com/blogs/containers/amazon-ebs-csi-driver-is-now-generally-available-in-amazon-eks-add-ons/ 
 data "aws_iam_policy" "ebs_csi_policy" {
