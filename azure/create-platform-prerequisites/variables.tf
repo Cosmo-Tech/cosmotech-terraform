@@ -28,10 +28,6 @@ variable "identifier_uri" {
   type        = string
 }
 
-variable "image_path" {
-  type = string
-}
-
 variable "project_stage" {
   description = "The Project stage"
   type        = string

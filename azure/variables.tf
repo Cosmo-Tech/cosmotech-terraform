@@ -22,10 +22,6 @@ variable "identifier_uri" {
   description = "The platform identifier uri"
 }
 
-variable "image_path" {
-  type = string
-}
-
 variable "stage" {
   description = "The platform stage"
   validation {
