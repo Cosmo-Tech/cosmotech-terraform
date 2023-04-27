@@ -7,9 +7,8 @@ module "create-platform-prerequisite" {
   client_secret    = var.client_secret
   platform_url     = var.platform_url
   identifier_uri   = var.identifier_uri
-  stage            = var.stage
-  customer         = var.customer
-  project          = var.project
+  project_stage    = var.project_stage
+  project_name     = var.project_name
   owner_list       = var.owner_list
   audience         = var.audience
   webapp_url       = var.webapp_url
@@ -25,7 +24,8 @@ module "create-platform-prerequisite" {
   create_vnet      = var.create_vnet
   vnet_iprange     = var.vnet_iprange
   api_version_path = var.api_version_path
-  image_path       = var.image_path
+  customer_name    = var.customer_name
+  user_app_role    = var.user_app_role
 }
 
 module "create-cluster" {

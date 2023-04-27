@@ -22,7 +22,7 @@ variable "identifier_uri" {
   description = "The platform identifier uri"
 }
 
-variable "stage" {
+variable "project_stage" {
   description = "The platform stage"
   validation {
     condition = contains([
@@ -33,7 +33,7 @@ variable "stage" {
       "EA",
       "Demo",
       "Prod"
-    ], var.stage)
+    ], var.project_stage)
     error_message = "Stage must be either: OnBoarding, Dev, QA, IA, EA, Demo, Prod."
   }
 }
@@ -42,11 +42,11 @@ variable "cluster_name" {
   type = string
 }
 
-variable "customer" {
+variable "customer_name" {
   description = "The customer name"
 }
 
-variable "project" {
+variable "project_name" {
   description = "The project name"
 }
 
@@ -65,6 +65,16 @@ variable "audience" {
     error_message = "Only AzureADMyOrg and AzureADMultipleOrgs are supported for audience."
   }
   default = "AzureADMultipleOrgs"
+}
+
+variable "user_app_role" {
+  type = list(object({
+    description  = string
+    display_name = string
+    id           = string
+    role_value   = string
+  }))
+  description = "App role for azuread_application"
 }
 
 variable "webapp_url" {
