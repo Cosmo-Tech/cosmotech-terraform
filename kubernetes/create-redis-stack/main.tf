@@ -8,7 +8,7 @@ locals {
 }
 
 data "azurerm_managed_disk" "managed_disk" {
-  name                = "cosmotech-database-disk"
+  name                = var.disk_name
   resource_group_name = var.resource_group
 }
 
@@ -38,16 +38,9 @@ resource "kubernetes_persistent_volume_v1" "redis-pv" {
       azure_disk {
         caching_mode  = "ReadWrite"
         data_disk_uri = local.redis_disk_resource
-        disk_name     = "cosmotech-database-disk"
+        disk_name     = var.disk_name
         kind          = "Managed"
       }
-      # csi {
-      #   driver        = var.redis_pv_driver
-      #   volume_handle = local.redis_disk_resource
-      #   volume_attributes = {
-      #     "fsType" = "ext4"
-      #   }
-      # }
     }
     persistent_volume_reclaim_policy = "Retain"
   }
@@ -90,9 +83,9 @@ resource "helm_release" "cosmotechredis" {
 }
 
 resource "helm_release" "redisinsight" {
-  name = "redisinsight"
+  name = var.helm_chart_name_insights
   namespace = var.namespace
-  chart = "https://docs.redis.com/latest/pkgs/redisinsight-chart-0.1.0.tgz"
+  chart = var.helm_chart_insights
 
   values = [file("${path.module}/values-insight.yaml")]
 }
