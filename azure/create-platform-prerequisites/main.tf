@@ -168,7 +168,7 @@ resource "azuread_application" "restish" {
     }
   }
 
-  single_page_application {
+  public_client {
     redirect_uris = ["http://localhost:8484/"]
   }
 }
@@ -240,7 +240,7 @@ resource "azuread_application" "webapp" {
       type = "Scope"
     }
   }
-  
+
   required_resource_access {
     resource_app_id = "00000009-0000-0000-c000-000000000000"
 
