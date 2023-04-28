@@ -73,7 +73,7 @@ variable "audience" {
     ], var.audience)
     error_message = "Only AzureADMyOrg and AzureADMultipleOrgs are supported for audience."
   }
-  default = "AzureADMyOrg"
+  default = "AzureADMultipleOrgs"
 }
 
 variable "location" {
