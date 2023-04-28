@@ -199,7 +199,7 @@ resource "azuread_application" "powerbi" {
 }
 
 resource "azuread_service_principal" "powerbi" {
-  depends_on                   = [azuread_service_principal.restish]
+  depends_on                   = [azuread_service_principal.platform]
   count                        = var.create_powerbi ? 1 : 0
   application_id               = azuread_application.powerbi[0].application_id
   app_role_assignment_required = false
