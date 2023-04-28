@@ -218,7 +218,7 @@ resource "azuread_application" "webapp" {
   display_name     = "${local.pre_name}Web App${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
-  sign_in_audience = var.audience
+  sign_in_audience = "AzureADMyOrg"
   count            = var.create_webapp ? 1 : 0
 
   tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
