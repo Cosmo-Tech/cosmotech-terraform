@@ -240,6 +240,20 @@ resource "azuread_application" "webapp" {
       type = "Scope"
     }
   }
+  
+  required_resource_access {
+    resource_app_id = "00000009-0000-0000-c000-000000000000"
+
+    resource_access {
+      id   = "4ae1bf56-f562-4747-b7bc-2fa0874ed46f"
+      type = "Scope"
+    }
+
+    resource_access {
+      id   = "b2f1b2fa-f35c-407c-979c-a858a808ba85"
+      type = "Scope"
+    }
+  }
 
   single_page_application {
     redirect_uris = var.webapp_url != "" ? ["http://localhost:3000/sign-in", "${var.webapp_url}/sign-in"] : ["http://localhost:3000/sign-in"]
