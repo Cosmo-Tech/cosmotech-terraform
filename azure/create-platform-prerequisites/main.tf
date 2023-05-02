@@ -276,6 +276,7 @@ resource "azurerm_resource_group" "platform_rg" {
 }
 
 resource "azuread_application" "babylon" {
+  count            = var.create_babylon ? 1 : 0
   display_name     = "${local.pre_name}Babylon${local.post_name}"
   logo_image       = filebase64("cosmotech.png")
   owners           = data.azuread_users.owners.object_ids
@@ -307,6 +308,7 @@ resource "azuread_application" "babylon" {
 }
 
 resource "azuread_service_principal" "babylon" {
+  count                        = var.create_babylon ? 1 : 0
   depends_on                   = [azuread_service_principal.swagger]
   application_id               = azuread_application.babylon[0].application_id
   app_role_assignment_required = false

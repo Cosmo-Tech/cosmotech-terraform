@@ -104,6 +104,12 @@ variable "create_webapp" {
   default     = true
 }
 
+variable "create_babylon" {
+  description = "Create the Azure Active Directory Application for Babylon"
+  type        = bool
+  default     = true
+}
+
 variable "create_publicip" {
   description = "Create the public IP for the platform"
   type        = bool
