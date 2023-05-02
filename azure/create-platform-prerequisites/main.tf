@@ -282,6 +282,28 @@ resource "azuread_application" "babylon" {
   sign_in_audience = var.audience
 
   tags = ["HideApp", "WindowsAzureActiveDirectoryIntegratedApp", var.project_stage, var.customer_name, var.project_name, "terraformed"]
+
+  required_resource_access {
+    resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
+
+    resource_access {
+      id   = "e1fe6dd8-ba31-4d61-89e7-88639da4683d" # User.Read
+      type = "Scope"
+    }
+  }
+
+  required_resource_access {
+    resource_app_id = azuread_application.platform.application_id # Cosmo Tech Platform
+
+    resource_access {
+      id   = "6332363e-bcba-4c4a-a605-c25f23117400" # platform
+      type = "Scope"
+    }
+  }
+
+  public_client {
+    redirect_uris = ["http://localhost:8484/"]
+  }
 }
 
 resource "azurerm_role_assignment" "rg_owner" {
