@@ -306,6 +306,14 @@ resource "azuread_application" "babylon" {
   }
 }
 
+resource "azuread_service_principal" "babylon" {
+  depends_on                   = [azuread_service_principal.swagger]
+  application_id               = azuread_application.babylon[0].application_id
+  app_role_assignment_required = false
+
+  tags = ["cosmotech", var.project_stage, var.customer_name, var.project_name, "HideApp", "WindowsAzureActiveDirectoryIntegratedApp", "terraformed"]
+}
+
 resource "azurerm_role_assignment" "rg_owner" {
   scope                = azurerm_resource_group.platform_rg.id
   role_definition_name = "Owner"
