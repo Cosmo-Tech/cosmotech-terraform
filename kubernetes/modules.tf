@@ -7,9 +7,9 @@ module "create-ingress-nginx" {
   loadbalancer_ip       = var.loadbalancer_ip
   tls_secret_name       = var.tls_secret_name
 
-  # depends_on = [
-  #   module.create-prometheus-stack
-  # ]
+  depends_on = [
+    module.create-prometheus-stack
+  ]
 }
 
 module "create-prometheus-stack" {
@@ -51,6 +51,8 @@ module "create-minio" {
   monitoring_namespace  = var.monitoring_namespace
   argo_minio_access_key = random_password.argo_minio_access_key.result
   argo_minio_secret_key = random_password.argo_minio_secret_key.result
+
+  depends_on = [ module.create-prometheus-stack ]
 }
 
 module "create-postgresql-db" {
