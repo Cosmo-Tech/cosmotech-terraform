@@ -53,6 +53,11 @@ output "out_restish_password" {
   sensitive = true
 }
 
+output "out_babylon_password" {
+  value     = var.create_secrets ? azuread_application_password.babylon_password[0].value : null
+  sensitive = true
+}
+
 output "out_restish_name" {
   value = azuread_application.restish[0].display_name
 }
