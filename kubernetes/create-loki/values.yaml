@@ -1,0 +1,23 @@
+loki:
+  persistence:
+    enabled: true
+    accessModes:
+    - ReadWriteOnce
+    size: 10Gi
+  config:
+    table_manager:
+      retention_deletes_enabled: true
+      retention_period: ${RETENTION_PERIOD}
+grafana:
+  enabled: true
+  persistence:
+    type: pvc
+    enabled: true
+    # storageClassName: default
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+promtail:
+  tolerations:
+    - effect: NoSchedule
+      operator: Exists
