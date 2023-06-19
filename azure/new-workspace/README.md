@@ -5,7 +5,7 @@
 * Create Event Hub Namespace (if dedicated Event Hub configured)
 * Create Event Hubs and consumer groups
 * Create ADX database
-* Create ADX generic tables and data mappings (optional, )
+* Create ADX generic tables and data mappings (optional, but recommended)
 * Create ADX / Event Hub data connections
 * Create a Workspace security group with role assignments on workspace resources (optional, not recommended due to lack of maturity)
 
