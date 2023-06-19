@@ -27,6 +27,11 @@
   * Select `Terraform v1.3.9` as Terraform version
   * Set the Terraform variables (Terraform variables specified in the table below)
   * Start a new run of the Terraform workspace
+* Check ADX / Event Hub Data connections health:
+  * In Azure Portal, open Azure Data Explorer Resource
+  * `Databases` > click on your database > `Data connections`
+  * Check that all 4 data conections are green, otherwise:
+    * Click on `...` > `Edit` > `Save`
 
 ### Option 2: Run in local using App registration identity
 * Fork the `cosmotech-terraform` repository (Cosmo Tech internal repository in `cosmotech-terraform-internal`)
@@ -36,6 +41,11 @@
 * Validate the terraform by running `terraform validate`
 * Plan the terraform by running `terraform plan`
 * End with applying the terraform by running `terraform apply`
+* Check ADX / Event Hub Data connections health:
+  * In Azure Portal, open Azure Data Explorer Resource
+  * `Databases` > click on your database > `Data connections`
+  * Check that all 4 data conections are green, otherwise:
+    * Click on `...` > `Edit` > `Save`
 
 ## Terraform variables specification
 
