@@ -73,7 +73,7 @@ variable "eventhub_namespace_capacity" {
 variable "aad_groups_and_assignements" {
   description = "Create the Azure Active Directory workspace group and do roles assignements on resources"
   type = bool
-  default = true
+  default = false
 }
 
 variable "kusto_script" {

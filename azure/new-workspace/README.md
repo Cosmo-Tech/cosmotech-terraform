@@ -57,7 +57,7 @@
 | **workspace_key**                | Key of the workspace previouly created in the API                  | Yes                   | String       |                     | supplychainworkspace                  |
 | **eventhub_namespace_capacity**  | Event Hub Namespace capacity in terms of throughput units          | No                    | Integer      | 2                   | 2                                     |
 | **kusto_script**                 | Run the database script (recommended value is `true`)              | No                    | String       | true                | true                                  |
-| **aad_groups_and_assignements**  | Run the database script (recommended value is `false`)             | No                    | String       | true                | false                                 |
+| **aad_groups_and_assignements**  | Run the database script (recommended value is `false`)             | No                    | String       | false                | false                                 |
 | **adx_identity_uid**             | The kusto cluster managed identity ui (recommended value is `""`)  | No                    | String       |                     |                                       |
 | **aad_group_members**            | List of members of workspace security group (recommended to keep empty) | No               | list(String) | []                  |                                       |
 | **owner_sp_name**                | Owner of the workspace security group (keep empty)                 | No                    | String       |                     |                                       |
