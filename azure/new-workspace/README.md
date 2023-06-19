@@ -14,9 +14,10 @@
   * Create a secret for this app registration
   * Assign the role Contributor to the App registration over the managed resource group
 * Create a container named `terraform` in the platform storage account
+* Have a [Terraform cloud](https://app.terraform.io) account or [Terraform lib](https://developer.hashicorp.com/terraform/cli/install/apt) installed on your machine.
 
 ## Run Terraform script
-### Option 1: run with Terraform cloud (a Terraform Cloud account is needed)
+### Option 1: run with Terraform cloud
 * Fork the `cosmotech-terraform` repository (Cosmo Tech internal repository in `cosmotech-terraform-internal`)
 * Create a new branch dedicated to the workspace you want to create
 * In [Terraform cloud](https://app.terraform.io):
