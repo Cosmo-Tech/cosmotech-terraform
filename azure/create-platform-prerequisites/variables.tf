@@ -174,3 +174,9 @@ variable "user_app_role" {
   }))
   description = "App role for azuread_application"
 }
+
+variable "cost_center" {
+  description = "The cost center"
+  type        = string
+  default     = "NA"
+}

@@ -293,6 +293,7 @@ resource "azurerm_resource_group" "platform_rg" {
     stage    = var.project_stage
     customer = var.customer_name
     project  = var.project_name
+    cost_center = var.cost_center
   }
 }
 
@@ -357,6 +358,7 @@ resource "azurerm_public_ip" "publicip" {
     stage    = var.project_stage
     customer = var.customer_name
     project  = var.project_name
+    cost_center = var.cost_center
   }
 }
 
@@ -395,6 +397,7 @@ resource "azurerm_virtual_network" "platform_vnet" {
     stage    = var.project_stage
     customer = var.customer_name
     project  = var.project_name
+    cost_center = var.cost_center
   }
 }
 
