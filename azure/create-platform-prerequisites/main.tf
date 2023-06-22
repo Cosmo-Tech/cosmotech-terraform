@@ -289,11 +289,11 @@ resource "azurerm_resource_group" "platform_rg" {
   name     = var.resource_group
   location = var.location
   tags = {
-    vendor   = "cosmotech"
-    stage    = var.project_stage
-    customer = var.customer_name
-    project  = var.project_name
-    cost_center = var.cost_center
+    cosmotech_vendor   = "cosmotech"
+    cosmotech_stage    = var.project_stage
+    cosmotech_customer = var.customer_name
+    cosmotech_project  = var.project_name
+    cosmotech_cost_center = var.cost_center
   }
 }
 
@@ -354,11 +354,11 @@ resource "azurerm_public_ip" "publicip" {
   sku                 = "Standard"
 
   tags = {
-    vendor   = "cosmotech"
-    stage    = var.project_stage
-    customer = var.customer_name
-    project  = var.project_name
-    cost_center = var.cost_center
+    cosmotech_vendor   = "cosmotech"
+    cosmotech_stage    = var.project_stage
+    cosmotech_customer = var.customer_name
+    cosmotech_project  = var.project_name
+    cosmotech_cost_center = var.cost_center
   }
 }
 
@@ -393,11 +393,11 @@ resource "azurerm_virtual_network" "platform_vnet" {
   }
 
   tags = {
-    vendor   = "cosmotech"
-    stage    = var.project_stage
-    customer = var.customer_name
-    project  = var.project_name
-    cost_center = var.cost_center
+    cosmotech_vendor   = "cosmotech"
+    cosmotech_stage    = var.project_stage
+    cosmotech_customer = var.customer_name
+    cosmotech_project  = var.project_name
+    cosmotech_cost_center = var.cost_center
   }
 }
 
