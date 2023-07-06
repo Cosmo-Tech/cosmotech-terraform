@@ -2,19 +2,19 @@
 
 This documentation describes the Azure prerequisite infrastructure needed to install the Cosmo Tech AI Simulation Platform using Terraform. The Terraform script creates several Azure resources, as well as app registrations and specific Cosmo Tech AI Simulation Platform roles. The following is a list of the resources that will be created:
 
-- Azure Active Directory Application for the Cosmo Tech Platform
-  - Api permissions : `Platform.Admin` as application on Cosmo Tech Platform API
-- Azure Active Directory Application for Network and Azure Digital Twins
+- Azure App Registration for the Cosmo Tech Platform
+  - Api permissions : `Platform.Admin` as Application on Cosmo Tech Platform API
+- Azure App Registration for AKS Network and Azure Digital Twins
   - IAM roles : `Azure Digital Twins Data Owner` on Azure Digital Twins and `Network Contributor` on the Virtual Network
-- Azure Active Directory Application for Cosmo Tech API Swagger UI
+- Azure App Registration for Cosmo Tech API Swagger UI
   - API permissions : Delegated on Cosmo Tech Platform API
-- Azure Active Directory Application for Restish (Optional)
+- Azure App Registration for Restish (Optional)
   - API permissions : Delegated on Cosmo Tech Platform API
-- Azure Active Directory Application for WebApp (Optional)
+- Azure App Registration for WebApp (Optional)
   - API permissions : Delegated on Cosmo Tech Platform API, `Workspace.Read.All` on Power BI and `Reports.Read.All` on Power BI
 - Azure Virtual Network for AKS
-- Azure DNS record
 - Azure public IP for the Cosmo Tech Platform
+- Azure DNS record
 - Role assignments for the Cosmo Tech Platform
 
 
@@ -38,7 +38,7 @@ There are two options to run this Terraform script :
 | **customer_name**            | The Customer name                                                              | Yes                   | String       | false |                     |                                    |
 | **project_name**             | The Project name                                                               | Yes                   | String       | false |                     |                                    |
 | **resource_group**           | The new resource group to use for the platform deployment to create            | Yes                   | String       | false |                     | rg-myrg                            |
-| **owner_list**               | The list of AAD user list witch will be owner of the deployment resource group | Yes                   | list[String] | true  |                     | ["user.foo@mail.com"]              |
+| **owner_list**               | The list of AAD user which will be owner of the deployment resource group | Yes                   | list[String] | true  |                     | ["user.foo@mail.com"]              |
 | **audience**                 | The App Registration audience type                                             | No                    | String       | false | AzureADMultipleOrgs |                                    |
 | **webapp_url**               | The Web Application URL                                                        | No                    | String       | false |                     | https://project.cosmo-platform.com |
 | **dns_zone_name**            | The Azure DNS Zone name                                                        | Yes                   | String       | false |                     | api.cosmo-platform.com             |
