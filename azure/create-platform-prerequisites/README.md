@@ -18,6 +18,7 @@ This documentation describes the Azure prerequisite infrastructure needed to ins
     * Create and save a secret
   * Expose an API
     * Add a scope
+      * Application ID URI: keep default value, should be `api://app-registration-client-id`
       * Scope name: `platform`
       * Who can consent: `Admins and users`
       * Admin consent display name: `Cosmo Tech Platform Impersonate`
