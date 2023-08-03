@@ -37,7 +37,7 @@ This documentation describes the Azure prerequisite infrastructure needed to ins
 * Azure App Registration for AKS Network (previously used for ADT authentication)
   * Secrets
     * Create and save a secret
-  * RBAC
+  * Role assignments
     * `Contributor` on the Public IP
     * `Network contributor` ont he Virtual Network
 * Azure App Registration for Cosmo Tech API Swagger UI
@@ -62,7 +62,7 @@ This documentation describes the Azure prerequisite infrastructure needed to ins
       * Type: Single-age Application
       * Redirect URIs: 
         * `web-app-url`/sign-in (e.g. https://app.cosmo-platform.com/sign-in)
-        * http://localhost:3000/sign-in (used for dev)
+        * http://localhost:3000/sign-in
   * API permissions:
     * API: `Microsoft Graph`
       * Permission name: `User.Read`
