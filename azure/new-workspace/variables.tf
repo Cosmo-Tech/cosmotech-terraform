@@ -82,6 +82,12 @@ variable "kusto_script" {
   default = true
 }
 
+variable "create_adt_instance" {
+  description = "Create Azure Digital Twins instance ?"
+  type = bool
+  default = false
+}
+
 variable "adx_identity_uid" {
   description = "The kusto cluster managed identity uid"
   type = string
