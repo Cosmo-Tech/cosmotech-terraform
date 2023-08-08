@@ -24,7 +24,7 @@ This documentation describes the Azure prerequisite infrastructure needed to ins
       * Admin consent display name: `Cosmo Tech Platform Impersonate`
       * Admin consent description: `Allow the appication to use the Cosmo Tech Platform with user account`
   * Manifest
-    * In the manifest, replace appRoles property value with the [app-roles.json file](/home/jplanchenault/src/cosmotech-terraform/azure/create-platform-prerequisites/app-roles.json)
+    * In the manifest, replace appRoles property value with the [app-roles.json file](app-roles.json)
   * API permissions
     * API: `Microsoft Graph`
       * Permission name: `User.Read`
