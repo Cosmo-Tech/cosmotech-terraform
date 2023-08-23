@@ -44,7 +44,7 @@ This documentation describes the Azure prerequisite infrastructure needed to ins
   * Authentication
     * Supported account types: Single tenant
     * Platform configurations: 
-      * Type: Web
+      * Type: Single-Page Application
       * Redirect URIs: `platform-api-url`/v2/swagger-ui/oauth2-redirect.html (e.g. https://lab.api.cosmo-platform.com/v2/swagger-ui/oauth2-redirect.html)
   * API permissions:
     * API: `Microsoft Graph`
