@@ -11,4 +11,4 @@ subscription_id = ""
 resource_group = ""
 organization_id = ""
 workspace_key = ""
-
+create_adt_instance = ""

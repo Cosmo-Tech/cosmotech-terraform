@@ -33,7 +33,7 @@ data "azuread_service_principal" "app_platform" {
 }
 
 data "azuread_service_principal" "app_adt" {
-  count = var.aad_groups_and_assignements ? 1 : 0
+  count = var.aad_groups_and_assignements && var.create_adt_instance ? 1 : 0
   display_name = var.app_adt_name
 }
 
@@ -48,7 +48,7 @@ data "azurerm_storage_container" "terraform_container" {
 }
 
 data "azurerm_kusto_cluster" "adx_cluster" {
-  name                 = var.adx_name
+  name                = var.adx_name
   resource_group_name = var.resource_group
 }
 
@@ -63,6 +63,7 @@ resource "azuread_group" "workspace_group" {
 
 # ADT instance
 resource "azurerm_digital_twins_instance" "adt" {
+  count = var.create_adt_instance ? 1 : 0
   name                = local.resource_name
   resource_group_name = var.resource_group
   location            = var.location
@@ -75,22 +76,22 @@ resource "azurerm_digital_twins_instance" "adt" {
 }
 
 resource "azurerm_role_assignment" "adt_owner" {
-  count = var.aad_groups_and_assignements ? 1 : 0
-  scope                = azurerm_digital_twins_instance.adt.id
+  count = var.aad_groups_and_assignements && var.create_adt_instance ? 1 : 0
+  scope                = azurerm_digital_twins_instance.adt[0].id
   role_definition_name = "Owner"
   principal_id         = azuread_group.workspace_group[0].object_id
 }
 
 resource "azurerm_role_assignment" "adt_data_owner" {
-  count = var.aad_groups_and_assignements ? 1 : 0
-  scope                = azurerm_digital_twins_instance.adt.id
+  count = var.aad_groups_and_assignements && var.create_adt_instance ? 1 : 0
+  scope                = azurerm_digital_twins_instance.adt[0].id
   role_definition_name = "Azure Digital Twins Data Owner"
   principal_id         = azuread_group.workspace_group[0].object_id
 }
 
 resource "azurerm_role_assignment" "adt_data_owner_app" {
-  count = var.aad_groups_and_assignements ? 1 : 0
-  scope                = azurerm_digital_twins_instance.adt.id
+  count = var.aad_groups_and_assignements && var.create_adt_instance ? 1 : 0
+  scope                = azurerm_digital_twins_instance.adt[0].id
   role_definition_name = "Azure Digital Twins Data Owner"
   principal_id         = data.azuread_service_principal.app_adt[0].id
 }
@@ -406,7 +407,7 @@ SentFactsTotal: long)
     ']'
 //
 // GetScenarios function to get the list of scenarios, with their latest name when renamed, and their lastest run
-.create-or-alter function with (folder = "", docstring = "", skipvalidation = "true") GetScenarios() { 
+.create-or-alter function with (folder = "", docstring = "", skipvalidation = "true") GetScenarios() {
     ScenarioMetadata
     | summarize arg_max(UpdateTime, *) by ScenarioId
     | lookup kind=inner
