@@ -321,6 +321,11 @@ resource "azuread_application" "babylon" {
       id   = "6332363e-bcba-4c4a-a605-c25f23117400" # platform
       type = "Scope"
     }
+
+    resource_access {
+      id   = "bb49d61f-8b6a-4a19-b5bd-06a29d6b8e60"
+      type = "Role"
+    }
   }
 
   public_client {
