@@ -1,4 +1,4 @@
-# Terraform script for Azure Prerequisites - Cosmo Tech Platform v2.3.5
+# Terraform script for Azure Prerequisites - Cosmo Tech Platform v2.4.10
 
 ## Description
 
